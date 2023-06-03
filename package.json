@@ -1,0 +1,93 @@
+{
+  "name": "dibs-dashboard",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@apollo/client": "^3.7.14",
+    "@ethersproject/bignumber": "^5.7.0",
+    "@fortawesome/fontawesome-svg-core": "^6.1.2",
+    "@fortawesome/free-solid-svg-icons": "^6.1.2",
+    "@fortawesome/pro-duotone-svg-icons": "^6.1.2",
+    "@fortawesome/pro-light-svg-icons": "^6.1.2",
+    "@fortawesome/pro-regular-svg-icons": "^6.1.2",
+    "@fortawesome/pro-solid-svg-icons": "^6.1.2",
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "@headlessui/react": "^1.6.6",
+    "@mui/base": "^5.0.0-alpha.88",
+    "@mui/icons-material": "^5.6.0",
+    "@mui/joy": "^5.0.0-alpha.35",
+    "@mui/material": "^5.6.0",
+    "@mui/styles": "^5.6.0",
+    "@rainbow-me/rainbowkit": "^1.0.1",
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^13.0.0",
+    "@testing-library/user-event": "^13.2.1",
+    "@types/jest": "^27.0.1",
+    "@types/node": "^20.2.5",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "@uniswap/sdk-core": "^3.2.3",
+    "@web3modal/ethereum": "^2.4.5",
+    "@web3modal/react": "^2.4.5",
+    "buffer": "^6.0.3",
+    "crypto-browserify": "^3.12.0",
+    "graphql-tag": "^2.12.6",
+    "process": "^0.11.10",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.11.2",
+    "react-scripts": "5.0.1",
+    "stream-browserify": "^3.0.0",
+    "typescript": "^4.4.2",
+    "viem": "^1.0.2",
+    "wagmi": "^1.1.1",
+    "web-vitals": "^2.1.0",
+    "web3": "1.2.11"
+  },
+  "scripts": {
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
+    "eject": "react-app-rewired eject",
+    "prepare": "wagmi generate && graphql-codegen"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "^4.0.1",
+    "@graphql-codegen/client-preset": "^4.0.0",
+    "@wagmi/cli": "^1.1.0",
+    "eslint": "^8.12.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-better-styled-components": "^1.1.2",
+    "eslint-plugin-mocha": "^10.1.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.29.4",
+    "eslint-plugin-react-hooks": "^4.4.0",
+    "eslint-plugin-simple-import-sort": "^7.0.0",
+    "eslint-plugin-unused-imports": "^2.0.0",
+    "graphql": "^16.6.0",
+    "node-sass": "^7.0.1",
+    "postcss": "^8.4.14",
+    "prettier": "^2.6.2",
+    "react-app-rewired": "^2.2.1",
+    "sass": "^1.53.0",
+    "tailwindcss": "^3.2.7"
+  }
+}

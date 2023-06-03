@@ -1,0 +1,204 @@
+@tailwind base
+@tailwind components
+@tailwind utilities
+
+
+html
+  // these two lines prevent changing the position of the body when you switch between a scrollable page to a non-scrollable one.
+  overflow-x: hidden
+  margin-right: calc(-1 * (100vw - 100%))
+
+body
+  font-family: 'Inter', sans-serif
+  font-weight: 500
+  @apply text-black bg-body
+  max-width: 1512px
+  margin: auto
+
+span
+  display: inline-block
+
+@mixin btn
+  @apply ease-out duration-300
+
+
+@layer base
+
+  h1
+    @apply text-4xl font-semibold
+
+  h2
+    @apply text-3xl font-semibold
+
+  h3
+    @apply text-2xl font-semibold
+
+  h4
+    @apply text-xl font-medium
+
+  p, span, button
+    @apply text-[17px] font-medium
+
+@layer components
+  .page-spacing
+    @apply px-4 md:px-8 lg:px-12 xl:px-24 lg1440:px-40 py-14 mt-8 md:mt-0
+
+  .main-spacing
+    @apply px-4 md:pl-84
+
+  .card
+    @apply rounded-3xl py-7 px-6
+
+  // BUTTON COLOR
+
+  .btn-primary
+    @include btn
+    @apply bg-primary font-medium text-white rounded-xl hover:bg-indigo-700
+
+  .btn-secondary
+    @include btn
+    @apply bg-secondary font-medium text-white rounded-xl hover:bg-orange-500
+
+
+  .btn-primary-inverted
+    @include btn
+    @apply text-primary bg-primary-light hover:bg-indigo-100
+
+  .btn-secondary-inverted
+    @include btn
+    @apply text-secondary text-secondary bg-secondary-light hover:bg-orange-200 rounded-xl
+
+  .btn-link
+    @include btn
+    @apply underline opacity-80 hover:text-primary
+
+  // BUTTON SIZE
+
+  .btn-small
+    @apply max-h-9 text-sm px-4 py-2 font-medium rounded-lg
+
+  .btn-large
+    @apply h-14 px-6 py-3 text-xl font-semibold rounded-xl
+
+  .btn-medium
+    @apply h-11 px-6 rounded-lg
+  // hover:shadow-button
+
+
+  // BUTTON STATES
+
+  .btn-waiting
+    @apply bg-indigo-400 cursor-default hover:bg-indigo-400
+
+  // STATUS
+
+  .status-red
+    @apply bg-red-100 text-red-500
+
+  // CHEAPS
+
+  .chips
+    @apply text-xs rounded-md bg-chips text-white px-2 py-0.5
+
+  // navbar
+
+  .nav-item
+    @apply text-light-gray-3
+
+
+  .text-gradient
+    @apply bg-clip-text bg-gradient
+    -webkit-text-fill-color: transparent
+
+  .element-disabled
+    @apply bg-disabled-bg text-disabled-text hover:bg-disabled-bg cursor-default #{!important}
+
+
+
+
+//@layer utilities
+//  .primary-shadow-xl
+//    filter: drop-shadow(0px 8px 18px rgba(81, 88, 246, 0.15))
+
+
+.countdown-container
+  div
+    @apply flex justify-center items-center flex-col
+  p
+    &:first-child
+      @apply text-5xl font-bold
+    &:last-child
+      @apply text-label text-sm font-medium
+
+
+.lottery-card
+  @apply relative rounded-2xl
+  &:after
+    content: ""
+    @apply absolute inset-0 w-full h-full opacity-75 bg-lottery rounded-2xl
+    z-index: -1
+
+
+
+
+.checkbox
+  position: absolute
+  display: block
+  height: 32px
+  width: 32px
+  top: 20px
+  right: 20px
+  z-index: 1002
+  opacity: 0
+  cursor: pointer
+
+
+.hamburger-lines
+  height: 26px
+  width: 32px
+  padding-left: -16px
+  position: absolute
+  top: 16px
+  right: 20px
+  z-index: 1001
+  display: flex
+  flex-direction: column
+  justify-content: space-between
+
+  .line
+    display: block
+    height: 4px
+    width: 100%
+    border-radius: 10px
+    @apply bg-black
+
+
+  .line1
+    transform-origin: 0% 0%
+    transition: transform 0.4s ease-in-out
+
+
+  .line2
+    transition: transform 0.2s ease-in-out
+
+
+  .line3
+    transform-origin: 0% 100%
+    transition: transform 0.4s ease-in-out
+
+
+
+input[type='checkbox']:checked ~ .hamburger-lines .line1
+  transform: rotate(45deg)
+
+
+input[type='checkbox']:checked ~ .hamburger-lines .line2
+  transform: scaleY(0)
+
+
+input[type='checkbox']:checked ~ .hamburger-lines .line3
+  transform: rotate(-45deg)
+
+
+input[type='checkbox']:checked ~ .menu-items
+  transform: translateX(0)
