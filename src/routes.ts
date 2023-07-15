@@ -3,6 +3,11 @@ export enum RoutePath {
   REWARDS = '/rewards',
   REPORTS = '/reports',
   TEST_SWAP = '/test-swap',
+  PAIR_ISOLATED = '/pair-isolated/:address',
+}
+
+export function requiresCode(routePath: string) {
+  return routePath !== RoutePath.HOME && !routePath.startsWith('/pair-isolated');
 }
 
 export function getRoute(path: RoutePath, params?: { [key: string]: string }) {

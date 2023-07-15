@@ -10,7 +10,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { shortenAddress } from 'utils/index';
 import { useAccount, useNetwork } from 'wagmi';
 
-import RoutePath from '../../../routes';
+import RoutePath, { requiresCode } from '../../../routes';
 
 // import { Dialog, Transition } from '@headlessui/react';
 
@@ -39,6 +39,11 @@ const Sidenav = () => {
       { name: 'Rewards', icon: faGift, address: RoutePath.REWARDS },
       // { name: 'Reports', icon: faFileChartColumn, address: RoutePath.REPORTS },
       { name: 'Test swap', icon: faRightLeft, address: RoutePath.TEST_SWAP },
+      {
+        name: 'Pair Isolated',
+        icon: faRightLeft,
+        address: RoutePath.PAIR_ISOLATED.replace(':address', '0x6cB66a0762E7Ce3c0Abc9d0241bF4cfFc67fcdA1'),
+      },
     ],
     [],
   );
@@ -73,7 +78,7 @@ const Sidenav = () => {
       <ul className={'pl-2 mt-16 mb-24'}>
         {links.map((link) => {
           const active = location.pathname === link.address;
-          const disabled = (!account || !isSupportedChain(chain?.id)) && link.address !== RoutePath.HOME;
+          const disabled = (!account || !isSupportedChain(chain?.id)) && requiresCode(link.address);
           return (
             <li
               onClick={() => {

@@ -7,14 +7,14 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { configureChains, createConfig, WagmiConfig } from 'wagmi';
-import { arbitrum, bsc, mainnet } from 'wagmi/chains';
+import { arbitrum, bsc, goerli, mainnet } from 'wagmi/chains';
 import { publicProvider } from 'wagmi/providers/public';
 
 import { dibsClient } from './apollo/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-const chains = [arbitrum, mainnet, bsc];
+const chains = [arbitrum, mainnet, bsc, goerli];
 
 if (!process.env.REACT_APP_WALLETCONNECT_PROJECT_ID) {
   throw new Error('REACT_APP_WALLETCONNECT_PROJECT_ID not provided');

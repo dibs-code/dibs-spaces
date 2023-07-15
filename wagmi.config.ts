@@ -5,6 +5,8 @@ import { erc20ABI } from 'wagmi';
 import DibsABI from './src/abis/dibs';
 import DibsLotteryABI from './src/abis/dibsLottery';
 import MuonInterfaceABI from './src/abis/muonInterface';
+import PairRewarderABI from './src/abis/pairRewarder';
+import UniswapV2PairABI from './src/abis/uniswapV2Pair';
 
 export default defineConfig({
   out: 'src/abis/types/generated.ts',
@@ -24,6 +26,14 @@ export default defineConfig({
     {
       name: 'MuonInterface',
       abi: MuonInterfaceABI,
+    },
+    {
+      name: 'PairRewarder',
+      abi: PairRewarderABI,
+    },
+    {
+      name: 'UniswapV2Pair',
+      abi: UniswapV2PairABI,
     },
   ],
   plugins: [react()],
