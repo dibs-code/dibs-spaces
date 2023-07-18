@@ -14,7 +14,7 @@ import { dibsClient } from './apollo/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-const chains = [arbitrum, mainnet, bsc, goerli];
+const chains = [goerli, arbitrum, mainnet, bsc];
 
 if (!process.env.REACT_APP_WALLETCONNECT_PROJECT_ID) {
   throw new Error('REACT_APP_WALLETCONNECT_PROJECT_ID not provided');

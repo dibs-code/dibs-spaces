@@ -102,8 +102,6 @@ export function useDibsData() {
     const balancesToClaim: BalanceToClaimObject[] = [];
     balances.forEach((b) => {
       const balanceToClaim = b.balance - b.claimedBalance;
-      console.log('balanceToClaim');
-      console.log(typeof b.balance);
       if (balanceToClaim) {
         balancesToClaim.push({
           accumulativeBalance: b.balance,

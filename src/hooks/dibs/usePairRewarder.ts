@@ -1,9 +1,11 @@
-import { multicall } from '@wagmi/core';
+import { multicall, readContract } from '@wagmi/core';
 import { Address } from 'abitype';
 import { useEffect, useState } from 'react';
+import { useAccount } from 'wagmi';
 
 import {
   dibsABI,
+  pairRewarderABI,
   usePairRewarderActiveDay,
   usePairRewarderLeaderBoardInfo,
   usePairRewarderLeaderBoardWinners,
@@ -80,7 +82,6 @@ export function usePairRewarder(pairRewarderAddress: Address) {
           args: [item],
         };
       });
-      if (!calls) return;
       const winnerCodeNames = await multicall({
         contracts: calls,
       });
@@ -102,5 +103,52 @@ export function usePairRewarder(pairRewarderAddress: Address) {
     activeDay,
     activeLeaderBoardInfo,
     epochWinners,
+  };
+}
+
+export type PairRewarderLeaderBoardRewardItem = {
+  day: bigint;
+  claimed: boolean;
+};
+
+export function usePairRewarderRewards(pairRewarderAddress: Address) {
+  const { address } = useAccount();
+
+  const [rewards, setRewards] = useState<PairRewarderLeaderBoardRewardItem[] | null>(null);
+  useEffect(() => {
+    async function getData() {
+      if (!address || !pairRewarderAddress) return;
+      const winDays = await readContract({
+        address: pairRewarderAddress,
+        abi: pairRewarderABI,
+        functionName: 'getUserLeaderBoardWins',
+        args: [address],
+      });
+      if (!winDays) return;
+      const calls = winDays.map((item) => {
+        return {
+          abi: pairRewarderABI,
+          address: pairRewarderAddress,
+          functionName: 'userLeaderBoardClaimedForDay',
+          args: [item],
+        };
+      });
+      const claimedForDays = await multicall({
+        contracts: calls,
+      });
+      console.log({ claimedForDays });
+      setRewards(
+        claimedForDays.map((item, i) => ({
+          day: winDays[i],
+          claimed: item.result as boolean,
+        })),
+      );
+    }
+
+    getData();
+  }, [address, pairRewarderAddress]);
+
+  return {
+    rewards,
   };
 }
