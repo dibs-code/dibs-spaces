@@ -130,7 +130,7 @@ export function usePairRewarderRewards(pairRewarderAddress: Address) {
           abi: pairRewarderABI,
           address: pairRewarderAddress,
           functionName: 'userLeaderBoardClaimedForDay',
-          args: [item],
+          args: [address, item],
         };
       });
       const claimedForDays = await multicall({

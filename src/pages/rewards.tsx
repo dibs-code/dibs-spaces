@@ -3,16 +3,43 @@ import { faTicket } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Modal from 'components/modal';
 import Sidenav from 'components/navigation/sidenav';
-import { LotteryRewards } from 'components/rewards/LotteryRewards';
 import React, { useState } from 'react';
+import { Address, useAccount } from 'wagmi';
 
+import { usePairRewarderWrite, usePreparePairRewarderClaimLeaderBoardReward } from '../abis/types/generated';
 import { ReferralRewardClaimRow } from '../components/rewards/ReferralRewardClaimRow';
-import { ReferralRewards } from '../components/rewards/ReferralRewards';
 import { useDibsData } from '../hooks/dibs/useDibsData';
-import { usePairRewarderRewards } from '../hooks/dibs/usePairRewarder';
+import { PairRewarderLeaderBoardRewardItem, usePairRewarderRewards } from '../hooks/dibs/usePairRewarder';
 
+const PairRewarderClaimButton = ({
+  rewardItem,
+  pairRewarderAddress,
+}: {
+  pairRewarderAddress: Address;
+  rewardItem: PairRewarderLeaderBoardRewardItem;
+}) => {
+  const { address } = useAccount();
+  const [pending, setPending] = useState(false);
+
+  const { config: claimRewardConfig } = usePreparePairRewarderClaimLeaderBoardReward({
+    address: pairRewarderAddress,
+    args: address && [rewardItem.day, address],
+  });
+  const { write: claim, isLoading: isLoadingClaim } = usePairRewarderWrite(claimRewardConfig);
+
+  return (
+    <button
+      disabled={isLoadingClaim}
+      className={`btn-primary btn-large font-medium mt-4 w-full xl:w-auto px-8 border-2 mx-2`}
+      onClick={claim}
+    >
+      Claim
+    </button>
+  );
+};
 const PairRewarderRewards = () => {
-  const { rewards } = usePairRewarderRewards('0x6cB66a0762E7Ce3c0Abc9d0241bF4cfFc67fcdA1');
+  const pairRewarderAddress = '0x6cB66a0762E7Ce3c0Abc9d0241bF4cfFc67fcdA1';
+  const { rewards } = usePairRewarderRewards(pairRewarderAddress);
 
   return (
     <section>
@@ -23,7 +50,9 @@ const PairRewarderRewards = () => {
       >
         <FontAwesomeIcon style={{ fontSize: 24 }} icon={faTicket}></FontAwesomeIcon>
         <p className={'text-22 mt-0.5'}>Pair isolated leaderboard rewards</p>
-        <table>
+      </header>
+      <main>
+        <table className={'w-full align-center text-center'}>
           <thead>
             <tr>
               <th>Day</th>
@@ -31,15 +60,21 @@ const PairRewarderRewards = () => {
             </tr>
           </thead>
           <tbody>
-            {rewards?.map((r) => (
-              <tr key={r.day.toString()}>
-                <td>{r.day.toString()}</td>
-                <td>{String(r.claimed)}</td>
+            {rewards?.map((rewardItem) => (
+              <tr key={rewardItem.day.toString()}>
+                <td>{rewardItem.day.toString()}</td>
+                <td>
+                  {rewardItem.claimed ? (
+                    'Claimed'
+                  ) : (
+                    <PairRewarderClaimButton rewardItem={rewardItem} pairRewarderAddress={pairRewarderAddress} />
+                  )}
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
-      </header>
+      </main>
     </section>
   );
 };
@@ -75,8 +110,8 @@ const Rewards = () => {
           </header>
 
           <main>
-            <ReferralRewards onClick={() => setOpen(true)} />
-            <LotteryRewards />
+            {/*<ReferralRewards onClick={() => setOpen(true)} />*/}
+            {/*<LotteryRewards />*/}
             <PairRewarderRewards />
           </main>
         </>

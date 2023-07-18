@@ -81,7 +81,6 @@ export function useDibsData() {
   const balances = useMemo((): AccBalanceObject[] => {
     if (!accumulativeTokenBalances?.data || !claimedBalancesResult.length) return [];
     const accBalancesResultLoaded = accumulativeTokenBalances?.data.accumulativeTokenBalances;
-    console.log({ accBalancesResultLoaded });
     return userTokenAddresses.map((tokenAddress, i) => ({
       tokenAddress,
       balance: BigInt(accBalancesResultLoaded[i].amount),
@@ -90,7 +89,6 @@ export function useDibsData() {
   }, [accumulativeTokenBalances?.data, claimedBalancesResult, userTokenAddresses]);
 
   const claimedBalances = useMemo((): BalanceObject[] => {
-    console.log({ balances });
     return balances.map((b) => ({
       balance: b.claimedBalance,
       tokenAddress: b.tokenAddress,

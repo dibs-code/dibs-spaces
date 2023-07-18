@@ -34,6 +34,5 @@ export type SupportedL2ChainId = (typeof L2_CHAIN_IDS)[number];
 
 export function isSupportedChain(chainId: number | null | undefined): chainId is SupportedChainId {
   // return !!chainId && !!SupportedChainId[chainId];
-  console.log({ chainId });
   return !!chainId && chainId === SupportedChainId.GOERLI;
 }
