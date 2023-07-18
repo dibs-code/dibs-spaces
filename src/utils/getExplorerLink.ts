@@ -2,7 +2,7 @@ import { SupportedChainId } from '../constants/chains';
 
 const BLOCK_EXPLORER_PREFIXES: { [chainId: number]: string } = {
   [SupportedChainId.MAINNET]: 'https://etherscan.io',
-  [SupportedChainId.RINKEBY]: 'https://rinkeby.etherscan.io',
+  [SupportedChainId.GOERLI]: 'https://goerli.etherscan.io',
   [SupportedChainId.BSC]: 'https://bscscan.com',
 };
 
@@ -34,7 +34,7 @@ export function getExplorerLink(chainId: number, data: string, type: ExplorerDat
   //   }
   // }
   //
-  // if (chainId === SupportedChainId.ARBITRUM_RINKEBY) {
+  // if (chainId === SupportedChainId.ARBITRUM_GOERLY) {
   //   switch (type) {
   //     case ExplorerDataType.TRANSACTION:
   //       return `https://rinkeby-explorer.arbitrum.io/tx/${data}`

@@ -1,31 +1,22 @@
 import { faCopy } from '@fortawesome/pro-regular-svg-icons';
 import { faCircleInfo } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useConnectModal } from '@rainbow-me/rainbowkit';
 import Input from 'components/basic/input';
 import SubmittedModal from 'components/modal/submitted';
 import { isSupportedChain, SupportedChainId } from 'constants/chains';
 import { useDibsData } from 'hooks/dibs/useDibsData';
 import { useDibsRegisterCallback } from 'hooks/dibs/useDibsRegisterCallback';
-import React, { PropsWithChildren, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { copyToClipboard } from 'utils/index';
 import { useAccount, useNetwork } from 'wagmi';
 
-// import { Dialog, Transition } from '@headlessui/react';
-
-export interface ModalPropsInterface extends React.HTMLAttributes<HTMLElement> {
-  open?: boolean;
-
-  // closeModal(): void;
-}
-
-export type ModalProps = PropsWithChildren<ModalPropsInterface>;
-
-const YourCode = (props: ModalProps) => {
+const YourCode = () => {
   const { chain } = useNetwork();
   const { address: account } = useAccount();
   const { addressToName, parentCodeName: parentCodeNameFromContract } = useDibsData();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, _setSearchParams] = useSearchParams();
   const [parentCodeName, setParentCodeName] = useState('');
 
   useEffect(() => {
@@ -58,9 +49,11 @@ const YourCode = (props: ModalProps) => {
   const selectChain = async (chainId: any) => {
     console.log(chainId);
   };
+  const { openConnectModal } = useConnectModal();
+
   const create = useCallback(async () => {
     if (!account) {
-      setOpen(true);
+      openConnectModal?.();
       return;
     }
     if (!isSupportedChain(chain?.id)) {
@@ -78,24 +71,14 @@ const YourCode = (props: ModalProps) => {
     if (mounted.current) {
       setLoading(false);
     }
-  }, [account, chain?.id, loading, registerCallback, selectChain]);
+  }, [account, chain?.id, loading, openConnectModal, registerCallback]);
 
-  //
-  // const [links, setLinks] = useState([]);
-
-  // const { open, closeModal, children, className, title } = props;
   const refUrl = useMemo(() => `${window.location.host}/?ref=${addressToName}`, [addressToName]);
 
   const copyRefUrl = useCallback(async () => {
     await copyToClipboard(refUrl);
     alert('Copied to clipboard!');
   }, [refUrl]);
-
-  const [open, setOpen] = React.useState(false);
-
-  function closeModal() {
-    setOpen(false);
-  }
 
   return (
     <>

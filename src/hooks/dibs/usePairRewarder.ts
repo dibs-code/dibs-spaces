@@ -1,11 +1,16 @@
+import { multicall } from '@wagmi/core';
 import { Address } from 'abitype';
 import { useEffect, useState } from 'react';
 
 import {
+  dibsABI,
+  usePairRewarderActiveDay,
   usePairRewarderLeaderBoardInfo,
+  usePairRewarderLeaderBoardWinners,
   usePairRewarderPair,
   useUniswapV2PairSymbol,
 } from '../../abis/types/generated';
+import { DibsAddress } from '../../constants/addresses';
 
 export function usePairRewarder(pairRewarderAddress: Address) {
   const { data: pairAddress } = usePairRewarderPair({
@@ -15,7 +20,7 @@ export function usePairRewarder(pairRewarderAddress: Address) {
     address: pairAddress,
   });
 
-  const { data: leaderBoardInfo } = usePairRewarderLeaderBoardInfo({
+  const { data: activeLeaderBoardInfo } = usePairRewarderLeaderBoardInfo({
     address: pairRewarderAddress,
   });
 
@@ -40,10 +45,62 @@ export function usePairRewarder(pairRewarderAddress: Address) {
       clearInterval(interval);
     };
   }, []);
+
+  const [epochToShowWinners, setEpochToShowWinners] = useState<bigint | null>(null);
+
+  const { data: activeDay } = usePairRewarderActiveDay({
+    address: pairRewarderAddress,
+  });
+
+  useEffect(() => {
+    if (activeDay) {
+      setEpochToShowWinners(activeDay - BigInt(1));
+    }
+  }, [activeDay]);
+
+  const { data: epochWinnersRaw } = usePairRewarderLeaderBoardWinners({
+    address: pairRewarderAddress,
+    args: epochToShowWinners !== null ? [epochToShowWinners] : undefined,
+  });
+
+  const [epochWinners, setEpochWinners] = useState<
+    | (typeof epochWinnersRaw & {
+        winnerCodeNames: string[];
+      })
+    | undefined
+  >(undefined);
+  useEffect(() => {
+    async function getData() {
+      if (!epochWinnersRaw) return;
+      const calls = epochWinnersRaw.winners.map((item) => {
+        return {
+          abi: dibsABI,
+          address: DibsAddress,
+          functionName: 'getCodeName',
+          args: [item],
+        };
+      });
+      if (!calls) return;
+      const winnerCodeNames = await multicall({
+        contracts: calls,
+      });
+      setEpochWinners({
+        ...epochWinnersRaw,
+        winnerCodeNames: winnerCodeNames.map((item) => item.result) as string[],
+      });
+    }
+
+    getData();
+  }, [epochWinnersRaw]);
+
   return {
     epochInfo,
     pairAddress,
     pairSymbol,
-    leaderBoardInfo,
+    epochToShowWinners,
+    setEpochToShowWinners,
+    activeDay,
+    activeLeaderBoardInfo,
+    epochWinners,
   };
 }

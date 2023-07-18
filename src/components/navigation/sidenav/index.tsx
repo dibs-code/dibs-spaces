@@ -58,7 +58,7 @@ const Sidenav = () => {
               hasCode ? 'text-base font-medium' : 'text-sm font-regular'
             }`}
           >
-            {addressToName || 'No code exist'}
+            {addressToName ?? 'No code exist'}
           </span>
         </p>
       </>

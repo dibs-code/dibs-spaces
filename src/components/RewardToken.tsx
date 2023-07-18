@@ -7,10 +7,10 @@ import formatLocaleNumber from '../lib/utils/formatLocaleNumber';
 
 export default function RewardToken({
   rewardTokenAddress,
-  rewardTokenAmounts,
+  rewardTokenAmount,
 }: {
   rewardTokenAddress: Address;
-  rewardTokenAmounts: readonly bigint[];
+  rewardTokenAmount: bigint;
 }) {
   const { data: rewardTokenDecimals } = useErc20Decimals({
     address: rewardTokenAddress,
@@ -19,9 +19,9 @@ export default function RewardToken({
     address: rewardTokenAddress,
   });
   const totalAmount = useMemo(() => {
-    const amount = rewardTokenAmounts.reduce((sum, amount) => sum + amount, BigInt(0));
-    return formatUnits(amount, rewardTokenDecimals);
-  }, [rewardTokenAmounts, rewardTokenDecimals]);
+    return formatUnits(rewardTokenAmount, rewardTokenDecimals);
+  }, [rewardTokenAmount, rewardTokenDecimals]);
+
   return (
     <div>
       {formatLocaleNumber({ number: Number(totalAmount) })} {rewardTokenSymbol}
