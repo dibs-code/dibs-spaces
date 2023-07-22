@@ -22,12 +22,7 @@ if (!process.env.REACT_APP_WALLETCONNECT_PROJECT_ID) {
 
 const projectId = process.env.REACT_APP_WALLETCONNECT_PROJECT_ID;
 
-const { publicClient } = configureChains(chains, [
-  // w3mProvider({
-  //   projectId
-  // }),
-  publicProvider(),
-]);
+const { publicClient } = configureChains(chains, [publicProvider()]);
 
 const { connectors } = getDefaultWallets({
   appName: 'Dibs',

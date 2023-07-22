@@ -1,3 +1,8 @@
+import { Address } from 'abitype';
+import { ReadContractResult } from 'wagmi/actions';
+
+import { pairRewarderABI } from '../abis/types/generated';
+
 export enum TransactionStatus {
   SUCCESS,
   PENDING,
@@ -60,3 +65,14 @@ export type MuonVerificationData = {
     startedAt: number;
   };
 };
+
+export type PairRewarderEpochWinnersRaw = ReadContractResult<typeof pairRewarderABI, 'leaderBoardWinners'> | undefined;
+export type PairRewarderEpochWinners =
+  | (PairRewarderEpochWinnersRaw & {
+      winnerCodeNames: string[];
+    })
+  | undefined;
+
+export type LeaderBoardInfo = ReadContractResult<typeof pairRewarderABI, 'leaderBoardInfo'>;
+
+export type RewardTokenAndAmount = { token: Address; amount: bigint };

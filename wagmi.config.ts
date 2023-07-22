@@ -6,6 +6,7 @@ import DibsABI from './src/abis/dibs';
 import DibsLotteryABI from './src/abis/dibsLottery';
 import MuonInterfaceABI from './src/abis/muonInterface';
 import PairRewarderABI from './src/abis/pairRewarder';
+import pairRewarderFactoryABI from './src/abis/pairRewarderFactory';
 import UniswapV2PairABI from './src/abis/uniswapV2Pair';
 
 export default defineConfig({
@@ -30,6 +31,10 @@ export default defineConfig({
     {
       name: 'PairRewarder',
       abi: PairRewarderABI,
+    },
+    {
+      name: 'pairRewarderFactory',
+      abi: pairRewarderFactoryABI,
     },
     {
       name: 'UniswapV2Pair',

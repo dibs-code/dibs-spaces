@@ -3,7 +3,8 @@ export enum RoutePath {
   REWARDS = '/rewards',
   REPORTS = '/reports',
   TEST_SWAP = '/test-swap',
-  PAIR_ISOLATED = '/pair-isolated/:address',
+  PAIR_ISOLATED = '/pair-isolated',
+  PAIR_REWARDER = '/pair-isolated/:address',
 }
 
 export function requiresCode(routePath: string) {

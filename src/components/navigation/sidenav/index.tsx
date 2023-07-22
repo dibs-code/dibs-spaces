@@ -38,11 +38,11 @@ const Sidenav = () => {
       { name: 'Your code', icon: faCircleC, address: RoutePath.HOME },
       { name: 'Rewards', icon: faGift, address: RoutePath.REWARDS },
       // { name: 'Reports', icon: faFileChartColumn, address: RoutePath.REPORTS },
-      { name: 'Test swap', icon: faRightLeft, address: RoutePath.TEST_SWAP },
+      // { name: 'Test swap', icon: faRightLeft, address: RoutePath.TEST_SWAP },
       {
         name: 'Pair Isolated',
         icon: faRightLeft,
-        address: RoutePath.PAIR_ISOLATED.replace(':address', '0x6cB66a0762E7Ce3c0Abc9d0241bF4cfFc67fcdA1'),
+        address: RoutePath.PAIR_REWARDER.replace(':address', '0x6cB66a0762E7Ce3c0Abc9d0241bF4cfFc67fcdA1'),
       },
     ],
     [],

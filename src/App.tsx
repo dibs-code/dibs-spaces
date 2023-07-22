@@ -2,7 +2,8 @@ import './App.css';
 
 import { isSupportedChain } from 'constants/chains';
 import Home from 'pages/home';
-import PairIsolated from 'pages/pair-isolated/_address';
+import PairRewarder from 'pages/pair-isolated/_address';
+import PairIsolated from 'pages/pair-isolated/index';
 import Report from 'pages/reports';
 import Rewards from 'pages/rewards';
 import React, { useEffect } from 'react';
@@ -28,6 +29,7 @@ function App() {
       <Route path={RoutePath.REWARDS} element={<Rewards />} />
       <Route path={RoutePath.REPORTS} element={<Report />} />
       <Route path={RoutePath.PAIR_ISOLATED} element={<PairIsolated />} />
+      <Route path={RoutePath.PAIR_REWARDER} element={<PairRewarder />} />
     </Routes>
   );
 }
