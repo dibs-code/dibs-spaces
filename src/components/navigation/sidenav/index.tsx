@@ -1,5 +1,5 @@
-import { faCircleC, faGift, faRightLeft } from '@fortawesome/pro-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faCircleC, faGift, faRightLeft } from '@fortawesome/pro-solid-svg-icons';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Transition } from '@headlessui/react';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { disconnect } from '@wagmi/core';
@@ -34,14 +34,21 @@ const Sidenav = () => {
   const { addressToName } = useDibsData();
   const hasCode = useMemo(() => !!addressToName, [addressToName]);
   const links = useMemo(
+    // () => [
+    //   { name: 'Your code', icon: faCircleC, address: RoutePath.HOME },
+    //   { name: 'Rewards', icon: faGift, address: RoutePath.REWARDS },
+    //   {
+    //     name: 'Pair Isolated',
+    //     icon: faRightLeft,
+    //     address: RoutePath.PAIR_REWARDER.replace(':address', '0x6cB66a0762E7Ce3c0Abc9d0241bF4cfFc67fcdA1'),
+    //   },
+    // ],
     () => [
-      { name: 'Your code', icon: faCircleC, address: RoutePath.HOME },
-      { name: 'Rewards', icon: faGift, address: RoutePath.REWARDS },
-      // { name: 'Reports', icon: faFileChartColumn, address: RoutePath.REPORTS },
-      // { name: 'Test swap', icon: faRightLeft, address: RoutePath.TEST_SWAP },
+      { name: 'Your code', icon: null, address: RoutePath.HOME },
+      { name: 'Rewards', icon: null, address: RoutePath.REWARDS },
       {
         name: 'Pair Isolated',
-        icon: faRightLeft,
+        icon: null,
         address: RoutePath.PAIR_REWARDER.replace(':address', '0x6cB66a0762E7Ce3c0Abc9d0241bF4cfFc67fcdA1'),
       },
     ],
@@ -93,7 +100,7 @@ const Sidenav = () => {
                ${link.name === 'Reports' ? 'pl-0.5 gap-4' : 'pl-0 gap-3'}`}
               key={link.name}
             >
-              <FontAwesomeIcon style={{ fontSize: 20 }} icon={link.icon}></FontAwesomeIcon>
+              {/*<FontAwesomeIcon style={{ fontSize: 20 }} icon={link.icon}></FontAwesomeIcon>*/}
               <span className={`${active ? '' : 'font-normal'}`}>{link.name}</span>
             </li>
           );

@@ -1,5 +1,5 @@
-import {faSackDollar ,faUsers} from "@fortawesome/pro-solid-svg-icons";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+// import {faSackDollar ,faUsers} from "@fortawesome/pro-solid-svg-icons";
+// import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import Sidenav from 'components/navigation/sidenav';
 import React from 'react';
 
@@ -15,10 +15,8 @@ const Report = () => {
         <main className={'flex justify-between'}>
           <div className={'bg-g2 relative bg-cover px-8 pt-6 pb-4 w-96 h-52 rounded-2xl'}>
             <label className={'text-22 mb-2 block relative font-light'}>
-              <FontAwesomeIcon style={{ fontSize: 42 }} icon={faUsers}></FontAwesomeIcon>
-              <button
-                className={'btn-medium btn-link absolute -right-2 -top-0.5'}
-              >{`See by level ->`}</button>
+              {/*<FontAwesomeIcon style={{ fontSize: 42 }} icon={faUsers}></FontAwesomeIcon>*/}
+              <button className={'btn-medium btn-link absolute -right-2 -top-0.5'}>{`See by level ->`}</button>
             </label>
 
             <footer className={' absolute left-8 bottom-4 pt-1 text-left'}>
@@ -29,10 +27,8 @@ const Report = () => {
 
           <div className={'bg-g3 relative bg-cover pl-8 pr-4 pt-6 pb-4 w-96 h-52 rounded-2xl'}>
             <label className={'text-22 mb-2 block relative font-light'}>
-              <FontAwesomeIcon style={{ fontSize: 44 }} icon={faSackDollar}></FontAwesomeIcon>
-              <button
-                className={'btn-medium btn-link absolute -right-2 -top-0.5'}
-              >{`See by level ->`}</button>
+              {/*<FontAwesomeIcon style={{ fontSize: 44 }} icon={faSackDollar}></FontAwesomeIcon>*/}
+              <button className={'btn-medium btn-link absolute -right-2 -top-0.5'}>{`See by level ->`}</button>
             </label>
 
             <footer className={' absolute left-8 bottom-4 pt-1 text-left'}>

@@ -1,5 +1,5 @@
-import { faXmark } from '@fortawesome/pro-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faXmark } from '@fortawesome/pro-solid-svg-icons';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Dialog, Transition } from '@headlessui/react';
 import React, { Fragment, PropsWithChildren } from 'react';
 
@@ -47,7 +47,7 @@ const Modal = (props: ModalProps) => {
                   <Dialog.Title as="h3" className="relative text-lg font-medium leading-6 text-gray-900 mb-8">
                     {title ? title : ''}
                     <div onClick={closeModal} className={'absolute -right-1 -top-2 p-2 cursor-pointer'}>
-                      <FontAwesomeIcon style={{ fontSize: 20 }} className={''} icon={faXmark}></FontAwesomeIcon>
+                      X{/*<FontAwesomeIcon style={{ fontSize: 20 }} className={''} icon={faXmark}></FontAwesomeIcon>*/}
                     </div>
                   </Dialog.Title>
 

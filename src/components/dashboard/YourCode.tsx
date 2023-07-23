@@ -1,6 +1,6 @@
-import { faCopy } from '@fortawesome/pro-regular-svg-icons';
-import { faCircleInfo } from '@fortawesome/pro-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faCopy } from '@fortawesome/pro-regular-svg-icons';
+// import { faCircleInfo } from '@fortawesome/pro-solid-svg-icons';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import Input from 'components/basic/input';
 import SubmittedModal from 'components/modal/submitted';
@@ -116,8 +116,10 @@ const YourCode = () => {
                   className={
                     'py-1 px-2 bg-white rounded shadow-[0_4px_6px_rgba(0,0,0,0.07)] cursor-pointer transition duration-200 hover:shadow-xl'
                   }
+                  onClick={copyRefUrl}
                 >
-                  <FontAwesomeIcon style={{ fontSize: 18 }} icon={faCopy} onClick={copyRefUrl}></FontAwesomeIcon>
+                  Copy
+                  {/*<FontAwesomeIcon style={{ fontSize: 18 }} icon={faCopy}></FontAwesomeIcon>*/}
                 </span>
               </div>
             </div>
@@ -136,7 +138,7 @@ const YourCode = () => {
             </p>
           </div>
           <div className={'inline-flex gap-2 mt-4 items-center px-4 py-4 bg-blue-gray-light rounded-lg'}>
-            <FontAwesomeIcon style={{ fontSize: 20, color: '#2394D3' }} icon={faCircleInfo}></FontAwesomeIcon>
+            {/*<FontAwesomeIcon style={{ fontSize: 20, color: '#2394D3' }} icon={faCircleInfo}></FontAwesomeIcon>*/}
             <p className={'font-normal'}>Your dibs code can contain use lowercase, uppercase Letters and numbers</p>
           </div>
           <section className={'mt-8 flex flex-col xl:flex-row gap-4 items-center'}>

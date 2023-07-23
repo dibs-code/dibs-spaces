@@ -5,8 +5,9 @@ import { Address, useAccount, useBlockNumber } from 'wagmi';
 import { pairRewarderABI } from '../../abis/types/generated';
 import { PairRewarderLeaderBoardRewardItem } from '../../types';
 import getPairIsolatedRewardTokensAndAmounts from '../../utils/getPairIsolatedRewardTokensAndAmounts';
+import { usePairRewarderFactory } from './usePairRewarderFactory';
 
-export function useAllPairRewardersRewards(pairRewarderAddress: Address) {
+export function usePairRewarderRewards(pairRewarderAddress: Address) {
   const { address } = useAccount();
 
   const [rewards, setRewards] = useState<PairRewarderLeaderBoardRewardItem[] | null>(null);
@@ -70,5 +71,31 @@ export function useAllPairRewardersRewards(pairRewarderAddress: Address) {
 
   return {
     rewards,
+  };
+}
+
+export function useWonPairRewarders() {
+  const { address } = useAccount();
+  const [wonPairRewarders, setWonPairRewarders] = useState<`0x${string}`[] | null>(null);
+  const { allPairRewarders } = usePairRewarderFactory();
+  useEffect(() => {
+    async function getData() {
+      if (!allPairRewarders || !address) return;
+      const allWinDays = await multicall({
+        allowFailure: false,
+        contracts: allPairRewarders.map((pairRewarderAddress) => ({
+          address: pairRewarderAddress,
+          abi: pairRewarderABI,
+          functionName: 'getUserLeaderBoardWins',
+          args: [address],
+        })),
+      });
+      setWonPairRewarders(allPairRewarders.filter((_item, i) => allWinDays[i].length !== 0));
+    }
+
+    getData();
+  }, [allPairRewarders, address]);
+  return {
+    wonPairRewarders,
   };
 }

@@ -5,6 +5,7 @@
   "dependencies": {
     "@apollo/client": "^3.7.14",
     "@ethersproject/bignumber": "^5.7.0",
+    "@headlessui/react": "^1.7.15",
     "@mui/base": "^5.0.0-alpha.88",
     "@mui/icons-material": "^5.6.0",
     "@mui/joy": "^5.0.0-alpha.35",

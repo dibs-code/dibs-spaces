@@ -6,7 +6,7 @@ import { pairRewarderFactoryABI } from '../../abis/types/generated';
 import { PairRewarderFactoryAddress } from '../../constants/addresses';
 
 export function usePairRewarderFactory() {
-  const [pairRewarders, setPairRewarders] = useState<{ [key: Address]: Address[] } | null>(null);
+  const [pairRewarders, setPairRewarders] = useState<{ [key: `0x${string}`]: `0x${string}`[] } | null>(null);
   useEffect(() => {
     async function getData() {
       const allPairs = await readContract({

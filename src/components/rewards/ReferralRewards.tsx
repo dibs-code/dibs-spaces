@@ -1,5 +1,3 @@
-import { faCircleDollarToSlot } from '@fortawesome/pro-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 
 import { useDibsData } from '../../hooks/dibs/useDibsData';
@@ -15,7 +13,7 @@ export function ReferralRewards(props: { onClick: () => void }) {
           'text-black items-center mb-8 px-6 py-2 bg-white inline-flex gap-4 inline-block rounded-lg shadow-header'
         }
       >
-        <FontAwesomeIcon style={{ fontSize: 24 }} icon={faCircleDollarToSlot}></FontAwesomeIcon>
+        {/*<FontAwesomeIcon style={{ fontSize: 24 }} icon={faCircleDollarToSlot}></FontAwesomeIcon>*/}
         <p className={'text-22 mt-0.5'}>Earned Fees</p>
       </header>
       <main className={'flex flex-col lg:flex-row justify-between gap-4 lg:gap-2'}>

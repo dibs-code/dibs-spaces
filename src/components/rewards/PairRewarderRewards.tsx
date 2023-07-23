@@ -4,7 +4,7 @@ import { Address, useAccount } from 'wagmi';
 
 import { usePairRewarderWrite, usePreparePairRewarderClaimLeaderBoardReward } from '../../abis/types/generated';
 import { usePairRewarder } from '../../hooks/dibs/usePairRewarder';
-import { useAllPairRewardersRewards } from '../../hooks/dibs/usePairRewardersRewards';
+import { usePairRewarderRewards, useWonPairRewarders } from '../../hooks/dibs/usePairRewarderRewards';
 import RoutePath from '../../routes';
 import { PairRewarderLeaderBoardRewardItem } from '../../types';
 import RewardToken from '../RewardToken';
@@ -35,16 +35,13 @@ const PairRewarderClaimButton = ({
   );
 };
 
-export const PairRewarderRewards = ({
-  pairRewarderAddress,
-  rewards,
-}: {
-  pairRewarderAddress: Address;
-  rewards: PairRewarderLeaderBoardRewardItem[];
-}) => {
+export const PairRewarderRewards = ({ pairRewarderAddress }: { pairRewarderAddress: Address }) => {
+  const { rewards } = usePairRewarderRewards(pairRewarderAddress);
   const { pairName } = usePairRewarder(pairRewarderAddress);
-
-  return rewards?.length ? (
+  if (rewards === null) {
+    return <div>Loading...</div>;
+  }
+  return (
     <div className="bg-white shadow-primary-xl rounded-lg">
       <div className={'p-4'}>
         {pairName}
@@ -62,7 +59,7 @@ export const PairRewarderRewards = ({
           </tr>
         </thead>
         <tbody>
-          {rewards?.map((rewardItem) => (
+          {rewards.map((rewardItem) => (
             <tr key={rewardItem.day.toString()} className="border-t border-gray">
               <td className="p-4">{rewardItem.day.toString()}</td>
               <td className="p-4">{rewardItem.rank}</td>
@@ -85,27 +82,21 @@ export const PairRewarderRewards = ({
         </tbody>
       </table>
     </div>
-  ) : (
-    <></>
   );
 };
 
-export const AllPairRewardersRewards = () => {
-  const { rewards } = useAllPairRewardersRewards();
-  if (rewards === null) {
+export const WonPairRewardersRewards = () => {
+  const { wonPairRewarders } = useWonPairRewarders();
+  if (wonPairRewarders === null) {
     return <div>Loading...</div>;
   }
-  if (rewards.length === 0) {
+  if (wonPairRewarders.length === 0) {
     return <div>No rewards yet</div>;
   }
   return (
     <>
-      {rewards.map((item, i) => (
-        <PairRewarderRewards
-          key={i}
-          pairRewarderAddress={'0x6cB66a0762E7Ce3c0Abc9d0241bF4cfFc67fcdA1'}
-          rewards={item}
-        />
+      {wonPairRewarders.map((pairRewarderAddress) => (
+        <PairRewarderRewards key={pairRewarderAddress} pairRewarderAddress={pairRewarderAddress} />
       ))}
     </>
   );

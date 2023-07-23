@@ -1,5 +1,5 @@
-import { faGift, faTicket } from '@fortawesome/pro-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faGift, faTicket } from '@fortawesome/pro-solid-svg-icons';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useMemo, useState } from 'react';
 
 import { LotteryStatus, useDibsLotteryData } from '../../hooks/dibs/useDibsLotteryData';
@@ -50,7 +50,7 @@ export function LotteryRewards() {
           'text-black items-center mb-6 px-6 py-2 bg-white inline-flex gap-4 inline-block rounded-lg shadow-header'
         }
       >
-        <FontAwesomeIcon style={{ fontSize: 24 }} icon={faTicket}></FontAwesomeIcon>
+        {/*<FontAwesomeIcon style={{ fontSize: 24 }} icon={faTicket}></FontAwesomeIcon>*/}
         <p className={'text-22 mt-0.5'}>Lottery Tickets</p>
       </header>
       <main>
@@ -87,7 +87,7 @@ export function LotteryRewards() {
               <img src={'/lottery-img.png'} className={'w-44 relative right-4 hidden lg:block'} alt="lottery" />
               {prePrize && (
                 <div className={'inline-flex gap-2 mt-4 items-center px-3 py-2 bg-primary-light rounded-lg '}>
-                  <FontAwesomeIcon style={{ fontSize: 20 }} icon={faGift}></FontAwesomeIcon>
+                  {/*<FontAwesomeIcon style={{ fontSize: 20 }} icon={faGift}></FontAwesomeIcon>*/}
                   <p className={'font-normal'}>
                     It seems you didn’t claim <button>your previous prize (2 Items)</button>
                   </p>

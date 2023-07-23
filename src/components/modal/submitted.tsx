@@ -1,6 +1,6 @@
 // @flow
-import { faArrowUpFromLine } from '@fortawesome/pro-regular-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faArrowUpFromLine } from '@fortawesome/pro-regular-svg-icons';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Modal from 'components/modal/index';
 import React, { PropsWithChildren } from 'react';
 import { ExplorerDataType, getExplorerLink } from 'utils/getExplorerLink';
@@ -22,7 +22,7 @@ const SubmittedModal = (props: SubmittedTxModalProps) => {
     <div>
       <Modal open={open} closeModal={closeModal}>
         <main className={'flex flex-col gap-8 justify-center items-center'}>
-          <FontAwesomeIcon style={{ fontSize: 96 }} icon={faArrowUpFromLine}></FontAwesomeIcon>
+          {/*<FontAwesomeIcon style={{ fontSize: 96 }} icon={faArrowUpFromLine}></FontAwesomeIcon>*/}
           <div className={'text-center'}>
             <h3 className={'font-normal'}>Transition Submitted</h3>
             {chain?.id && hash && (
