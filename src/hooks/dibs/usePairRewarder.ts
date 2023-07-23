@@ -1,11 +1,10 @@
-import { multicall, readContract } from '@wagmi/core';
+import { multicall } from '@wagmi/core';
 import { Address } from 'abitype';
 import { useEffect, useMemo, useState } from 'react';
-import { useAccount, useBlockNumber } from 'wagmi';
+import { useAccount } from 'wagmi';
 
 import {
   dibsABI,
-  pairRewarderABI,
   useErc20Symbol,
   usePairRewarderActiveDay,
   usePairRewarderHasRole,
@@ -17,9 +16,9 @@ import {
   useUniswapV2PairToken1,
 } from '../../abis/types/generated';
 import { DibsAddress } from '../../constants/addresses';
-import { PairRewarderEpochWinners, RewardTokenAndAmount } from '../../types';
-import getPairIsolatedRewardTokensAndAmounts from '../../utils/getPairIsolatedRewardTokensAndAmounts';
+import { PairRewarderEpochWinners } from '../../types';
 
+//TODO: use mutlicall to have fewer calls
 export function usePairRewarder(pairRewarderAddress: Address) {
   const { address } = useAccount();
   const { data: pairAddress } = usePairRewarderPair({
@@ -128,73 +127,5 @@ export function usePairRewarder(pairRewarderAddress: Address) {
     activeLeaderBoardInfo,
     epochWinners,
     hasSetterRole,
-  };
-}
-
-export type PairRewarderLeaderBoardRewardItem = {
-  day: bigint;
-  rank: number;
-  claimed: boolean;
-  rewardTokensAndAmounts: RewardTokenAndAmount[];
-};
-
-export function usePairRewarderRewards(pairRewarderAddress: Address) {
-  const { address } = useAccount();
-
-  const [rewards, setRewards] = useState<PairRewarderLeaderBoardRewardItem[] | null>(null);
-
-  const blockNumber = useBlockNumber({
-    watch: true,
-  });
-  useEffect(() => {
-    async function getData() {
-      if (!address || !pairRewarderAddress) return;
-      const winDays = await readContract({
-        address: pairRewarderAddress,
-        abi: pairRewarderABI,
-        functionName: 'getUserLeaderBoardWins',
-        args: [address],
-      });
-      if (!winDays) return;
-      const claimedForDays = await multicall({
-        allowFailure: false,
-        contracts: winDays.map((item) => {
-          return {
-            abi: pairRewarderABI,
-            address: pairRewarderAddress,
-            functionName: 'userLeaderBoardClaimedForDay',
-            args: [address, item],
-          };
-        }),
-      });
-      const leaderBoardWinnersForDays = await multicall({
-        allowFailure: false,
-        contracts: winDays.map((item) => {
-          return {
-            abi: pairRewarderABI,
-            address: pairRewarderAddress,
-            functionName: 'leaderBoardWinners',
-            args: [item],
-          };
-        }),
-      });
-      const rewardsArray: PairRewarderLeaderBoardRewardItem[] = [];
-      for (let i = 0; i < winDays.length; i++) {
-        const rankIndex = leaderBoardWinnersForDays[i].winners.findIndex((a) => a === address);
-        rewardsArray.push({
-          day: winDays[i],
-          rank: rankIndex + 1,
-          rewardTokensAndAmounts: getPairIsolatedRewardTokensAndAmounts(leaderBoardWinnersForDays[i].info, rankIndex),
-          claimed: claimedForDays[i],
-        });
-      }
-      setRewards(rewardsArray);
-    }
-
-    getData();
-  }, [address, pairRewarderAddress, blockNumber]);
-
-  return {
-    rewards,
   };
 }

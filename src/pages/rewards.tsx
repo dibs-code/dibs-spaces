@@ -1,9 +1,11 @@
 // import {faCopy} from "@fortawesome/pro-regular-svg-icons";
+import { faTicket } from '@fortawesome/pro-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Modal from 'components/modal';
 import Sidenav from 'components/navigation/sidenav';
 import React, { useState } from 'react';
 
-import { PairRewarderRewards } from '../components/rewards/PairRewarderRewards';
+import { AllPairRewardersRewards } from '../components/rewards/PairRewarderRewards';
 import { ReferralRewardClaimRow } from '../components/rewards/ReferralRewardClaimRow';
 import { useDibsData } from '../hooks/dibs/useDibsData';
 
@@ -40,7 +42,14 @@ const Rewards = () => {
           <main>
             {/*<ReferralRewards onClick={() => setOpen(true)} />*/}
             {/*<LotteryRewards />*/}
-            <PairRewarderRewards />
+
+            <section>
+              <header className="flex flex-row items-center text-black mb-6">
+                <FontAwesomeIcon style={{ fontSize: 24 }} icon={faTicket} />
+                <p className="text-22 ml-2 mt-0.5">Pair isolated leaderboard rewards</p>
+              </header>
+              <AllPairRewardersRewards />
+            </section>
           </main>
         </>
       </main>

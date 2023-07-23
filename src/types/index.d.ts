@@ -76,3 +76,9 @@ export type PairRewarderEpochWinners =
 export type LeaderBoardInfo = ReadContractResult<typeof pairRewarderABI, 'leaderBoardInfo'>;
 
 export type RewardTokenAndAmount = { token: Address; amount: bigint };
+export type PairRewarderLeaderBoardRewardItem = {
+  day: bigint;
+  rank: number;
+  claimed: boolean;
+  rewardTokensAndAmounts: RewardTokenAndAmount[];
+};
