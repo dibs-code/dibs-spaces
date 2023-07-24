@@ -1,25 +1,23 @@
 import { multicall } from '@wagmi/core';
 import { Address } from 'abitype';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAccount } from 'wagmi';
 
 import {
   dibsABI,
-  useErc20Symbol,
   usePairRewarderActiveDay,
   usePairRewarderHasRole,
   usePairRewarderLeaderBoardInfo,
   usePairRewarderLeaderBoardWinners,
   usePairRewarderPair,
   usePairRewarderSetterRole,
-  useUniswapV2PairToken0,
-  useUniswapV2PairToken1,
 } from '../../abis/types/generated';
 import { DibsAddress } from '../../constants/addresses';
 import { PairRewarderEpochWinners } from '../../types';
+import usePairName from './usePairName';
 
 //TODO: use mutlicall to have fewer calls
-export function usePairRewarder(pairRewarderAddress: Address) {
+export function usePairRewarder(pairRewarderAddress: Address | undefined) {
   const { address } = useAccount();
   const { data: pairAddress } = usePairRewarderPair({
     address: pairRewarderAddress,
@@ -33,22 +31,7 @@ export function usePairRewarder(pairRewarderAddress: Address) {
     args: address && setterRole ? [setterRole, address] : undefined,
   });
 
-  const { data: token0Address } = useUniswapV2PairToken0({
-    address: pairAddress,
-  });
-  const { data: token0Symbol } = useErc20Symbol({
-    address: token0Address,
-  });
-  const { data: token1Address } = useUniswapV2PairToken1({
-    address: pairAddress,
-  });
-  const { data: token1Symbol } = useErc20Symbol({
-    address: token1Address,
-  });
-  const pairName = useMemo(
-    () => (token0Symbol && token1Symbol ? token0Symbol + '/' + token1Symbol : undefined),
-    [token0Symbol, token1Symbol],
-  );
+  const { pairName } = usePairName(pairAddress);
 
   const { data: activeLeaderBoardInfo } = usePairRewarderLeaderBoardInfo({
     address: pairRewarderAddress,

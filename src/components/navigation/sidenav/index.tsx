@@ -40,6 +40,11 @@ const Sidenav = () => {
     //   {
     //     name: 'Pair Isolated',
     //     icon: faRightLeft,
+    //     address: RoutePath.PAIR_ISOLATED,
+    //   },
+    //   {
+    //     name: 'Pair Isolated (test contract)',
+    //     icon: faRightLeft,
     //     address: RoutePath.PAIR_REWARDER.replace(':address', '0x6cB66a0762E7Ce3c0Abc9d0241bF4cfFc67fcdA1'),
     //   },
     // ],
@@ -48,6 +53,11 @@ const Sidenav = () => {
       { name: 'Rewards', icon: null, address: RoutePath.REWARDS },
       {
         name: 'Pair Isolated',
+        icon: null,
+        address: RoutePath.PAIR_ISOLATED,
+      },
+      {
+        name: 'Pair Isolated (test contract)',
         icon: null,
         address: RoutePath.PAIR_REWARDER.replace(':address', '0x6cB66a0762E7Ce3c0Abc9d0241bF4cfFc67fcdA1'),
       },

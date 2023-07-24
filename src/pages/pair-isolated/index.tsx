@@ -11,20 +11,20 @@ const PairIsolated = () => {
       <Sidenav></Sidenav>
       <main className={'main-spacing'}>
         <header className={'border-b pb-4 mb-16'}>
-          <h2> Dibs pair isolated leaderboard</h2>
+          <h2> Dibs pair isolated leaderboards</h2>
         </header>
 
         <main>
           <section className={'px-2 rounded-2xl h-80 bg-cover mt-4 flex flex-col gap-3'}>
-            <table>
-              <thead>
+            <table className="w-full text-center bg-white shadow-primary-xl rounded-lg">
+              <thead className="bg-primary text-white">
                 <tr>
-                  <th>Pair</th>
-                  <th>Total Volume</th>
-                  <th>Total Prize</th>
-                  <th>#1 Winner</th>
-                  <th>Your position</th>
-                  <th></th>
+                  <th className="p-4">Pair</th>
+                  <th className="p-4">Total Volume</th>
+                  <th className="p-4">Total Prize</th>
+                  <th className="p-4">#1 Winner</th>
+                  <th className="p-4">Your position</th>
+                  <th className="p-4"></th>
                 </tr>
               </thead>
               <tbody>

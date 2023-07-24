@@ -21,10 +21,7 @@ export const useClaimPrizes = () => {
       await writeContract(request);
     } catch (err) {
       console.log('claim error :>> ', err);
-      setPending(false);
-      return;
     }
-
     setPending(false);
   }, [address]);
 
