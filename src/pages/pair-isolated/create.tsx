@@ -2,9 +2,11 @@ import { prepareWriteContract, waitForTransaction, writeContract } from '@wagmi/
 import pairRewarderFactoryABI from 'abis/pairRewarderFactory';
 import Sidenav from 'components/navigation/sidenav';
 import { PairRewarderFactoryAddress } from 'constants/addresses';
+// eslint-disable-next-line no-restricted-imports
+import { ethers } from 'ethers';
 import usePairName from 'hooks/dibs/usePairName';
 import React, { useCallback, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import RoutePath from 'routes';
 import { Address } from 'viem';
 import { useAccount } from 'wagmi';
@@ -19,7 +21,7 @@ export default function PairRewarderCreate() {
     }
   }, [address]);
   const { pairName } = usePairName(pairAddress as Address);
-
+  const navigate = useNavigate();
   const [pending, setPending] = useState(false);
   const handleButtonClick = useCallback(async () => {
     if (pending || !address) return;
@@ -35,12 +37,17 @@ export default function PairRewarderCreate() {
       const data = await waitForTransaction({
         hash,
       });
-      console.log(data);
+      console.log({ data });
+      const iface = new ethers.Interface(pairRewarderFactoryABI);
+      const events = data.logs.map((l) => iface.parseLog(l));
+      const pairRewarderDeployedEvent = events.find((e) => e?.name === 'PairRewarderDeployed');
+      const pairRewarderAddress = pairRewarderDeployedEvent?.args.getValue('pairRewarder');
+      navigate(RoutePath.PAIR_REWARDER_SET_PRIZE.replace(':address', pairRewarderAddress));
     } catch (err) {
       console.log('set reward error :>> ', err);
     }
     setPending(false);
-  }, [address, pairAddress, pending, setterAccount]);
+  }, [address, navigate, pairAddress, pending, setterAccount]);
   return (
     <div className={'page-spacing'}>
       <Sidenav></Sidenav>
