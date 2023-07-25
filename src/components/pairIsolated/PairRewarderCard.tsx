@@ -18,7 +18,10 @@ export default function PairRewarderCard({ pairRewarderAddress }: { pairRewarder
       <td>-</td>
       <td>-</td>
       <td className={'p-4'}>
-        <Link to={RoutePath.PAIR_REWARDER.replace(':address', pairRewarderAddress)} className={'btn-primary btn-large'}>
+        <Link
+          to={RoutePath.PAIR_REWARDER_LEADERBOARD.replace(':address', pairRewarderAddress)}
+          className={'btn-primary btn-large'}
+        >
           Leaderboard
         </Link>
       </td>

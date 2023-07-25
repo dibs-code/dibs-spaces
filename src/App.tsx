@@ -2,7 +2,8 @@ import './App.css';
 
 import { isSupportedChain } from 'constants/chains';
 import Home from 'pages/home';
-import PairRewarder from 'pages/pair-isolated/_address';
+import PairRewarderLeaderboard from 'pages/pair-isolated/_address/leaderboard';
+import PairRewarderSetPrize from 'pages/pair-isolated/_address/setPrize';
 import PairIsolated from 'pages/pair-isolated/index';
 import Rewards from 'pages/rewards';
 import React, { useEffect } from 'react';
@@ -27,7 +28,8 @@ function App() {
       <Route path={RoutePath.HOME} element={<Home />} />
       <Route path={RoutePath.REWARDS} element={<Rewards />} />
       <Route path={RoutePath.PAIR_ISOLATED} element={<PairIsolated />} />
-      <Route path={RoutePath.PAIR_REWARDER} element={<PairRewarder />} />
+      <Route path={RoutePath.PAIR_REWARDER_LEADERBOARD} element={<PairRewarderLeaderboard />} />
+      <Route path={RoutePath.PAIR_REWARDER_SET_PRIZE} element={<PairRewarderSetPrize />} />
     </Routes>
   );
 }

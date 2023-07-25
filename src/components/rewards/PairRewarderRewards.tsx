@@ -45,7 +45,10 @@ export const PairRewarderRewards = ({ pairRewarderAddress }: { pairRewarderAddre
     <div className="bg-white shadow-primary-xl rounded-lg">
       <div className={'p-4'}>
         {pairName}
-        <Link to={RoutePath.PAIR_REWARDER.replace(':address', pairRewarderAddress)} className={'btn-link btn-large'}>
+        <Link
+          to={RoutePath.PAIR_REWARDER_LEADERBOARD.replace(':address', pairRewarderAddress)}
+          className={'btn-link btn-large'}
+        >
           view leaderboard -&gt;
         </Link>
       </div>
