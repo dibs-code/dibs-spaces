@@ -11,10 +11,18 @@ import RoutePath from 'routes';
 import { Address } from 'viem';
 import { useAccount } from 'wagmi';
 
+enum CreatePairRewarderTransactionState {
+  INITIAL,
+  PREPARING_TRANSACTION,
+  AWAITING_USER_CONFIRMATION,
+  AWAITING_TRANSACTION,
+}
+
 export default function PairRewarderCreate() {
   const { address } = useAccount();
   const [pairAddress, setPairAddress] = useState('');
   const [setterAccount, setSetterAccount] = useState('');
+  const [createdPairRewarderAddress, setCreatedPairRewarderAddress] = useState<Address | null>(null);
   useEffect(() => {
     if (address) {
       setSetterAccount(address);
@@ -22,10 +30,10 @@ export default function PairRewarderCreate() {
   }, [address]);
   const { pairName } = usePairName(pairAddress as Address);
   const navigate = useNavigate();
-  const [pending, setPending] = useState(false);
+  const [txState, setTxState] = useState(CreatePairRewarderTransactionState.INITIAL);
   const handleButtonClick = useCallback(async () => {
-    if (pending || !address) return;
-    setPending(true);
+    if (txState !== CreatePairRewarderTransactionState.INITIAL || !address) return;
+    setTxState(CreatePairRewarderTransactionState.PREPARING_TRANSACTION);
     try {
       const { request } = await prepareWriteContract({
         address: PairRewarderFactoryAddress,
@@ -33,21 +41,42 @@ export default function PairRewarderCreate() {
         functionName: 'deployPairRewarder',
         args: [pairAddress as Address, address, setterAccount as Address],
       });
+      setCreatedPairRewarderAddress(null);
+      setTxState(CreatePairRewarderTransactionState.AWAITING_USER_CONFIRMATION);
       const { hash } = await writeContract(request);
+      setTxState(CreatePairRewarderTransactionState.AWAITING_TRANSACTION);
       const data = await waitForTransaction({
         hash,
       });
-      console.log({ data });
       const iface = new ethers.Interface(pairRewarderFactoryABI);
       const events = data.logs.map((l) => iface.parseLog(l));
       const pairRewarderDeployedEvent = events.find((e) => e?.name === 'PairRewarderDeployed');
-      const pairRewarderAddress = pairRewarderDeployedEvent?.args.getValue('pairRewarder');
-      navigate(RoutePath.PAIR_REWARDER_SET_PRIZE.replace(':address', pairRewarderAddress));
+      const pairRewarderAddress: Address = pairRewarderDeployedEvent?.args.getValue('pairRewarder');
+      if (!pairRewarderAddress) {
+        alert('Error: Could not get the created contract address from the factory contract');
+        return;
+      }
+      setCreatedPairRewarderAddress(pairRewarderAddress);
+      setTxState(CreatePairRewarderTransactionState.INITIAL);
+      if (address === setterAccount) {
+        alert('PairRewarder created successfully! Now set the rewards');
+        navigate(RoutePath.PAIR_REWARDER_SET_PRIZE.replace(':address', pairRewarderAddress));
+      } else {
+        alert('PairRewarder created successfully!');
+      }
     } catch (err) {
-      console.log('set reward error :>> ', err);
+      alert(String(err));
+      setTxState(CreatePairRewarderTransactionState.INITIAL);
     }
-    setPending(false);
-  }, [address, navigate, pairAddress, pending, setterAccount]);
+  }, [address, navigate, pairAddress, txState, setterAccount]);
+
+  const buttonText = {
+    [CreatePairRewarderTransactionState.INITIAL]: 'Create LeaderBoard',
+    [CreatePairRewarderTransactionState.PREPARING_TRANSACTION]: 'Preparing Transaction....',
+    [CreatePairRewarderTransactionState.AWAITING_USER_CONFIRMATION]: 'Awaiting user confirmation...',
+    [CreatePairRewarderTransactionState.AWAITING_TRANSACTION]: 'Awaiting transaction confirmation...',
+  };
+
   return (
     <div className={'page-spacing'}>
       <Sidenav></Sidenav>
@@ -94,11 +123,13 @@ export default function PairRewarderCreate() {
                   e.preventDefault();
                   handleButtonClick();
                 }}
-                disabled={pending}
                 className="w-full px-4 py-2 mt-4 font-medium text-white bg-blue-500 rounded-md hover:bg-blue-700"
               >
-                {pending ? 'Sending Transaction...' : 'Create Leaderboard'}
+                {buttonText[txState]}
               </button>
+              {createdPairRewarderAddress && (
+                <div className={'pt-2'}>Created PairRewarder address: {createdPairRewarderAddress}</div>
+              )}
             </form>
           </section>
         </main>

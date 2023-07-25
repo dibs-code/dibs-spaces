@@ -203,7 +203,11 @@ export default function PairRewarderSetPrize() {
                   disabled={pending}
                   className="w-full px-4 py-2 mt-4 font-medium text-white bg-blue-500 rounded-md hover:bg-blue-700"
                 >
-                  {pending ? 'Sending Transaction...' : activeLeaderBoardInfo ? 'Update Rewards' : 'Set Rewards'}
+                  {pending
+                    ? 'Sending Transaction...'
+                    : activeLeaderBoardInfo && activeLeaderBoardInfo?.winnersCount !== BigInt(0)
+                    ? 'Update Rewards'
+                    : 'Set Rewards'}
                 </button>
               </form>
             )}
