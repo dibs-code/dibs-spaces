@@ -1,8 +1,8 @@
 import { multicall, readContract } from '@wagmi/core';
+import { pairRewarderFactoryABI } from 'abis/types/generated';
 import { Address } from 'abitype';
 import { useEffect, useMemo, useState } from 'react';
 
-import { pairRewarderFactoryABI } from '../../abis/types/generated';
 import { PairRewarderFactoryAddress } from '../../constants/addresses';
 
 export function usePairRewarderFactory() {

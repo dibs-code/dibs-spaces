@@ -1,7 +1,7 @@
 import { formatUnits } from '@ethersproject/units';
+import { useErc20Decimals, useErc20Symbol } from 'abis/types/generated';
 import React, { useMemo } from 'react';
 
-import { useErc20Decimals, useErc20Symbol } from '../../abis/types/generated';
 import { BalanceObject } from '../../hooks/dibs/useDibsData';
 
 export const AccBalance = (props: { obj: BalanceObject }) => {

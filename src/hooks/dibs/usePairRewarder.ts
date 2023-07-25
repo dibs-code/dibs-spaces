@@ -1,8 +1,4 @@
 import { multicall } from '@wagmi/core';
-import { Address } from 'abitype';
-import { useEffect, useState } from 'react';
-import { useAccount } from 'wagmi';
-
 import {
   dibsABI,
   usePairRewarderActiveDay,
@@ -11,7 +7,11 @@ import {
   usePairRewarderLeaderBoardWinners,
   usePairRewarderPair,
   usePairRewarderSetterRole,
-} from '../../abis/types/generated';
+} from 'abis/types/generated';
+import { Address } from 'abitype';
+import { useEffect, useState } from 'react';
+import { useAccount } from 'wagmi';
+
 import { DibsAddress } from '../../constants/addresses';
 import { PairRewarderEpochWinners } from '../../types';
 import usePairName from './usePairName';

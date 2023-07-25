@@ -29,7 +29,7 @@ export default defineConfig({
       abi: MuonInterfaceABI,
     },
     {
-      name: 'PairRewarderLeaderboard',
+      name: 'PairRewarder',
       abi: PairRewarderABI,
     },
     {

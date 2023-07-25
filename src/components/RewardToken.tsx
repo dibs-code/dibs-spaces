@@ -1,8 +1,8 @@
 import { formatUnits } from '@ethersproject/units';
+import { useErc20Decimals, useErc20Symbol } from 'abis/types/generated';
 import { useMemo } from 'react';
 import { Address } from 'wagmi';
 
-import { useErc20Decimals, useErc20Symbol } from '../abis/types/generated';
 import formatLocaleNumber from '../lib/utils/formatLocaleNumber';
 
 export default function RewardToken({

@@ -1,8 +1,8 @@
+import { usePairRewarderWrite, usePreparePairRewarderClaimLeaderBoardReward } from 'abis/types/generated';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Address, useAccount } from 'wagmi';
 
-import { usePairRewarderWrite, usePreparePairRewarderClaimLeaderBoardReward } from '../../abis/types/generated';
 import { usePairRewarder } from '../../hooks/dibs/usePairRewarder';
 import { usePairRewarderRewards, useWonPairRewarders } from '../../hooks/dibs/usePairRewarderRewards';
 import RoutePath from '../../routes';

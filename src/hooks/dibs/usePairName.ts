@@ -1,7 +1,6 @@
+import { useErc20Symbol, useUniswapV2PairToken0, useUniswapV2PairToken1 } from 'abis/types/generated';
 import { useMemo } from 'react';
 import { Address } from 'wagmi';
-
-import { useErc20Symbol, useUniswapV2PairToken0, useUniswapV2PairToken1 } from '../../abis/types/generated';
 
 export default function usePairName(pairAddress: Address | undefined) {
   const { data: token0Address } = useUniswapV2PairToken0({

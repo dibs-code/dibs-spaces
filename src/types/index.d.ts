@@ -1,7 +1,6 @@
+import { pairRewarderABI } from 'abis/types/generated';
 import { Address } from 'abitype';
 import { ReadContractResult } from 'wagmi/actions';
-
-import { pairRewarderABI } from '../abis/types/generated';
 
 export enum TransactionStatus {
   SUCCESS,
