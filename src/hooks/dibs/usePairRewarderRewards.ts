@@ -1,10 +1,10 @@
 import { multicall } from '@wagmi/core';
 import { pairRewarderABI } from 'abis/types/generated';
 import { useEffect, useState } from 'react';
+import { PairRewarderLeaderBoardRewardItem } from 'types';
+import getPairIsolatedRewardTokensAndAmounts from 'utils/getPairIsolatedRewardTokensAndAmounts';
 import { Address, useAccount, useBlockNumber } from 'wagmi';
 
-import { PairRewarderLeaderBoardRewardItem } from '../../types';
-import getPairIsolatedRewardTokensAndAmounts from '../../utils/getPairIsolatedRewardTokensAndAmounts';
 import { usePairRewarderFactory } from './usePairRewarderFactory';
 
 export function usePairRewarderRewards(pairRewarderAddress: Address) {

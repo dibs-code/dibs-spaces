@@ -1,10 +1,9 @@
 import Sidenav from 'components/navigation/sidenav';
+import PairRewarderCard from 'components/pairIsolated/PairRewarderCard';
+import { usePairRewarderFactory } from 'hooks/dibs/usePairRewarderFactory';
 import React from 'react';
 import { Link } from 'react-router-dom';
-
-import PairRewarderCard from '../../components/pairIsolated/PairRewarderCard';
-import { usePairRewarderFactory } from '../../hooks/dibs/usePairRewarderFactory';
-import RoutePath from '../../routes';
+import RoutePath from 'routes';
 
 const PairIsolated = () => {
   const { allPairRewarders } = usePairRewarderFactory();

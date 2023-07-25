@@ -1,8 +1,7 @@
 // import { faGift, faTicket } from '@fortawesome/pro-solid-svg-icons';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { LotteryStatus, useDibsLotteryData } from 'hooks/dibs/useDibsLotteryData';
 import React, { useEffect, useMemo, useState } from 'react';
-
-import { LotteryStatus, useDibsLotteryData } from '../../hooks/dibs/useDibsLotteryData';
 
 export function LotteryRewards() {
   const { userLotteryStatus } = useDibsLotteryData();

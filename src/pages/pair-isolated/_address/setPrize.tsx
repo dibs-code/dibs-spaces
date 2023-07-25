@@ -1,16 +1,15 @@
 import { formatUnits } from '@ethersproject/units';
 import { multicall, prepareWriteContract, writeContract } from '@wagmi/core';
+import PairRewarderABI from 'abis/pairRewarder';
 import { erc20ABI } from 'abis/types/generated';
+import TokenAddressInput from 'components/basic/input/TokenAddressInput';
+import Sidenav from 'components/navigation/sidenav';
+import usePairName from 'hooks/dibs/usePairName';
+import { usePairRewarder } from 'hooks/dibs/usePairRewarder';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import RoutePath from 'routes';
 import { Address, parseUnits } from 'viem';
-
-import PairRewarderABI from '../../../abis/pairRewarder';
-import TokenAddressInput from '../../../components/basic/input/TokenAddressInput';
-import Sidenav from '../../../components/navigation/sidenav';
-import usePairName from '../../../hooks/dibs/usePairName';
-import { usePairRewarder } from '../../../hooks/dibs/usePairRewarder';
-import RoutePath from '../../../routes';
 
 export default function PairRewarderSetPrize() {
   const params = useParams();

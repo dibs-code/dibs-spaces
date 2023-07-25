@@ -1,13 +1,12 @@
 import { Address } from 'abitype';
 import Sidenav from 'components/navigation/sidenav';
+import { LeaderBoardEpochButtons } from 'components/pairIsolated/LeaderBoardEpochButtons';
+import PairRewarderLeaderBoard from 'components/pairIsolated/PairRewarderLeaderboard';
+import TotalPrizes from 'components/pairIsolated/TotalPrizes';
+import { usePairRewarder } from 'hooks/dibs/usePairRewarder';
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
-
-import { LeaderBoardEpochButtons } from '../../../components/pairIsolated/LeaderBoardEpochButtons';
-import PairRewarderLeaderBoard from '../../../components/pairIsolated/PairRewarderLeaderboard';
-import TotalPrizes from '../../../components/pairIsolated/TotalPrizes';
-import { usePairRewarder } from '../../../hooks/dibs/usePairRewarder';
-import RoutePath from '../../../routes';
+import RoutePath from 'routes';
 
 const PairRewarderLeaderboard = () => {
   const params = useParams();

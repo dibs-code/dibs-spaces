@@ -1,8 +1,7 @@
+import RewardToken from 'components/RewardToken';
 import React from 'react';
-
-import { PairRewarderEpochWinners } from '../../types';
-import getPairIsolatedRewardTokensAndAmounts from '../../utils/getPairIsolatedRewardTokensAndAmounts';
-import RewardToken from '../RewardToken';
+import { PairRewarderEpochWinners } from 'types';
+import getPairIsolatedRewardTokensAndAmounts from 'utils/getPairIsolatedRewardTokensAndAmounts';
 
 export default function PairRewarderLeaderBoard({ epochWinners }: { epochWinners: PairRewarderEpochWinners }) {
   return (

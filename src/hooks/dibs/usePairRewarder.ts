@@ -9,11 +9,11 @@ import {
   usePairRewarderSetterRole,
 } from 'abis/types/generated';
 import { Address } from 'abitype';
+import { DibsAddress } from 'constants/addresses';
 import { useEffect, useState } from 'react';
+import { PairRewarderEpochWinners } from 'types';
 import { useAccount } from 'wagmi';
 
-import { DibsAddress } from '../../constants/addresses';
-import { PairRewarderEpochWinners } from '../../types';
 import usePairName from './usePairName';
 
 //TODO: use mutlicall to have fewer calls

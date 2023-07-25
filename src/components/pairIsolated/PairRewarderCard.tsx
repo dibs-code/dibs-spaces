@@ -1,9 +1,9 @@
+import { usePairRewarder } from 'hooks/dibs/usePairRewarder';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import RoutePath from 'routes';
 import { Address } from 'wagmi';
 
-import { usePairRewarder } from '../../hooks/dibs/usePairRewarder';
-import RoutePath from '../../routes';
 import TotalPrizes from './TotalPrizes';
 
 export default function PairRewarderCard({ pairRewarderAddress }: { pairRewarderAddress: Address }) {

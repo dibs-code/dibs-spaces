@@ -1,6 +1,6 @@
+import { useDibsData } from 'hooks/dibs/useDibsData';
 import React from 'react';
 
-import { useDibsData } from '../../hooks/dibs/useDibsData';
 import { AccBalance, NoBalance } from './AccBalance';
 
 export function ReferralRewards(props: { onClick: () => void }) {

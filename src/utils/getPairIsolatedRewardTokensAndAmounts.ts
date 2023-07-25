@@ -1,4 +1,4 @@
-import { LeaderBoardInfo, RewardTokenAndAmount } from '../types';
+import { LeaderBoardInfo, RewardTokenAndAmount } from 'types';
 
 export default function getPairIsolatedRewardTokensAndAmounts(
   leaderBoardInfo: LeaderBoardInfo | undefined,

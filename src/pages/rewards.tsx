@@ -3,11 +3,10 @@
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Modal from 'components/modal';
 import Sidenav from 'components/navigation/sidenav';
+import { WonPairRewardersRewards } from 'components/rewards/PairRewarderRewards';
+import { ReferralRewardClaimRow } from 'components/rewards/ReferralRewardClaimRow';
+import { useDibsData } from 'hooks/dibs/useDibsData';
 import React, { useState } from 'react';
-
-import { WonPairRewardersRewards } from '../components/rewards/PairRewarderRewards';
-import { ReferralRewardClaimRow } from '../components/rewards/ReferralRewardClaimRow';
-import { useDibsData } from '../hooks/dibs/useDibsData';
 
 const Rewards = () => {
   const { balancesToClaim } = useDibsData();

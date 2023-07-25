@@ -1,13 +1,12 @@
 import { usePairRewarderWrite, usePreparePairRewarderClaimLeaderBoardReward } from 'abis/types/generated';
+import RewardToken from 'components/RewardToken';
+import { usePairRewarder } from 'hooks/dibs/usePairRewarder';
+import { usePairRewarderRewards, useWonPairRewarders } from 'hooks/dibs/usePairRewarderRewards';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import RoutePath from 'routes';
+import { PairRewarderLeaderBoardRewardItem } from 'types';
 import { Address, useAccount } from 'wagmi';
-
-import { usePairRewarder } from '../../hooks/dibs/usePairRewarder';
-import { usePairRewarderRewards, useWonPairRewarders } from '../../hooks/dibs/usePairRewarderRewards';
-import RoutePath from '../../routes';
-import { PairRewarderLeaderBoardRewardItem } from '../../types';
-import RewardToken from '../RewardToken';
 
 const PairRewarderClaimButton = ({
   rewardItem,

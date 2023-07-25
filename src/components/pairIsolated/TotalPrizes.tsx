@@ -1,7 +1,6 @@
+import RewardToken from 'components/RewardToken';
 import React from 'react';
-
-import { LeaderBoardInfo } from '../../types';
-import RewardToken from '../RewardToken';
+import { LeaderBoardInfo } from 'types';
 
 export default function TotalPrizes({ leaderBoardInfo }: { leaderBoardInfo: LeaderBoardInfo | undefined }) {
   if (!leaderBoardInfo) return <></>;

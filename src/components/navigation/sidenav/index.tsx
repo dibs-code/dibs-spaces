@@ -7,10 +7,9 @@ import { isSupportedChain } from 'constants/chains';
 import { useDibsData } from 'hooks/dibs/useDibsData';
 import React, { Fragment, PropsWithChildren, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import RoutePath, { requiresCode } from 'routes';
 import { shortenAddress } from 'utils/index';
 import { useAccount, useNetwork } from 'wagmi';
-
-import RoutePath, { requiresCode } from '../../../routes';
 
 // import { Dialog, Transition } from '@headlessui/react';
 
