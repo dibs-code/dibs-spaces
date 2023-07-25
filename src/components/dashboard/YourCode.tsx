@@ -16,7 +16,7 @@ const YourCode = () => {
   const { chain } = useNetwork();
   const { address: account } = useAccount();
   const { addressToName, parentCodeName: parentCodeNameFromContract } = useDibsData();
-  const [searchParams, _setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const [parentCodeName, setParentCodeName] = useState('');
 
   useEffect(() => {

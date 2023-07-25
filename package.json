@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@apollo/client": "^3.7.14",
+    "@ethersproject/abi": "^5.7.0",
     "@ethersproject/bignumber": "^5.7.0",
     "@headlessui/react": "^1.7.15",
     "@mui/base": "^5.0.0-alpha.88",
@@ -24,7 +25,6 @@
     "@web3modal/react": "^2.4.5",
     "buffer": "^6.0.3",
     "crypto-browserify": "^3.12.0",
-    "ethers": "^6.6.5",
     "graphql-tag": "^2.12.6",
     "process": "^0.11.10",
     "react": "^18.2.0",

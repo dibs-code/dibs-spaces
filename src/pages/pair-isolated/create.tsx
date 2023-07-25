@@ -1,9 +1,8 @@
+import { Interface } from '@ethersproject/abi';
 import { prepareWriteContract, waitForTransaction, writeContract } from '@wagmi/core';
 import pairRewarderFactoryABI from 'abis/pairRewarderFactory';
 import Sidenav from 'components/navigation/sidenav';
 import { PairRewarderFactoryAddress } from 'constants/addresses';
-// eslint-disable-next-line no-restricted-imports
-import { ethers } from 'ethers';
 import usePairName from 'hooks/dibs/usePairName';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -48,10 +47,16 @@ export default function PairRewarderCreate() {
       const data = await waitForTransaction({
         hash,
       });
-      const iface = new ethers.Interface(pairRewarderFactoryABI);
-      const events = data.logs.map((l) => iface.parseLog(l));
+      const iface = new Interface(pairRewarderFactoryABI);
+      const events = data.logs.map((l) => {
+        try {
+          return iface.parseLog(l);
+        } catch (_e) {
+          return null;
+        }
+      });
       const pairRewarderDeployedEvent = events.find((e) => e?.name === 'PairRewarderDeployed');
-      const pairRewarderAddress: Address = pairRewarderDeployedEvent?.args.getValue('pairRewarder');
+      const pairRewarderAddress: Address = pairRewarderDeployedEvent?.args.pairRewarder;
       if (!pairRewarderAddress) {
         alert('Error: Could not get the created contract address from the factory contract');
         return;
