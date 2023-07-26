@@ -1,19 +1,20 @@
 import { prepareWriteContract, writeContract } from '@wagmi/core';
 import DibsLotteryABI from 'abis/dibsLottery';
-import { DibsLotteryAddress } from 'constants/addresses';
+import { useDibsAddresses } from 'hooks/dibs/useDibsAddresses';
 import { useCallback, useState } from 'react';
 import { useAccount } from 'wagmi';
 
 export const useClaimPrizes = () => {
   const { address } = useAccount();
   const [pending, setPending] = useState(false);
+  const { dibsLotteryAddress } = useDibsAddresses();
 
   const handleClaimFees = useCallback(async () => {
-    if (!address) return;
+    if (!address || !dibsLotteryAddress) return;
     setPending(true);
     try {
       const { request } = await prepareWriteContract({
-        address: DibsLotteryAddress,
+        address: dibsLotteryAddress,
         abi: DibsLotteryABI,
         functionName: 'claimReward',
         args: [address],
@@ -23,7 +24,7 @@ export const useClaimPrizes = () => {
       console.log('claim error :>> ', err);
     }
     setPending(false);
-  }, [address]);
+  }, [dibsLotteryAddress, address]);
 
   return { onClaimFees: handleClaimFees, pending };
 };

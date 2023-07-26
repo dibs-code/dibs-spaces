@@ -1,23 +1,26 @@
 import { multicall, readContract } from '@wagmi/core';
 import { pairRewarderFactoryABI } from 'abis/types/generated';
 import { Address } from 'abitype';
-import { PairRewarderFactoryAddress } from 'constants/addresses';
+import { useDibsAddresses } from 'hooks/dibs/useDibsAddresses';
 import { useEffect, useMemo, useState } from 'react';
 
 export function usePairRewarderFactory() {
   const [pairRewarders, setPairRewarders] = useState<{
     [key: `0x${string}`]: `0x${string}`[];
   } | null>(null);
+  const { pairRewarderFactoryAddress } = useDibsAddresses();
+
   useEffect(() => {
     async function getData() {
+      if (!pairRewarderFactoryAddress) return;
       const allPairs = await readContract({
-        address: PairRewarderFactoryAddress,
+        address: pairRewarderFactoryAddress,
         abi: pairRewarderFactoryABI,
         functionName: 'getAllPairs',
       });
       const calls = allPairs.map((item) => {
         return {
-          address: PairRewarderFactoryAddress,
+          address: pairRewarderFactoryAddress,
           abi: pairRewarderFactoryABI,
           functionName: 'getAllPairRewarders',
           args: [item],
@@ -36,7 +39,7 @@ export function usePairRewarderFactory() {
     }
 
     getData().catch(console.log);
-  }, []);
+  }, [pairRewarderFactoryAddress]);
   const allPairs = useMemo(() => (pairRewarders ? Object.keys(pairRewarders) : null), [pairRewarders]);
   const allPairRewarders = useMemo(
     () => (pairRewarders ? Object.values(pairRewarders).reduce((a, c) => a.concat(c), []) : null),

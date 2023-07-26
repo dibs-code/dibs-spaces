@@ -1,6 +1,6 @@
 import { prepareWriteContract, writeContract } from '@wagmi/core';
 import MuonInterfaceABI from 'abis/muonInterface';
-import { MuonInterfaceAddress } from 'constants/addresses';
+import { useDibsAddresses } from 'hooks/dibs/useDibsAddresses';
 import { BalanceToClaimObject, useDibsData } from 'hooks/dibs/useDibsData';
 import useGetMuonSignature from 'hooks/muon/useMuonSignature';
 import { useCallback, useState } from 'react';
@@ -12,10 +12,11 @@ export const useClaimFees = () => {
   const [pending, setPending] = useState(false);
   const getMuonSignature = useGetMuonSignature();
   const { projectId } = useDibsData();
+  const { muonInterfaceAddress } = useDibsAddresses();
 
   const handleClaimFees = useCallback(
     async (balanceToClaim: BalanceToClaimObject) => {
-      if (!address) return;
+      if (!address || !muonInterfaceAddress) return;
       const timestamp = Math.floor(Date.now() / 1000);
       setPending(true);
       let sig;
@@ -47,7 +48,7 @@ export const useClaimFees = () => {
       }
       try {
         const { request } = await prepareWriteContract({
-          address: MuonInterfaceAddress,
+          address: muonInterfaceAddress,
           abi: MuonInterfaceABI,
           functionName: 'claim',
           args: [
@@ -74,7 +75,7 @@ export const useClaimFees = () => {
 
       setPending(false);
     },
-    [address, projectId, getMuonSignature],
+    [muonInterfaceAddress, address, projectId, getMuonSignature],
   );
 
   return { callback: handleClaimFees, pending };

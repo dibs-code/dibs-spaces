@@ -55,11 +55,11 @@ const Sidenav = () => {
         icon: null,
         address: RoutePath.PAIR_ISOLATED,
       },
-      {
-        name: 'Pair Isolated (test contract)',
-        icon: null,
-        address: RoutePath.PAIR_REWARDER_LEADERBOARD.replace(':address', '0x6cB66a0762E7Ce3c0Abc9d0241bF4cfFc67fcdA1'),
-      },
+      // {
+      //   name: 'Pair Isolated (test contract)',
+      //   icon: null,
+      //   address: RoutePath.PAIR_REWARDER_LEADERBOARD.replace(':address', '0x6cB66a0762E7Ce3c0Abc9d0241bF4cfFc67fcdA1'),
+      // },
     ],
     [],
   );

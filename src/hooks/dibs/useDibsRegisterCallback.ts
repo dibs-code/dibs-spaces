@@ -2,7 +2,8 @@ import { keccak256 } from '@ethersproject/keccak256';
 import { toUtf8Bytes } from '@ethersproject/strings';
 import DibsABI from 'abis/dibs';
 import { useDibsRegister, usePrepareDibsRegister } from 'abis/types/generated';
-import { DibsAddress } from 'constants/addresses';
+import { DibsAddressMap } from 'constants/addresses';
+import { useContractAddress } from 'hooks/useContractAddress';
 import { useCallback, useMemo, useState } from 'react';
 import { readContracts } from 'wagmi';
 
@@ -14,23 +15,26 @@ export const useDibsRegisterCallback = (name: string, parentName: string) => {
   const yourCode = useMemo(() => keccak256(toUtf8Bytes(name)) as `0x${string}`, [name]);
   const parentCode = useMemo(() => keccak256(toUtf8Bytes(parentName)) as `0x${string}`, [parentName]);
 
+  const dibsAddress = useContractAddress(DibsAddressMap);
+
   const { config: registerConfig } = usePrepareDibsRegister({
-    address: DibsAddress,
+    address: dibsAddress,
     args: [name, parentCode],
   });
   const { write: register } = useDibsRegister(registerConfig);
 
   const handleRegister = useCallback(async () => {
+    if (!dibsAddress) return;
     const [resCodeToName, resParentCodeToName] = await readContracts({
       contracts: [
         {
-          address: DibsAddress,
+          address: dibsAddress,
           abi: DibsABI,
           functionName: 'codeToAddress',
           args: [yourCode],
         },
         {
-          address: DibsAddress,
+          address: dibsAddress,
           abi: DibsABI,
           functionName: 'codeToAddress',
           args: [parentCode],
@@ -54,7 +58,7 @@ export const useDibsRegisterCallback = (name: string, parentName: string) => {
       return;
     }
     setPending(false);
-  }, [parentCode, register, yourCode]);
+  }, [dibsAddress, parentCode, register, yourCode]);
 
   return { callback: handleRegister, pending };
 };

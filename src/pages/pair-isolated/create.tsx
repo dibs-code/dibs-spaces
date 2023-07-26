@@ -2,7 +2,7 @@ import { Interface } from '@ethersproject/abi';
 import { prepareWriteContract, waitForTransaction, writeContract } from '@wagmi/core';
 import pairRewarderFactoryABI from 'abis/pairRewarderFactory';
 import Sidenav from 'components/navigation/sidenav';
-import { PairRewarderFactoryAddress } from 'constants/addresses';
+import { useDibsAddresses } from 'hooks/dibs/useDibsAddresses';
 import usePairName from 'hooks/dibs/usePairName';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -19,6 +19,8 @@ enum CreatePairRewarderTransactionState {
 
 export default function PairRewarderCreate() {
   const { address } = useAccount();
+  const { pairRewarderFactoryAddress } = useDibsAddresses();
+
   const [pairAddress, setPairAddress] = useState('');
   const [setterAccount, setSetterAccount] = useState('');
   const [createdPairRewarderAddress, setCreatedPairRewarderAddress] = useState<Address | null>(null);
@@ -31,11 +33,11 @@ export default function PairRewarderCreate() {
   const navigate = useNavigate();
   const [txState, setTxState] = useState(CreatePairRewarderTransactionState.INITIAL);
   const handleButtonClick = useCallback(async () => {
-    if (txState !== CreatePairRewarderTransactionState.INITIAL || !address) return;
+    if (txState !== CreatePairRewarderTransactionState.INITIAL || !address || !pairRewarderFactoryAddress) return;
     setTxState(CreatePairRewarderTransactionState.PREPARING_TRANSACTION);
     try {
       const { request } = await prepareWriteContract({
-        address: PairRewarderFactoryAddress,
+        address: pairRewarderFactoryAddress,
         abi: pairRewarderFactoryABI,
         functionName: 'deployPairRewarder',
         args: [pairAddress as Address, address, setterAccount as Address],
@@ -73,7 +75,7 @@ export default function PairRewarderCreate() {
       alert(String(err));
       setTxState(CreatePairRewarderTransactionState.INITIAL);
     }
-  }, [address, navigate, pairAddress, txState, setterAccount]);
+  }, [pairRewarderFactoryAddress, address, navigate, pairAddress, txState, setterAccount]);
 
   const buttonText = {
     [CreatePairRewarderTransactionState.INITIAL]: 'Create LeaderBoard',

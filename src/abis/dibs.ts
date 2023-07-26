@@ -156,6 +156,20 @@ export default [
   {
     anonymous: false,
     inputs: [
+      { indexed: false, internalType: 'address', name: '_old', type: 'address' },
+      {
+        indexed: false,
+        internalType: 'address',
+        name: '_new',
+        type: 'address',
+      },
+    ],
+    name: 'SetPairRewarderFactory',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
       { indexed: false, internalType: 'address', name: '_user', type: 'address' },
       {
         indexed: false,
@@ -438,6 +452,13 @@ export default [
     type: 'function',
   },
   {
+    inputs: [],
+    name: 'pairRewarderFactory',
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
     inputs: [{ internalType: 'address', name: '', type: 'address' }],
     name: 'parents',
     outputs: [{ internalType: 'address', name: '', type: 'address' }],
@@ -544,6 +565,13 @@ export default [
     type: 'function',
   },
   {
+    inputs: [{ internalType: 'address', name: '_pairRewarderFactory', type: 'address' }],
+    name: 'setPairRewarderFactory',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
     inputs: [
       { internalType: 'address', name: 'user', type: 'address' },
       {
@@ -559,18 +587,18 @@ export default [
   },
   {
     inputs: [
-      { internalType: 'uint32', name: '_refereePercentage', type: 'uint32' },
       {
         internalType: 'uint32',
-        name: '_referrerPercentage',
+        name: '_refereePercentage',
         type: 'uint32',
       },
-      { internalType: 'uint32', name: '_grandparentPercentage', type: 'uint32' },
+      { internalType: 'uint32', name: '_referrerPercentage', type: 'uint32' },
       {
         internalType: 'uint32',
-        name: '_dibsPercentage',
+        name: '_grandparentPercentage',
         type: 'uint32',
       },
+      { internalType: 'uint32', name: '_dibsPercentage', type: 'uint32' },
     ],
     name: 'setPercentages',
     outputs: [],

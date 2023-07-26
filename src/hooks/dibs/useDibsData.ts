@@ -3,7 +3,8 @@ import { multicall } from '@wagmi/core';
 import DibsABI from 'abis/dibs';
 import { useDibsGetCodeName, useDibsParents, useDibsProjectId } from 'abis/types/generated';
 import { ACCUMULATIVE_TOKEN_BALANCES } from 'apollo/queries';
-import { DibsAddress } from 'constants/addresses';
+import { DibsAddressMap } from 'constants/addresses';
+import { useContractAddress } from 'hooks/useContractAddress';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useAccount } from 'wagmi';
 
@@ -22,23 +23,23 @@ export interface BalanceToClaimObject extends BalanceObject {
 
 export function useDibsData() {
   const { address } = useAccount();
-
+  const dibsAddress = useContractAddress(DibsAddressMap);
   const { data: projectId } = useDibsProjectId({
-    address: DibsAddress,
+    address: dibsAddress,
   });
 
   const { data: addressToName } = useDibsGetCodeName({
-    address: DibsAddress,
+    address: dibsAddress,
     args: address ? [address] : undefined,
   });
 
   const { data: parent } = useDibsParents({
-    address: DibsAddress,
+    address: dibsAddress,
     args: address ? [address] : undefined,
   });
 
   const { data: parentCodeName } = useDibsGetCodeName({
-    address: DibsAddress,
+    address: dibsAddress,
     args: parent ? [parent] : undefined,
   });
 
@@ -55,14 +56,14 @@ export function useDibsData() {
   }, [accumulativeTokenBalances?.data?.accumulativeTokenBalances]);
 
   const claimedBalancesCall = useMemo(() => {
-    if (!address) return [];
+    if (!address || !dibsAddress) return [];
     return userTokenAddresses.map((tokenAddress) => ({
-      address: DibsAddress,
+      address: dibsAddress,
       abi: DibsABI,
       functionName: 'claimedBalance',
       args: [tokenAddress, address],
     }));
-  }, [address, userTokenAddresses]);
+  }, [address, dibsAddress, userTokenAddresses]);
 
   const [claimedBalancesResult, setClaimedBalancesResult] = useState<any[]>([]);
   const getClaimedBalancesResult = useCallback(async () => {

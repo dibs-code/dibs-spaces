@@ -6,7 +6,9 @@ import {
   useDibsRoundDuration,
 } from 'abis/types/generated';
 import { USER_TICKETS } from 'apollo/queries';
-import { DibsAddress, DibsLotteryAddress } from 'constants/addresses';
+import { DibsAddressMap } from 'constants/addresses';
+import { useDibsAddresses } from 'hooks/dibs/useDibsAddresses';
+import { useContractAddress } from 'hooks/useContractAddress';
 import { useMemo } from 'react';
 import { useAccount } from 'wagmi';
 
@@ -17,16 +19,18 @@ export enum LotteryStatus {
 }
 
 export function useDibsLotteryData() {
+  const dibsAddress = useContractAddress(DibsAddressMap);
+  const { dibsLotteryAddress } = useDibsAddresses();
   const { data: activeLotteryRound } = useDibsLotteryGetActiveLotteryRound({
-    address: DibsLotteryAddress,
+    address: dibsLotteryAddress,
   });
 
   const { data: firstRoundStartTime } = useDibsFirstRoundStartTime({
-    address: DibsAddress,
+    address: dibsAddress,
   });
 
   const { data: roundDuration } = useDibsRoundDuration({
-    address: DibsAddress,
+    address: dibsAddress,
   });
 
   const { address } = useAccount();
@@ -36,7 +40,7 @@ export function useDibsLotteryData() {
   });
 
   const { data: lotteryWinners } = useDibsLotteryGetRoundWinners({
-    address: DibsLotteryAddress,
+    address: dibsLotteryAddress,
     args: activeLotteryRound ? [activeLotteryRound - 1] : undefined,
   });
 

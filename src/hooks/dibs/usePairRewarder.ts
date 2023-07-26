@@ -9,7 +9,8 @@ import {
   usePairRewarderSetterRole,
 } from 'abis/types/generated';
 import { Address } from 'abitype';
-import { DibsAddress } from 'constants/addresses';
+import { DibsAddressMap } from 'constants/addresses';
+import { useContractAddress } from 'hooks/useContractAddress';
 import { useEffect, useState } from 'react';
 import { PairRewarderEpochWinners } from 'types';
 import { useAccount } from 'wagmi';
@@ -19,6 +20,8 @@ import usePairName from './usePairName';
 //TODO: use mutlicall to have fewer calls
 export function usePairRewarder(pairRewarderAddress: Address | undefined) {
   const { address } = useAccount();
+  const dibsAddress = useContractAddress(DibsAddressMap);
+
   const { data: pairAddress } = usePairRewarderPair({
     address: pairRewarderAddress,
   });
@@ -79,11 +82,11 @@ export function usePairRewarder(pairRewarderAddress: Address | undefined) {
   const [epochWinners, setEpochWinners] = useState<PairRewarderEpochWinners>(undefined);
   useEffect(() => {
     async function getData() {
-      if (!epochWinnersRaw) return;
+      if (!epochWinnersRaw || !dibsAddress) return;
       const calls = epochWinnersRaw.winners.map((item) => {
         return {
           abi: dibsABI,
-          address: DibsAddress,
+          address: dibsAddress,
           functionName: 'getCodeName',
           args: [item],
         };
@@ -98,7 +101,7 @@ export function usePairRewarder(pairRewarderAddress: Address | undefined) {
     }
 
     getData().catch(console.log);
-  }, [epochWinnersRaw]);
+  }, [dibsAddress, epochWinnersRaw]);
 
   return {
     epochTimer,
