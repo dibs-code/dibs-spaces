@@ -4,7 +4,7 @@
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import Input from 'components/basic/input';
 import SubmittedModal from 'components/modal/submitted';
-import { isSupportedChain, SupportedChainId } from 'constants/chains';
+import { chains, isSupportedChain } from 'constants/chains';
 import { useDibsData } from 'hooks/dibs/useDibsData';
 import { useDibsRegisterCallback } from 'hooks/dibs/useDibsRegisterCallback';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -57,7 +57,7 @@ const YourCode = () => {
       return;
     }
     if (!isSupportedChain(chain?.id)) {
-      await selectChain(SupportedChainId.BSC);
+      await selectChain(chains[0].id);
       return;
     }
     if (loading) return;
