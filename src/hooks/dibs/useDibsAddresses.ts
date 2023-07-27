@@ -24,16 +24,6 @@ export function useDibsAddresses() {
     async function getData() {
       if (!dibsAddress) return;
 
-      //TODO: remove this hardcoded contract
-      if (dibsAddress.toLowerCase() === '0xe3da69b64641a84509aca772e545c8f048a4643c') {
-        setAddresses({
-          dibsLotteryAddress: '0xF5e1C6ac54c4C8a654bd0E04D52A357E672d3FEa',
-          muonInterfaceAddress: '0x0000000000000000000000000000000000000000',
-          pairRewarderFactoryAddress: '0x27Cac1957068F28A86789B750E5eb3714324A2A5',
-        });
-        return;
-      }
-
       const args = {
         address: dibsAddress,
         abi: dibsABI,
