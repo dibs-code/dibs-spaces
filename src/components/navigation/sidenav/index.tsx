@@ -8,6 +8,7 @@ import { useDibsData } from 'hooks/dibs/useDibsData';
 import React, { Fragment, PropsWithChildren, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import RoutePath, { requiresCode } from 'routes';
+import { IS_PRODUCTION } from 'utils/env';
 import { shortenAddress } from 'utils/index';
 import { useAccount, useNetwork } from 'wagmi';
 
@@ -32,22 +33,8 @@ const Sidenav = () => {
   const { chain } = useNetwork();
   const { addressToName } = useDibsData();
   const hasCode = useMemo(() => !!addressToName, [addressToName]);
-  const links = useMemo(
-    // () => [
-    //   { name: 'Your code', icon: faCircleC, address: RoutePath.HOME },
-    //   { name: 'Rewards', icon: faGift, address: RoutePath.REWARDS },
-    //   {
-    //     name: 'Pair Isolated',
-    //     icon: faRightLeft,
-    //     address: RoutePath.PAIR_ISOLATED,
-    //   },
-    //   {
-    //     name: 'Pair Isolated (test contract)',
-    //     icon: faRightLeft,
-    //     address: RoutePath.PAIR_REWARDER_LEADERBOARD.replace(':address', '0x6cB66a0762E7Ce3c0Abc9d0241bF4cfFc67fcdA1'),
-    //   },
-    // ],
-    () => [
+  const links = useMemo(() => {
+    const linksList: { name: string; icon: string | null; address: string }[] = [
       { name: 'Your code', icon: null, address: RoutePath.HOME },
       { name: 'Rewards', icon: null, address: RoutePath.REWARDS },
       {
@@ -55,14 +42,21 @@ const Sidenav = () => {
         icon: null,
         address: RoutePath.PAIR_ISOLATED,
       },
-      // {
-      //   name: 'Pair Isolated (test contract)',
-      //   icon: null,
-      //   address: RoutePath.PAIR_REWARDER_LEADERBOARD.replace(':address', '0x6cB66a0762E7Ce3c0Abc9d0241bF4cfFc67fcdA1'),
-      // },
-    ],
-    [],
-  );
+    ];
+    //TODO: remove this hardcoded contract
+    return IS_PRODUCTION
+      ? linksList
+      : linksList.concat([
+          {
+            name: 'Pair Isolated (test contract)',
+            icon: null,
+            address: RoutePath.PAIR_REWARDER_LEADERBOARD.replace(
+              ':address',
+              '0x6cB66a0762E7Ce3c0Abc9d0241bF4cfFc67fcdA1',
+            ),
+          },
+        ]);
+  }, []);
 
   const renderConnector = () => {
     return account ? (
