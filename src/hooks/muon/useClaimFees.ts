@@ -3,7 +3,7 @@ import MuonInterfaceABI from 'abis/muonInterface';
 import { useDibsProjectId } from 'abis/types/generated';
 import { DibsAddressMap } from 'constants/addresses';
 import { useDibsAddresses } from 'hooks/dibs/useDibsAddresses';
-import { BalanceToClaimObject } from 'hooks/dibs/useDibsData';
+import { BalanceToClaimObject } from 'hooks/dibs/useDibsReferralRewardsData';
 import useGetMuonSignature from 'hooks/muon/useMuonSignature';
 import { useContractAddress } from 'hooks/useContractAddress';
 import { useCallback, useState } from 'react';

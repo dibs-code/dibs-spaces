@@ -1,7 +1,7 @@
 import { formatUnits } from '@ethersproject/units';
 import { useErc20Decimals, useErc20Symbol } from 'abis/types/generated';
 import SubmittedModal from 'components/modal/submitted';
-import { BalanceToClaimObject } from 'hooks/dibs/useDibsData';
+import { BalanceToClaimObject } from 'hooks/dibs/useDibsReferralRewardsData';
 import { useClaimFees } from 'hooks/muon/useClaimFees';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 

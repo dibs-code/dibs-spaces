@@ -5,11 +5,11 @@ import Modal from 'components/modal';
 import Sidenav from 'components/navigation/sidenav';
 import { WonPairRewardersRewards } from 'components/rewards/PairRewarderRewards';
 import { ReferralRewardClaimRow } from 'components/rewards/ReferralRewardClaimRow';
-import { useDibsData } from 'hooks/dibs/useDibsData';
+import { useDibsReferralRewardsData } from 'hooks/dibs/useDibsReferralRewardsData';
 import React, { useState } from 'react';
 
 const Rewards = () => {
-  const { balancesToClaim } = useDibsData();
+  const { balancesToClaim } = useDibsReferralRewardsData();
 
   // Mock variable for type of reward (nft / token)
   // const [isNFT, setIsNFT] = useState(false);

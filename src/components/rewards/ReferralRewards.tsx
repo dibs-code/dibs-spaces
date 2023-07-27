@@ -1,10 +1,10 @@
-import { useDibsData } from 'hooks/dibs/useDibsData';
+import { useDibsReferralRewardsData } from 'hooks/dibs/useDibsReferralRewardsData';
 import React from 'react';
 
 import { AccBalance, NoBalance } from './AccBalance';
 
 export function ReferralRewards(props: { onClick: () => void }) {
-  const { balancesToClaim, claimedBalances } = useDibsData();
+  const { balancesToClaim, claimedBalances } = useDibsReferralRewardsData();
 
   return (
     <section className={'mb-20'}>

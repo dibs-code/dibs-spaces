@@ -12,7 +12,7 @@ export function usePairRewarderRewards(pairRewarderAddress: Address) {
 
   const [rewards, setRewards] = useState<PairRewarderLeaderBoardRewardItem[] | null>(null);
 
-  const blockNumber = useBlockNumber({
+  const { data: blockNumber } = useBlockNumber({
     watch: true,
   });
 
