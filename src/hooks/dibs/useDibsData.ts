@@ -1,7 +1,6 @@
 import { useQuery } from '@apollo/client';
 import { multicall } from '@wagmi/core';
 import DibsABI from 'abis/dibs';
-import { useDibsGetCodeName, useDibsParents, useDibsProjectId } from 'abis/types/generated';
 import { ACCUMULATIVE_TOKEN_BALANCES } from 'apollo/queries';
 import { DibsAddressMap } from 'constants/addresses';
 import { useContractAddress } from 'hooks/useContractAddress';
@@ -24,24 +23,6 @@ export interface BalanceToClaimObject extends BalanceObject {
 export function useDibsData() {
   const { address } = useAccount();
   const dibsAddress = useContractAddress(DibsAddressMap);
-  const { data: projectId } = useDibsProjectId({
-    address: dibsAddress,
-  });
-
-  const { data: addressToName } = useDibsGetCodeName({
-    address: dibsAddress,
-    args: address ? [address] : undefined,
-  });
-
-  const { data: parent } = useDibsParents({
-    address: dibsAddress,
-    args: address ? [address] : undefined,
-  });
-
-  const { data: parentCodeName } = useDibsGetCodeName({
-    address: dibsAddress,
-    args: parent ? [parent] : undefined,
-  });
 
   const accumulativeTokenBalances = useQuery(ACCUMULATIVE_TOKEN_BALANCES, {
     variables: { user: address?.toLowerCase() },
@@ -113,9 +94,6 @@ export function useDibsData() {
   }, [address, balances]);
 
   return {
-    projectId,
-    addressToName,
-    parentCodeName,
     balances,
     balancesToClaim,
     claimedBalances,

@@ -4,7 +4,7 @@ import { Transition } from '@headlessui/react';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { disconnect } from '@wagmi/core';
 import { isSupportedChain } from 'constants/chains';
-import { useDibsData } from 'hooks/dibs/useDibsData';
+import { useDibsCodeData } from 'hooks/dibs/useDibsCodeData';
 import React, { Fragment, PropsWithChildren, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import RoutePath, { requiresCode } from 'routes';
@@ -31,7 +31,7 @@ const Sidenav = () => {
 
   const { address: account } = useAccount();
   const { chain } = useNetwork();
-  const { addressToName } = useDibsData();
+  const { addressToName } = useDibsCodeData();
   const hasCode = useMemo(() => !!addressToName, [addressToName]);
   const links = useMemo(() => {
     const linksList: { name: string; icon: string | null; address: string }[] = [

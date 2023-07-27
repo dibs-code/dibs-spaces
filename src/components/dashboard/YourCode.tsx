@@ -5,7 +5,7 @@ import { useConnectModal } from '@rainbow-me/rainbowkit';
 import Input from 'components/basic/input';
 import SubmittedModal from 'components/modal/submitted';
 import { chains, isSupportedChain } from 'constants/chains';
-import { useDibsData } from 'hooks/dibs/useDibsData';
+import { useDibsCodeData } from 'hooks/dibs/useDibsCodeData';
 import { useDibsRegisterCallback } from 'hooks/dibs/useDibsRegisterCallback';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
@@ -15,22 +15,18 @@ import { useAccount, useNetwork } from 'wagmi';
 const YourCode = () => {
   const { chain } = useNetwork();
   const { address: account } = useAccount();
-  const { addressToName, parentCodeName: parentCodeNameFromContract } = useDibsData();
+  const { addressToName, parentCodeName: parentCodeNameFromContract } = useDibsCodeData();
   const [searchParams] = useSearchParams();
-  const [parentCodeName, setParentCodeName] = useState('');
+  const [parentCodeName, setParentCodeName] = useState('DIBS');
 
   useEffect(() => {
     const refCode = searchParams.get('ref');
     if (refCode) {
       setParentCodeName(refCode);
-    }
-  }, [searchParams]);
-
-  useEffect(() => {
-    if (parentCodeNameFromContract) {
+    } else if (parentCodeNameFromContract) {
       setParentCodeName(parentCodeNameFromContract);
     }
-  }, [parentCodeNameFromContract]);
+  }, [parentCodeNameFromContract, searchParams]);
 
   const hasCode = useMemo(() => !!addressToName, [addressToName]);
 
