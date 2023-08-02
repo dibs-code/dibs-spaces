@@ -51,7 +51,19 @@ const PairRewarderLeaderboard = () => {
           </div>
         </section>
 
-        <section className={'px-2 rounded-2xl h-80 bg-cover flex flex-col gap-3'}>
+        <section className="actions flex justify-between mb-4">
+          <LeaderBoardEpochButtons
+            epochToShowWinners={epochToShowWinners}
+            setEpochToShowWinners={setEpochToShowWinners}
+            activeDay={activeDay}
+          />
+          <button onClick={() => {}} className="btn btn--secondary btn--with-icon">
+            <img src="/assets/images/pair-isolated/create-leaderboard-icon.svg" alt="" />
+            <p className="mt-1">Create Leaderboard</p>
+          </button>
+        </section>
+
+        <section className="border border-primary rounded p-8 pt-0 pb-6">
           {/*<p>*/}
           {/*  Epoch Timer: {epochTimer.hours}h {epochTimer.minutes}m | 24h Total Prizes:{' '}*/}
           {/*  <TotalPrizes leaderBoardInfo={activeLeaderBoardInfo} />*/}
@@ -66,11 +78,6 @@ const PairRewarderLeaderboard = () => {
           {/*    </p>*/}
           {/*  )}*/}
           {/*</p>*/}
-          <LeaderBoardEpochButtons
-            epochToShowWinners={epochToShowWinners}
-            setEpochToShowWinners={setEpochToShowWinners}
-            activeDay={activeDay}
-          />
           <PairRewarderLeaderBoard epochWinners={epochWinners} />
         </section>
       </main>

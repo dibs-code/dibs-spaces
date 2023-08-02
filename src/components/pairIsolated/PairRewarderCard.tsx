@@ -9,13 +9,15 @@ import TotalPrizes from './TotalPrizes';
 export default function PairRewarderCard({ pairRewarderAddress }: { pairRewarderAddress: Address }) {
   const { pairName, activeLeaderBoardInfo } = usePairRewarder(pairRewarderAddress);
   return (
-    <tr className="text-white text-left rounded bg-gray2 overflow-hidden">
-      <td className="pl-8 rounded-l flex flex-col justify-center py-5">
-        <span className="flex gap-3">
-          <img src="/assets/images/pair-coin-icon.svg" alt="" />
-          <span>
-            <p>{pairName}</p>
-            <p className="text-secondary text-sm">Volatile</p>
+    <tr className="text-white text-left bg-gray2">
+      <td className="pl-8 rounded-l py-5">
+        <span className="flex flex-col justify-center ">
+          <span className="flex gap-3">
+            <img src="/assets/images/pair-coin-icon.svg" alt="" />
+            <span>
+              <p>{pairName}</p>
+              <p className="text-secondary text-sm">Volatile</p>
+            </span>
           </span>
         </span>
       </td>

@@ -33,7 +33,7 @@ const PairIsolated = () => {
           </div>
           <button onClick={() => setCreateLeaderBoardModalOpen(true)} className="btn btn--secondary btn--with-icon">
             <img src="/assets/images/pair-isolated/create-leaderboard-icon.svg" alt="" />
-            Create Leaderboard
+            <p className="mt-1">Create Leaderboard</p>
           </button>
         </section>
         <section className="border border-primary rounded p-8 pt-0 pb-6">
