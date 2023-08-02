@@ -5,10 +5,10 @@ import { ACCUMULATIVE_TOKEN_BALANCES } from 'apollo/queries';
 import { DibsAddressMap } from 'constants/addresses';
 import { useContractAddress } from 'hooks/useContractAddress';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useAccount, useBlockNumber } from 'wagmi';
+import { Address, useAccount, useBlockNumber } from 'wagmi';
 
 export interface BalanceObject {
-  tokenAddress: `0x${string}`;
+  tokenAddress: Address;
   balance: bigint;
 }
 
@@ -29,7 +29,7 @@ export function useDibsReferralRewardsData() {
   });
 
   const userTokenAddresses = useMemo(() => {
-    const tokens: `0x${string}`[] = [];
+    const tokens: Address[] = [];
     accumulativeTokenBalances?.data?.accumulativeTokenBalances.forEach((atb) => {
       tokens.push(atb.token);
     });

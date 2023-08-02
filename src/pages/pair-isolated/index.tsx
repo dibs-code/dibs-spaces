@@ -1,14 +1,20 @@
 import Sidenav from 'components/navigation/sidenav';
+import CreateLeaderBoardModal from 'components/pairIsolated/CreateLeaderBoardModal';
 import PairRewarderCard from 'components/pairIsolated/PairRewarderCard';
 import { usePairRewarderFactory } from 'hooks/dibs/usePairRewarderFactory';
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import RoutePath from 'routes';
 
 const PairIsolated = () => {
   const { allPairRewarders } = usePairRewarderFactory();
+  const [createLeaderBoardModalOpen, setCreateLeaderBoardModalOpen] = useState(false);
   return (
     <div className={'page-spacing'}>
+      <CreateLeaderBoardModal
+        open={createLeaderBoardModalOpen}
+        closeModal={() => setCreateLeaderBoardModalOpen(false)}
+      />
       <Sidenav></Sidenav>
       <main className={'main-spacing'}>
         <header className={'border-b pb-4 mb-16'}>
@@ -17,8 +23,11 @@ const PairIsolated = () => {
 
         <main>
           <section className={'px-2 rounded-2xl h-80 bg-cover mt-4 flex flex-col gap-3'}>
+            <button onClick={() => setCreateLeaderBoardModalOpen(true)} className="btn-primary btn-large w-72">
+              Create LeaderBoard (Modal)
+            </button>
             <Link to={RoutePath.PAIR_REWARDER_CREATE} className="btn-primary btn-large w-72">
-              Create LeaderBoard
+              Create LeaderBoard (Page)
             </Link>
             <table className="w-full text-center bg-white shadow-primary-xl rounded-lg">
               <thead className="bg-primary text-white">
