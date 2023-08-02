@@ -1,11 +1,9 @@
 import YourCode from 'components/dashboard/YourCode';
-import Sidenav from 'components/navigation/sidenav';
 import React from 'react';
 
 const Home = () => {
   return (
     <div className={'page-spacing'}>
-      <Sidenav></Sidenav>
       <main className={'main-spacing'}>
         <YourCode></YourCode>
       </main>
@@ -13,4 +11,4 @@ const Home = () => {
   );
 };
 
-export default Home; /* Rectangle 18 */
+export default Home;

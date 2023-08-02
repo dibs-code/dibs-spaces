@@ -2,6 +2,11 @@
 @tailwind components
 @tailwind utilities
 
+*
+  @apply box-border outline-none focus:outline-none select-none p-0 m-0
+
+.app
+  @apply min-h-screen bg-black-background
 
 html
   // these two lines prevent changing the position of the body when you switch between a scrollable page to a non-scrollable one.
@@ -12,7 +17,6 @@ body
   font-family: 'Inter', sans-serif
   font-weight: 500
   @apply text-black bg-body
-  max-width: 1512px
   margin: auto
 
 span

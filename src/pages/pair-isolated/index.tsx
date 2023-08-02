@@ -1,4 +1,3 @@
-import Sidenav from 'components/navigation/sidenav';
 import CreateLeaderBoardModal from 'components/pairIsolated/CreateLeaderBoardModal';
 import PairRewarderCard from 'components/pairIsolated/PairRewarderCard';
 import { usePairRewarderFactory } from 'hooks/dibs/usePairRewarderFactory';
@@ -15,7 +14,6 @@ const PairIsolated = () => {
         open={createLeaderBoardModalOpen}
         closeModal={() => setCreateLeaderBoardModalOpen(false)}
       />
-      <Sidenav></Sidenav>
       <main className={'main-spacing'}>
         <header className={'border-b pb-4 mb-16'}>
           <h2> Dibs pair isolated leaderboards</h2>

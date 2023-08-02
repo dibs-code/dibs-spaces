@@ -1,5 +1,4 @@
 import { Address } from 'abitype';
-import Sidenav from 'components/navigation/sidenav';
 import { LeaderBoardEpochButtons } from 'components/pairIsolated/LeaderBoardEpochButtons';
 import PairRewarderLeaderBoard from 'components/pairIsolated/PairRewarderLeaderboard';
 import TotalPrizes from 'components/pairIsolated/TotalPrizes';
@@ -24,7 +23,6 @@ const PairRewarderLeaderboard = () => {
 
   return (
     <div className={'page-spacing'}>
-      <Sidenav></Sidenav>
       <main className={'main-spacing'}>
         <header className={'border-b pb-4 mb-16'}>
           <h2> Dibs pair isolated leaderboard {pairName}</h2>

@@ -22,7 +22,7 @@ export interface ModalPropsInterface extends React.HTMLAttributes<HTMLElement> {
 
 export type ModalProps = PropsWithChildren<ModalPropsInterface>;
 
-const Sidenav = () => {
+const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { openConnectModal } = useConnectModal();
@@ -61,7 +61,7 @@ const Sidenav = () => {
   const renderConnector = () => {
     return account ? (
       <>
-        <h4 className={'font-semibold mb-2 text-primary text-center'}>{shortenAddress(account)}</h4>
+        <h4 className={'font-semibold mb-2 flex-1 text-primary text-center'}>{shortenAddress(account)}</h4>
         <p className={'text-center'}>
           <span
             className={`h-9 rounded-md inline-flex items-center px-4 bg-input ${
@@ -74,7 +74,7 @@ const Sidenav = () => {
       </>
     ) : (
       <>
-        <div className={'flex justify-center'}>
+        <div className={'flex justify-end flex-1'}>
           <button className={'btn-primary-inverted btn-medium text-center'} onClick={openConnectModal}>
             Connect Wallet
           </button>
@@ -85,7 +85,7 @@ const Sidenav = () => {
 
   const menu = useMemo(
     () => (
-      <ul className={'pl-2 mt-16 mb-24'}>
+      <ul className="flex gap-9 mx-auto">
         {links.map((link) => {
           const active = location.pathname === link.address;
           const disabled = (!account || !isSupportedChain(chain?.id)) && requiresCode(link.address);
@@ -97,9 +97,11 @@ const Sidenav = () => {
                 }
               }}
               className={`flex mb-3 items-center transition duration-200  ${
-                active ? 'text-primary' : 'text-light-gray-3'
+                active ? 'text-light-gray-3' : 'text-primary'
               }
-                ${!disabled ? 'hover:text-primary cursor-pointer' : 'cursor-not-allowed'}
+                ${disabled && 'cursor-not-allowed'}
+                ${!disabled && !active && 'cursor-pointer'}
+                ${!disabled && !active && 'hover:text-primary-dark'}
                ${link.name === 'Reports' ? 'pl-0.5 gap-4' : 'pl-0 gap-3'}`}
               key={link.name}
             >
@@ -114,14 +116,15 @@ const Sidenav = () => {
   );
 
   return (
-    <div className={''}>
-      <nav
-        className={'w-68 px-9 py-10 bg-white rounded-2xl fixed shadow-[0_6px_24px_rgba(0,0,0,0.05)] hidden md:block'}
-      >
-        {renderConnector()}
+    <>
+      <nav className="w-full py-8 px-[88px] bg-transparent hidden md:flex justify-between">
+        <div className="flex-1">
+          <img src="/assets/images/navbar/logo.svg" alt="" />
+        </div>
         {menu}
+        {renderConnector()}
         {account && (
-          <div className={'flex justify-center'} onClick={openConnectModal}>
+          <div className={'flex justify-center flex-1'} onClick={openConnectModal}>
             <button className={'btn-primary-inverted btn-medium text-center'} onClick={() => disconnect()}>
               Disconnect Wallet
             </button>
@@ -168,8 +171,8 @@ const Sidenav = () => {
           </div>
         </Transition>
       </nav>
-    </div>
+    </>
   );
 };
 
-export default Sidenav;
+export default Navbar;
