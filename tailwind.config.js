@@ -34,6 +34,7 @@ module.exports = {
         gray: '#6F7787',
         gray2: '#2C2F30',
         gray3: '#D2D2D2',
+        gray4: '#3C3C3C',
         body: '#F6F8FA',
         disabled: '#E2E4E7',
         'primary-dark': '#d1b745',

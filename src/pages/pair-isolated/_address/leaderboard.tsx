@@ -22,12 +22,30 @@ const PairRewarderLeaderboard = () => {
   } = usePairRewarder(pairRewarderAddress);
 
   return (
-    <div className={'page-spacing'}>
-      <main className={'main-spacing'}>
-        <header className={'border-b pb-4 mb-16'}>
-          <h2> Dibs pair isolated leaderboard {pairName}</h2>
-        </header>
-
+    <div className="page">
+      <main>
+        <section className="px-8 py-7 rounded bg-primary mb-8 flex w-full justify-between">
+          <div className="section--left pr-6">
+            <h1 className="text-[32px] font-bold text-secondary mb-3 flex gap-3">
+              <img src="/assets/images/pair-coin-icon.svg" alt="" />
+              WBNB/USDC leaderboard
+            </h1>
+            <p className="text-xl">
+              This is where you can view the leaderboard of all positions. <br />
+              Rewards are distributed based on each participant&apos;s trading volume.
+            </p>
+          </div>
+          <div className="section--right flex gap-4 items-center justify-end">
+            <div className="px-6 py-4 bg-gray4 rounded-md w-[218px]">
+              <p className="title mb-4 text-primary font-semibold text-2xl">Daily reward:</p>
+              <p className="value text-white font-semibold text-2xl text-right">892.30 USDC</p>
+            </div>
+            <div className="px-6 py-4 bg-gray4 rounded-md w-[218px]">
+              <p className="title mb-4 text-primary font-semibold text-2xl">Daily reward:</p>
+              <p className="value text-white font-semibold text-2xl text-right">892.30 USDC</p>
+            </div>
+          </div>
+        </section>
         <main>
           <section className={'px-2 rounded-2xl h-80 bg-cover mt-4 flex flex-col gap-3'}>
             <p>
