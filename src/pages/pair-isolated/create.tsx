@@ -1,4 +1,3 @@
-import Sidenav from 'components/navigation/sidenav';
 import usePairRewarderCreate, { CreatePairRewarderTransactionState } from 'hooks/dibs/usePairRewarderCreate';
 import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
@@ -27,7 +26,6 @@ export default function PairRewarderCreate() {
 
   return (
     <div className={'page-spacing'}>
-      <Sidenav></Sidenav>
       <main className={'main-spacing'}>
         <header className={'border-b pb-4 mb-16'}>
           <h2>Create Dibs pair isolated leaderboard</h2>

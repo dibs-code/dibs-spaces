@@ -12,6 +12,8 @@ import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import RoutePath, { requiresCode } from 'routes';
 import { useAccount, useNetwork } from 'wagmi';
 
+import Navbar from './components/navigation/navbar';
+
 function App() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -25,14 +27,17 @@ function App() {
     }
   }, [chain, location, navigate, address]);
   return (
-    <Routes>
-      <Route path={RoutePath.HOME} element={<Home />} />
-      <Route path={RoutePath.REWARDS} element={<Rewards />} />
-      <Route path={RoutePath.PAIR_ISOLATED} element={<PairIsolated />} />
-      <Route path={RoutePath.PAIR_REWARDER_LEADERBOARD} element={<PairRewarderLeaderboard />} />
-      <Route path={RoutePath.PAIR_REWARDER_SET_PRIZE} element={<PairRewarderSetPrize />} />
-      <Route path={RoutePath.PAIR_REWARDER_CREATE} element={<PairRewarderCreate />} />
-    </Routes>
+    <div className="app">
+      <Navbar />
+      <Routes>
+        <Route path={RoutePath.HOME} element={<Home />} />
+        <Route path={RoutePath.REWARDS} element={<Rewards />} />
+        <Route path={RoutePath.PAIR_ISOLATED} element={<PairIsolated />} />
+        <Route path={RoutePath.PAIR_REWARDER_LEADERBOARD} element={<PairRewarderLeaderboard />} />
+        <Route path={RoutePath.PAIR_REWARDER_SET_PRIZE} element={<PairRewarderSetPrize />} />
+        <Route path={RoutePath.PAIR_REWARDER_CREATE} element={<PairRewarderCreate />} />
+      </Routes>
+    </div>
   );
 }
 

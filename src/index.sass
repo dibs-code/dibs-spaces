@@ -2,6 +2,11 @@
 @tailwind components
 @tailwind utilities
 
+*
+  @apply box-border outline-none focus:outline-none select-none p-0 m-0
+
+.app
+  @apply min-h-screen bg-black-background
 
 html
   // these two lines prevent changing the position of the body when you switch between a scrollable page to a non-scrollable one.
@@ -12,7 +17,6 @@ body
   font-family: 'Inter', sans-serif
   font-weight: 500
   @apply text-black bg-body
-  max-width: 1512px
   margin: auto
 
 span
@@ -51,6 +55,15 @@ span
 
   // BUTTON COLOR
 
+  .btn
+    @apply cursor-pointer flex items-center justify-center
+
+    &--secondary
+      @apply bg-secondary text-white
+
+    &--secondary-outlined
+      @apply bg-transparent border border-secondary text-secondary
+
   .btn-primary
     @include btn
     @apply bg-primary font-medium text-white rounded-xl hover:bg-indigo-700
@@ -73,6 +86,10 @@ span
     @apply underline opacity-80 hover:text-primary
 
   // BUTTON SIZE
+  .btn
+    @apply px-8 py-2 font-medium text-center
+    @apply rounded
+
 
   .btn-small
     @apply max-h-9 text-sm px-4 py-2 font-medium rounded-lg

@@ -12,6 +12,8 @@ import { IS_PRODUCTION } from 'utils/env';
 import { shortenAddress } from 'utils/index';
 import { useAccount, useNetwork } from 'wagmi';
 
+import { ConnectWalletButton } from '../../ConnectWalletButton';
+
 // import { Dialog, Transition } from '@headlessui/react';
 
 export interface ModalPropsInterface extends React.HTMLAttributes<HTMLElement> {
@@ -22,7 +24,7 @@ export interface ModalPropsInterface extends React.HTMLAttributes<HTMLElement> {
 
 export type ModalProps = PropsWithChildren<ModalPropsInterface>;
 
-const Sidenav = () => {
+const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { openConnectModal } = useConnectModal();
@@ -59,33 +61,43 @@ const Sidenav = () => {
   }, []);
 
   const renderConnector = () => {
-    return account ? (
-      <>
-        <h4 className={'font-semibold mb-2 text-primary text-center'}>{shortenAddress(account)}</h4>
-        <p className={'text-center'}>
-          <span
-            className={`h-9 rounded-md inline-flex items-center px-4 bg-input ${
-              hasCode ? 'text-base font-medium' : 'text-sm font-regular'
-            }`}
-          >
-            {addressToName ?? 'No code exist'}
-          </span>
-        </p>
-      </>
-    ) : (
-      <>
-        <div className={'flex justify-center'}>
-          <button className={'btn-primary-inverted btn-medium text-center'} onClick={openConnectModal}>
-            Connect Wallet
-          </button>
-        </div>
-      </>
+    return (
+      <div className="flex-1 flex justify-end">
+        {account ? (
+          <>
+            <button className={'btn__secondary--outlined btn-medium text-center'} onClick={() => {}}>
+              {shortenAddress(account)}
+            </button>
+            {/*<h4 className={'font-semibold mb-2 flex-1 text-primary text-center'}>{shortenAddress(account)}</h4>*/}
+            {/*<p className={'text-center'}>*/}
+            {/*  <span*/}
+            {/*    className={`h-9 rounded-md inline-flex items-center px-4 bg-input ${*/}
+            {/*      hasCode ? 'text-base font-medium' : 'text-sm font-regular'*/}
+            {/*    }`}*/}
+            {/*  >*/}
+            {/*    {addressToName ?? 'No code exist'}*/}
+            {/*  </span>*/}
+            {/*</p>*/}
+          </>
+        ) : (
+          <>
+            <button className={'btn__secondary btn-medium text-center'} onClick={openConnectModal}>
+              Connect Wallet
+            </button>
+            {/*<div className={'flex justify-end flex-1'}>*/}
+            {/*  <button className={'btn-primary-inverted btn-medium text-center'} onClick={openConnectModal}>*/}
+            {/*    Connect Wallet*/}
+            {/*  </button>*/}
+            {/*</div>*/}
+          </>
+        )}
+      </div>
     );
   };
 
   const menu = useMemo(
     () => (
-      <ul className={'pl-2 mt-16 mb-24'}>
+      <ul className="flex gap-9 mx-auto items-center">
         {links.map((link) => {
           const active = location.pathname === link.address;
           const disabled = (!account || !isSupportedChain(chain?.id)) && requiresCode(link.address);
@@ -96,10 +108,10 @@ const Sidenav = () => {
                   navigate(link.address);
                 }
               }}
-              className={`flex mb-3 items-center transition duration-200  ${
-                active ? 'text-primary' : 'text-light-gray-3'
-              }
-                ${!disabled ? 'hover:text-primary cursor-pointer' : 'cursor-not-allowed'}
+              className={`flex items-center transition duration-200  ${active ? 'text-light-gray-3' : 'text-primary'}
+                ${disabled && 'cursor-not-allowed'}
+                ${!disabled && !active && 'cursor-pointer'}
+                ${!disabled && !active && 'hover:text-primary-dark'}
                ${link.name === 'Reports' ? 'pl-0.5 gap-4' : 'pl-0 gap-3'}`}
               key={link.name}
             >
@@ -114,19 +126,22 @@ const Sidenav = () => {
   );
 
   return (
-    <div className={''}>
-      <nav
-        className={'w-68 px-9 py-10 bg-white rounded-2xl fixed shadow-[0_6px_24px_rgba(0,0,0,0.05)] hidden md:block'}
-      >
-        {renderConnector()}
+    <>
+      <nav className="w-full py-8 px-[88px] bg-transparent hidden md:flex justify-between">
+        <div className="flex-1">
+          <img src="/assets/images/navbar/logo.svg" alt="" />
+        </div>
         {menu}
-        {account && (
-          <div className={'flex justify-center'} onClick={openConnectModal}>
-            <button className={'btn-primary-inverted btn-medium text-center'} onClick={() => disconnect()}>
-              Disconnect Wallet
-            </button>
-          </div>
-        )}
+        <div className="flex-1 flex justify-end">
+          <ConnectWalletButton />
+        </div>
+        {/*{account && (*/}
+        {/*  <div className={'flex justify-center flex-1'} onClick={openConnectModal}>*/}
+        {/*    <button className={'btn-primary-inverted btn-medium text-center'} onClick={() => disconnect()}>*/}
+        {/*      Disconnect Wallet*/}
+        {/*    </button>*/}
+        {/*  </div>*/}
+        {/*)}*/}
       </nav>
 
       <nav className={'dibs-mobile-nav z-100 block md:hidden fixed w-full text-right right-0 top-0 px-7 py-4 mb-4'}>
@@ -168,8 +183,8 @@ const Sidenav = () => {
           </div>
         </Transition>
       </nav>
-    </div>
+    </>
   );
 };
 
-export default Sidenav;
+export default Navbar;

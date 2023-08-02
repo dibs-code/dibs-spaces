@@ -2,7 +2,6 @@
 // import { faTicket } from '@fortawesome/pro-solid-svg-icons';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Modal from 'components/modal';
-import Sidenav from 'components/navigation/sidenav';
 import { WonPairRewardersRewards } from 'components/rewards/PairRewarderRewards';
 import { ReferralRewardClaimRow } from 'components/rewards/ReferralRewardClaimRow';
 import { useDibsReferralRewardsData } from 'hooks/dibs/useDibsReferralRewardsData';
@@ -31,7 +30,6 @@ const Rewards = () => {
           </p>
         )}
       </Modal>
-      <Sidenav></Sidenav>
       <main className={'main-spacing'}>
         <>
           <header className={'border-b pb-4 mb-16'}>

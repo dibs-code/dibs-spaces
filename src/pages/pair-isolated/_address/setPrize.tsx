@@ -1,5 +1,4 @@
 import TokenAddressInput from 'components/basic/input/TokenAddressInput';
-import Sidenav from 'components/navigation/sidenav';
 import usePairRewarderSetPrize from 'hooks/dibs/usePairRewarderSetPrize';
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
@@ -30,7 +29,6 @@ export default function PairRewarderSetPrize() {
 
   return (
     <div className={'page-spacing'}>
-      <Sidenav></Sidenav>
       <main className={'main-spacing'}>
         <header className={'border-b pb-4 mb-16'}>
           <h2> Dibs pair isolated leaderboard {pairName}</h2>
