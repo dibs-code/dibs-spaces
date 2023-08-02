@@ -22,7 +22,7 @@ export default function RewardToken({
   }, [rewardTokenAmount, rewardTokenDecimals]);
 
   return (
-    <div>
+    <div className="text-white">
       {formatLocaleNumber({ number: Number(totalAmount) })} {rewardTokenSymbol}
     </div>
   );
