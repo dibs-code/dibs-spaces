@@ -26,7 +26,7 @@ module.exports = {
       },
       colors: {
         primary: '#FFE25F',
-        secondary: '#F59569',
+        secondary: '#DA5056',
         input: '#EFF3F8',
         label: '#565656',
         black: '#353535',

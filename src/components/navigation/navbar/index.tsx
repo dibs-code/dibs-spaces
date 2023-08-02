@@ -12,6 +12,8 @@ import { IS_PRODUCTION } from 'utils/env';
 import { shortenAddress } from 'utils/index';
 import { useAccount, useNetwork } from 'wagmi';
 
+import { ConnectWalletButton } from '../../ConnectWalletButton';
+
 // import { Dialog, Transition } from '@headlessui/react';
 
 export interface ModalPropsInterface extends React.HTMLAttributes<HTMLElement> {
@@ -59,33 +61,43 @@ const Navbar = () => {
   }, []);
 
   const renderConnector = () => {
-    return account ? (
-      <>
-        <h4 className={'font-semibold mb-2 flex-1 text-primary text-center'}>{shortenAddress(account)}</h4>
-        <p className={'text-center'}>
-          <span
-            className={`h-9 rounded-md inline-flex items-center px-4 bg-input ${
-              hasCode ? 'text-base font-medium' : 'text-sm font-regular'
-            }`}
-          >
-            {addressToName ?? 'No code exist'}
-          </span>
-        </p>
-      </>
-    ) : (
-      <>
-        <div className={'flex justify-end flex-1'}>
-          <button className={'btn-primary-inverted btn-medium text-center'} onClick={openConnectModal}>
-            Connect Wallet
-          </button>
-        </div>
-      </>
+    return (
+      <div className="flex-1 flex justify-end">
+        {account ? (
+          <>
+            <button className={'btn__secondary--outlined btn-medium text-center'} onClick={() => {}}>
+              {shortenAddress(account)}
+            </button>
+            {/*<h4 className={'font-semibold mb-2 flex-1 text-primary text-center'}>{shortenAddress(account)}</h4>*/}
+            {/*<p className={'text-center'}>*/}
+            {/*  <span*/}
+            {/*    className={`h-9 rounded-md inline-flex items-center px-4 bg-input ${*/}
+            {/*      hasCode ? 'text-base font-medium' : 'text-sm font-regular'*/}
+            {/*    }`}*/}
+            {/*  >*/}
+            {/*    {addressToName ?? 'No code exist'}*/}
+            {/*  </span>*/}
+            {/*</p>*/}
+          </>
+        ) : (
+          <>
+            <button className={'btn__secondary btn-medium text-center'} onClick={openConnectModal}>
+              Connect Wallet
+            </button>
+            {/*<div className={'flex justify-end flex-1'}>*/}
+            {/*  <button className={'btn-primary-inverted btn-medium text-center'} onClick={openConnectModal}>*/}
+            {/*    Connect Wallet*/}
+            {/*  </button>*/}
+            {/*</div>*/}
+          </>
+        )}
+      </div>
     );
   };
 
   const menu = useMemo(
     () => (
-      <ul className="flex gap-9 mx-auto">
+      <ul className="flex gap-9 mx-auto items-center">
         {links.map((link) => {
           const active = location.pathname === link.address;
           const disabled = (!account || !isSupportedChain(chain?.id)) && requiresCode(link.address);
@@ -96,9 +108,7 @@ const Navbar = () => {
                   navigate(link.address);
                 }
               }}
-              className={`flex mb-3 items-center transition duration-200  ${
-                active ? 'text-light-gray-3' : 'text-primary'
-              }
+              className={`flex items-center transition duration-200  ${active ? 'text-light-gray-3' : 'text-primary'}
                 ${disabled && 'cursor-not-allowed'}
                 ${!disabled && !active && 'cursor-pointer'}
                 ${!disabled && !active && 'hover:text-primary-dark'}
@@ -122,14 +132,16 @@ const Navbar = () => {
           <img src="/assets/images/navbar/logo.svg" alt="" />
         </div>
         {menu}
-        {renderConnector()}
-        {account && (
-          <div className={'flex justify-center flex-1'} onClick={openConnectModal}>
-            <button className={'btn-primary-inverted btn-medium text-center'} onClick={() => disconnect()}>
-              Disconnect Wallet
-            </button>
-          </div>
-        )}
+        <div className="flex-1 flex justify-end">
+          <ConnectWalletButton />
+        </div>
+        {/*{account && (*/}
+        {/*  <div className={'flex justify-center flex-1'} onClick={openConnectModal}>*/}
+        {/*    <button className={'btn-primary-inverted btn-medium text-center'} onClick={() => disconnect()}>*/}
+        {/*      Disconnect Wallet*/}
+        {/*    </button>*/}
+        {/*  </div>*/}
+        {/*)}*/}
       </nav>
 
       <nav className={'dibs-mobile-nav z-100 block md:hidden fixed w-full text-right right-0 top-0 px-7 py-4 mb-4'}>
