@@ -11,8 +11,13 @@ export default function PairRewarderCard({ pairRewarderAddress }: { pairRewarder
   return (
     <tr className="text-white text-left rounded bg-gray2 overflow-hidden">
       <td className="pl-8 rounded-l flex flex-col justify-center py-5">
-        <p>{pairName}</p>
-        <p className="text-secondary text-sm">Volatile</p>
+        <span className="flex gap-3">
+          <img src="/assets/images/pair-coin-icon.svg" alt="" />
+          <span>
+            <p>{pairName}</p>
+            <p className="text-secondary text-sm">Volatile</p>
+          </span>
+        </span>
       </td>
       <td>$232,195</td>
       <td>
