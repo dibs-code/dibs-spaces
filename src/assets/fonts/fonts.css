@@ -1,0 +1,75 @@
+@font-face {
+    font-family: exo;
+    font-style: normal;
+    font-weight: 800;
+    src: url("Exo/Exo-ExtraBold.ttf") format("truetype"),
+    url("Exo/Exo-ExtraBold.otf") format("opentype");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: exo;
+    font-style: normal;
+    font-weight: 700;
+    src: url("Exo/Exo-Bold.ttf") format("truetype"),
+    url("Exo/Exo-Bold.otf") format("opentype");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: exo;
+    font-style: normal;
+    font-weight: 600;
+    src: url("Exo/Exo-SemiBold.ttf") format("truetype"),
+    url("Exo/Exo-SemiBold.otf") format("opentype");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: exo;
+    font-style: normal;
+    font-weight: 500;
+    src: url("Exo/Exo-Medium.ttf") format("truetype"),
+    url("Exo/Exo-Medium.otf") format("opentype");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: exo;
+    font-style: normal;
+    font-weight: 400;
+    src: url("Exo/Exo-Regular.ttf") format("truetype"),
+    url("Exo/Exo-Regular.otf") format("opentype");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: exo;
+    font-style: normal;
+    font-weight: 300;
+    src: url("Exo/Exo-Light.ttf") format("truetype"),
+    url("Exo/Exo-Light.otf") format("opentype");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: exo;
+    font-style: normal;
+    font-weight: 200;
+    src: url("Exo/Exo-ExtraLight.ttf") format("truetype"),
+    url("Exo/Exo-ExtraLight.otf") format("opentype");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: exo;
+    font-style: normal;
+    font-weight: 100;
+    src: url("Exo/Exo-Thin.ttf") format("truetype"),
+    url("Exo/Exo-Thin.otf") format("opentype");
+    font-display: swap;
+}
+
+* {
+    font-family: exo, sans-serif !important;
+}

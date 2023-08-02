@@ -10,7 +10,10 @@ export default function PairRewarderCard({ pairRewarderAddress }: { pairRewarder
   const { pairName, activeLeaderBoardInfo } = usePairRewarder(pairRewarderAddress);
   return (
     <tr className="text-white text-left rounded bg-gray2 overflow-hidden">
-      <td className="pl-8 rounded-l">{pairName}</td>
+      <td className="pl-8 rounded-l flex flex-col justify-center py-5">
+        <p>{pairName}</p>
+        <p className="text-secondary text-sm">Volatile</p>
+      </td>
       <td>$232,195</td>
       <td>
         <TotalPrizes leaderBoardInfo={activeLeaderBoardInfo} />
@@ -20,7 +23,7 @@ export default function PairRewarderCard({ pairRewarderAddress }: { pairRewarder
       <td className="py-4 pr-8 rounded-r w-36">
         <Link
           to={RoutePath.PAIR_REWARDER_LEADERBOARD.replace(':address', pairRewarderAddress)}
-          className={'btn btn--secondary-outlined'}
+          className={'btn btn--secondary-outlined py-1.5'}
         >
           Leaderboard
         </Link>
