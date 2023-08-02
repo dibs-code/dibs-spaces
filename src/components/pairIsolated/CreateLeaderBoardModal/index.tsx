@@ -1,8 +1,9 @@
-import TokenAddressInput from 'components/basic/input/TokenAddressInput';
+import TokenAddressInput, { TokenSymbol } from 'components/basic/input/TokenAddressInput';
 import Modal, { ModalProps } from 'components/modal';
 import { CreateLeaderBoardModalCreateStage } from 'components/pairIsolated/CreateLeaderBoardModal/CreateStage';
 import usePairRewarderCreateAndSetPrize from 'hooks/dibs/usePairRewarderCreateAndSetPrize';
 import React, { useState } from 'react';
+import { Address } from 'wagmi';
 
 export enum CreateLeaderBoardStage {
   CREATE,
@@ -85,30 +86,25 @@ export default function CreateLeaderBoardModal(props: ModalProps) {
               </>
             ) : (
               <>
-                {rewardTokenAddresses.slice(0, rewardTokenCount).map((tokenAddress, i) => (
+                {allTokenAmounts.slice(0, leaderBoardSpotsCount).map((leaderboardSpotTokenAmounts, i) => (
                   <div className="border-t-2 py-2" key={i}>
                     <label className="block mb-2 text-sm font-bold text-gray-700" htmlFor="tokenCount">
-                      Reward Token {i + 1}
+                      {i + 1}
                     </label>
-                    <TokenAddressInput
-                      type="text"
-                      className="block w-full px-4 py-2 mt-2 border border-gray-300 rounded-md"
-                      value={tokenAddress}
-                      placeholder={`Token Address`}
-                      onChange={(event) => handleTokenAddressChange(i, event.target.value)}
-                    />
                     <div className="flex py-2 flex-wrap">
-                      {allTokenAmounts[i].slice(0, leaderBoardSpotsCount).map((rewardAmount, j) => (
-                        <div className={'w-1/2 px-2'} key={j}>
-                          Rank {j + 1} Reward Amount
+                      {leaderboardSpotTokenAmounts.slice(0, rewardTokenCount).map((rewardAmount, j, arr) => (
+                        <div className={'w-1/2 px-2 flex'} key={j}>
                           <input
                             type="number"
-                            className="block w-full px-4 py-2 border border-gray-300 rounded-md"
+                            className="block w-1/2 px-4 py-2 border border-gray-300 rounded-md"
                             value={rewardAmount}
                             onChange={(event) => handleTokenAmountChange(i, j, Number(event.target.value))}
                           />
+                          <TokenSymbol address={rewardTokenAddresses[j] as Address} />
+                          {j !== arr.length - 1 && '+'}
                         </div>
                       ))}
+                      = 340$
                     </div>
                   </div>
                 ))}

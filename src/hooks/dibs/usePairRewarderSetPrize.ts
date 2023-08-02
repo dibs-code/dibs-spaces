@@ -16,7 +16,7 @@ export default function usePairRewarderSetPrize(pairRewarderAddress?: Address | 
 
   const [leaderBoardSpotsCount, setLeaderBoardSpotsCount] = useState(1);
 
-  const [allTokenAmounts, setAllTokenAmounts] = useState<number[][]>(Array(4).fill(Array(16).fill(0)));
+  const [allTokenAmounts, setAllTokenAmounts] = useState<number[][]>(Array(16).fill(Array(4).fill(0)));
   const { pairName } = usePairName(pairAddress as Address);
 
   const handleTokenAddressChange = (index: number, newTokenAddress: string) => {
@@ -25,10 +25,10 @@ export default function usePairRewarderSetPrize(pairRewarderAddress?: Address | 
     setRewardTokenAddresses(newTokenAddresses);
   };
 
-  const handleTokenAmountChange = (tokenIndex: number, rewardIndex: number, newAmount: number) => {
+  const handleTokenAmountChange = (rewardIndex: number, tokenIndex: number, newAmount: number) => {
     if (newAmount < 0) return;
     const newTokenAmounts = allTokenAmounts.map((tokenAmounts) => [...tokenAmounts]);
-    newTokenAmounts[tokenIndex][rewardIndex] = newAmount;
+    newTokenAmounts[rewardIndex][tokenIndex] = newAmount;
     setAllTokenAmounts(newTokenAmounts);
   };
   const [pending, setPending] = useState(false);
