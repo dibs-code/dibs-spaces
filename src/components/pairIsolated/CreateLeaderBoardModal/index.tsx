@@ -1,7 +1,7 @@
 import TokenAddressInput from 'components/basic/input/TokenAddressInput';
 import Modal, { ModalProps } from 'components/modal';
 import { CreateLeaderBoardModalCreateStage } from 'components/pairIsolated/CreateLeaderBoardModal/CreateStage';
-import usePairRewarderSetPrize from 'hooks/dibs/usePairRewarderSetPrize';
+import usePairRewarderCreateAndSetPrize from 'hooks/dibs/usePairRewarderCreateAndSetPrize';
 import React, { useState } from 'react';
 
 export enum CreateLeaderBoardStage {
@@ -29,7 +29,7 @@ export default function CreateLeaderBoardModal(props: ModalProps) {
     handleTokenAddressChange,
     pending,
     activeLeaderBoardInfo,
-  } = usePairRewarderSetPrize();
+  } = usePairRewarderCreateAndSetPrize();
 
   return (
     <Modal {...props}>
@@ -38,6 +38,9 @@ export default function CreateLeaderBoardModal(props: ModalProps) {
           <CreateLeaderBoardModalCreateStage
             leaderBoardSpotsCount={leaderBoardSpotsCount}
             setLeaderBoardSpotsCount={setLeaderBoardSpotsCount}
+            pairAddress={pairAddress}
+            setPairAddress={setPairAddress}
+            pairName={pairName}
             onNext={() => setCreateLeaderBoardStage(CreateLeaderBoardStage.SET_TOKENS)}
           />
         ) : (
@@ -67,7 +70,12 @@ export default function CreateLeaderBoardModal(props: ModalProps) {
                   </button>
                 </div>
 
-                <button className={'btn-medium btn-primary'}>Prev</button>
+                <button
+                  className={'btn-medium btn-primary'}
+                  onClick={() => setCreateLeaderBoardStage(CreateLeaderBoardStage.CREATE)}
+                >
+                  Prev
+                </button>
                 <button
                   className={'btn-medium btn-primary'}
                   onClick={() => setCreateLeaderBoardStage(CreateLeaderBoardStage.SET_AMOUNTS)}
