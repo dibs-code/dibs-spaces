@@ -1,5 +1,6 @@
 import './index.sass';
 import '@rainbow-me/rainbowkit/styles.css';
+import './assets/fonts/fonts.css';
 
 import { ApolloProvider } from '@apollo/client';
 import { darkTheme, getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
