@@ -23,7 +23,7 @@ export default function PairRewarderCard({ pairRewarderAddress }: { pairRewarder
       <td className="py-4 pr-8 rounded-r w-36">
         <Link
           to={RoutePath.PAIR_REWARDER_LEADERBOARD.replace(':address', pairRewarderAddress)}
-          className={'btn btn--secondary-outlined'}
+          className={'btn btn--secondary-outlined py-1.5'}
         >
           Leaderboard
         </Link>
