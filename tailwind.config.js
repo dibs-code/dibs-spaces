@@ -32,6 +32,8 @@ module.exports = {
         black: '#353535',
         chips: '#5EBAB0',
         gray: '#6F7787',
+        gray2: '#2C2F30',
+        gray3: '#D2D2D2',
         body: '#F6F8FA',
         disabled: '#E2E4E7',
         'primary-dark': '#d1b745',
