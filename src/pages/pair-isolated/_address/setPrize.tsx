@@ -12,8 +12,6 @@ export default function PairRewarderSetPrize() {
     setLeaderBoardSpotsCount,
     setRewardTokenCount,
     pairName,
-    pairAddress,
-    setPairAddress,
     leaderBoardSpotsCount,
     rewardTokenCount,
     rewardTokenAddresses,
@@ -53,12 +51,9 @@ export default function PairRewarderSetPrize() {
                     Pair
                   </label>
                   <input
-                    className={`block w-full px-4 py-2 mt-2 border border-gray-300 rounded-md ${
-                      !!pairAddressFromContract && 'text-gray cursor-not-allowed'
-                    }`}
-                    disabled={!!pairAddressFromContract}
-                    value={pairAddress}
-                    onChange={(e) => setPairAddress(e.target.value)}
+                    className={`block w-full px-4 py-2 mt-2 border border-gray-300 rounded-md text-gray cursor-not-allowed`}
+                    disabled={true}
+                    value={pairAddressFromContract}
                   />
                   {pairName || 'Unknown Pair'}
                 </div>

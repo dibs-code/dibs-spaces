@@ -28,6 +28,7 @@ export default function CreateLeaderBoardModal(props: ModalProps) {
     handleTokenAmountChange,
     handleTokenAddressChange,
   } = hookData;
+
   return (
     <Modal {...props}>
       <div>

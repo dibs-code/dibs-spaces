@@ -1,5 +1,5 @@
 import { formatUnits } from '@ethersproject/units';
-import { multicall, prepareWriteContract, writeContract } from '@wagmi/core';
+import { multicall, prepareWriteContract, waitForTransaction, writeContract } from '@wagmi/core';
 import PairRewarderABI from 'abis/pairRewarder';
 import { erc20ABI } from 'abis/types/generated';
 import usePairName from 'hooks/dibs/usePairName';
@@ -9,16 +9,16 @@ import { TransactionState } from 'types/transaction';
 import { parseUnits } from 'viem';
 import { Address } from 'wagmi';
 
-export default function usePairRewarderSetPrize(pairRewarderAddress?: Address | undefined) {
-  const [pairAddress, setPairAddress] = useState('');
-
+export default function usePairRewarderSetPrize(
+  pairRewarderAddress?: Address | undefined,
+  loadCurrentLeaderBoard = true,
+) {
   const [rewardTokenCount, setRewardTokenCount] = useState(1);
   const [rewardTokenAddresses, setRewardTokenAddresses] = useState<string[]>(Array(4).fill(''));
 
   const [leaderBoardSpotsCount, setLeaderBoardSpotsCount] = useState(1);
 
   const [allTokenAmounts, setAllTokenAmounts] = useState<number[][]>(Array(16).fill(Array(4).fill(0)));
-  const { pairName } = usePairName(pairAddress as Address);
 
   const handleTokenAddressChange = (index: number, newTokenAddress: string) => {
     const newTokenAddresses = [...rewardTokenAddresses];
@@ -48,11 +48,11 @@ export default function usePairRewarderSetPrize(pairRewarderAddress?: Address | 
           functionName: 'decimals',
         })),
       });
-      const finalTokenAmounts = allTokenAmounts
-        .slice(0, rewardTokenCount)
-        .map((tokenAmounts, i) =>
-          tokenAmounts.slice(0, leaderBoardSpotsCount).map((item) => parseUnits(`${item}`, tokenDecimals[i])),
-        );
+      const finalTokenAmounts = Array.from(Array(rewardTokenCount).keys()).map((i) =>
+        allTokenAmounts
+          .slice(0, leaderBoardSpotsCount)
+          .map((tokenAmounts) => parseUnits(`${tokenAmounts[Number(i)]}`, tokenDecimals[Number(i)])),
+      );
       const { request } = await prepareWriteContract({
         address: pairRewarderAddress,
         abi: PairRewarderABI,
@@ -60,7 +60,12 @@ export default function usePairRewarderSetPrize(pairRewarderAddress?: Address | 
         args: [BigInt(leaderBoardSpotsCount), finalRewardTokenAddresses, finalTokenAmounts],
       });
       setTxState(TransactionState.AWAITING_USER_CONFIRMATION);
-      await writeContract(request);
+      const { hash } = await writeContract(request);
+      setTxState(TransactionState.AWAITING_TRANSACTION);
+      await waitForTransaction({
+        hash,
+      });
+      setTxState(TransactionState.INITIAL);
     } catch (err) {
       console.log('set reward error :>> ', err);
     }
@@ -69,15 +74,12 @@ export default function usePairRewarderSetPrize(pairRewarderAddress?: Address | 
 
   // For loading activeLeaderBoard if any
   const { pairAddress: pairAddressFromContract, activeLeaderBoardInfo } = usePairRewarder(pairRewarderAddress);
-  useEffect(() => {
-    if (pairAddressFromContract) {
-      setPairAddress(pairAddressFromContract);
-    }
-  }, [pairAddressFromContract, setPairAddress]);
+  const { pairName } = usePairName(pairAddressFromContract);
+
   const [loadingCurrentRewards, setLoadingCurrentRewards] = useState(false);
   useEffect(() => {
     async function updateInfo() {
-      if (!activeLeaderBoardInfo) return;
+      if (!activeLeaderBoardInfo || !loadCurrentLeaderBoard) return;
       setLoadingCurrentRewards(true);
       const tokenCount = activeLeaderBoardInfo.rewardTokens.length;
       const tokenAddresses = activeLeaderBoardInfo.rewardTokens as Address[];
@@ -110,6 +112,7 @@ export default function usePairRewarderSetPrize(pairRewarderAddress?: Address | 
     updateInfo();
   }, [
     activeLeaderBoardInfo,
+    loadCurrentLeaderBoard,
     setAllTokenAmounts,
     setLeaderBoardSpotsCount,
     setRewardTokenAddresses,
@@ -134,8 +137,7 @@ export default function usePairRewarderSetPrize(pairRewarderAddress?: Address | 
     setRewardTokenAddresses,
     setAllTokenAmounts,
     pairName,
-    pairAddress,
-    setPairAddress,
+    pairAddressFromContract,
     leaderBoardSpotsCount,
     rewardTokenCount,
     rewardTokenAddresses,
@@ -146,7 +148,6 @@ export default function usePairRewarderSetPrize(pairRewarderAddress?: Address | 
     pending,
     buttonText,
     loadingCurrentRewards,
-    pairAddressFromContract,
     activeLeaderBoardInfo,
   };
 }
