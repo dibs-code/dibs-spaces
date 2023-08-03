@@ -4,9 +4,7 @@ export enum RoutePath {
   REPORTS = '/reports',
   TEST_SWAP = '/test-swap',
   PAIR_ISOLATED = '/pair-isolated',
-  PAIR_REWARDER_CREATE = '/pair-isolated/create',
   PAIR_REWARDER_LEADERBOARD = '/pair-isolated/:address/leaderboard',
-  PAIR_REWARDER_SET_PRIZE = '/pair-isolated/:address/set-prize',
 }
 
 export function requiresCode(routePath: string) {
