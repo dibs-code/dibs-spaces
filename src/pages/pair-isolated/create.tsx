@@ -1,5 +1,5 @@
-import usePairRewarderCreate, { CreatePairRewarderTransactionState } from 'hooks/dibs/usePairRewarderCreate';
-import React, { useMemo } from 'react';
+import usePairRewarderCreate from 'hooks/dibs/usePairRewarderCreate';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import RoutePath from 'routes';
 
@@ -10,19 +10,10 @@ export default function PairRewarderCreate() {
     pairName,
     setterAccount,
     setSetterAccount,
-    handleConfirmClick,
-    txState,
+    handleCreatePairRewarder,
     createdPairRewarderAddress,
+    buttonText,
   } = usePairRewarderCreate();
-  const buttonText = useMemo(
-    () => ({
-      [CreatePairRewarderTransactionState.INITIAL]: 'Create LeaderBoard',
-      [CreatePairRewarderTransactionState.PREPARING_TRANSACTION]: 'Preparing Transaction...',
-      [CreatePairRewarderTransactionState.AWAITING_USER_CONFIRMATION]: 'Awaiting user confirmation...',
-      [CreatePairRewarderTransactionState.AWAITING_TRANSACTION]: 'Awaiting transaction confirmation...',
-    }),
-    [],
-  );
 
   return (
     <div className={'page-spacing'}>
@@ -67,11 +58,11 @@ export default function PairRewarderCreate() {
               <button
                 onClick={(e) => {
                   e.preventDefault();
-                  handleConfirmClick();
+                  handleCreatePairRewarder();
                 }}
                 className="w-full px-4 py-2 mt-4 font-medium text-white bg-blue-500 rounded-md hover:bg-blue-700"
               >
-                {buttonText[txState]}
+                {buttonText}
               </button>
               {createdPairRewarderAddress && (
                 <div className={'pt-2'}>Created PairRewarder address: {createdPairRewarderAddress}</div>

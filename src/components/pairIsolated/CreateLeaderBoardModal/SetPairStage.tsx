@@ -3,6 +3,11 @@ import usePairName from 'hooks/dibs/usePairName';
 import React, { useEffect, useState } from 'react';
 import { Address } from 'wagmi';
 
+export function ShowPair({ pairAddress }: { pairAddress: string }) {
+  const { pairName } = usePairName(pairAddress as Address);
+  return <>{pairName || 'Unknown Pair'}</>;
+}
+
 function SelectPair({ pairAddress, onConfirm }: { pairAddress: string; onConfirm: (pairAddress: string) => void }) {
   const [pairAddressLocal, setPairAddressLocal] = useState('');
   useEffect(() => {
@@ -30,12 +35,11 @@ function SelectPair({ pairAddress, onConfirm }: { pairAddress: string; onConfirm
   );
 }
 
-export function CreateLeaderBoardModalCreateStage({
+export function SetPairStage({
   leaderBoardSpotsCount,
   setLeaderBoardSpotsCount,
   pairAddress,
   setPairAddress,
-  pairName,
   onNext,
   onPrev,
 }: {
@@ -43,7 +47,6 @@ export function CreateLeaderBoardModalCreateStage({
   setLeaderBoardSpotsCount: (count: number) => void;
   pairAddress: string;
   setPairAddress: (value: string) => void;
-  pairName: string | undefined;
   onNext?: () => void;
   onPrev?: () => void;
 }) {
@@ -53,7 +56,7 @@ export function CreateLeaderBoardModalCreateStage({
     <>
       {pairAddress ? (
         <div>
-          {pairName || 'Unknown Pair'}
+          <ShowPair pairAddress={pairAddress} />
           <button className={'btn-medium btn-primary mb-4'} onClick={() => setPairSelectModalOpen(true)}>
             Change Pair
           </button>

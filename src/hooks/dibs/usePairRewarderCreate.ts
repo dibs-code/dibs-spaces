@@ -3,18 +3,10 @@ import { prepareWriteContract, waitForTransaction, writeContract } from '@wagmi/
 import pairRewarderFactoryABI from 'abis/pairRewarderFactory';
 import { useDibsAddresses } from 'hooks/dibs/useDibsAddresses';
 import usePairName from 'hooks/dibs/usePairName';
-import { useCallback, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import RoutePath from 'routes';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { TransactionState } from 'types/transaction';
 import { Address } from 'viem';
 import { useAccount } from 'wagmi';
-
-export enum CreatePairRewarderTransactionState {
-  INITIAL,
-  PREPARING_TRANSACTION,
-  AWAITING_USER_CONFIRMATION,
-  AWAITING_TRANSACTION,
-}
 
 export default function usePairRewarderCreate() {
   const { address } = useAccount();
@@ -29,11 +21,11 @@ export default function usePairRewarderCreate() {
     }
   }, [address]);
   const { pairName } = usePairName(pairAddress as Address);
-  const navigate = useNavigate();
-  const [txState, setTxState] = useState(CreatePairRewarderTransactionState.INITIAL);
-  const handleConfirmClick = useCallback(async () => {
-    if (txState !== CreatePairRewarderTransactionState.INITIAL || !address || !pairRewarderFactoryAddress) return;
-    setTxState(CreatePairRewarderTransactionState.PREPARING_TRANSACTION);
+
+  const [txState, setTxState] = useState(TransactionState.INITIAL);
+  const handleCreatePairRewarder = useCallback(async () => {
+    if (txState !== TransactionState.INITIAL || !address || !pairRewarderFactoryAddress) return;
+    setTxState(TransactionState.PREPARING_TRANSACTION);
     try {
       const { request } = await prepareWriteContract({
         address: pairRewarderFactoryAddress,
@@ -42,9 +34,9 @@ export default function usePairRewarderCreate() {
         args: [pairAddress as Address, address, setterAccount as Address],
       });
       setCreatedPairRewarderAddress(null);
-      setTxState(CreatePairRewarderTransactionState.AWAITING_USER_CONFIRMATION);
+      setTxState(TransactionState.AWAITING_USER_CONFIRMATION);
       const { hash } = await writeContract(request);
-      setTxState(CreatePairRewarderTransactionState.AWAITING_TRANSACTION);
+      setTxState(TransactionState.AWAITING_TRANSACTION);
       const data = await waitForTransaction({
         hash,
       });
@@ -59,29 +51,43 @@ export default function usePairRewarderCreate() {
       const pairRewarderDeployedEvent = events.find((e) => e?.name === 'PairRewarderDeployed');
       const pairRewarderAddress: Address = pairRewarderDeployedEvent?.args.pairRewarder;
       if (!pairRewarderAddress) {
-        alert('Error: Could not get the created contract address from the factory contract');
-        return;
+        throw new Error('Error: Could not get the created contract address from the factory contract');
       }
       setCreatedPairRewarderAddress(pairRewarderAddress);
-      setTxState(CreatePairRewarderTransactionState.INITIAL);
-      if (address === setterAccount) {
-        alert('PairRewarder created successfully! Now set the rewards');
-        navigate(RoutePath.PAIR_REWARDER_SET_PRIZE.replace(':address', pairRewarderAddress));
-      } else {
-        alert('PairRewarder created successfully!');
-      }
+      setTxState(TransactionState.INITIAL);
+      // if (address === setterAccount) {
+      //   alert('PairRewarder created successfully! Now set the rewards');
+      // navigate(RoutePath.PAIR_REWARDER_SET_PRIZE.replace(':address', pairRewarderAddress));
+      // } else {
+      //   alert('PairRewarder created successfully!');
+      // }
+      return pairRewarderAddress;
     } catch (err) {
       alert(String(err));
-      setTxState(CreatePairRewarderTransactionState.INITIAL);
+      setTxState(TransactionState.INITIAL);
+      throw err;
     }
-  }, [pairRewarderFactoryAddress, address, navigate, pairAddress, txState, setterAccount]);
+  }, [pairRewarderFactoryAddress, address, pairAddress, txState, setterAccount]);
+
+  const buttonText = useMemo(
+    () =>
+      ({
+        [TransactionState.INITIAL]: 'Create LeaderBoard',
+        [TransactionState.PREPARING_TRANSACTION]: 'Preparing Transaction...',
+        [TransactionState.AWAITING_USER_CONFIRMATION]: 'Awaiting user confirmation...',
+        [TransactionState.AWAITING_TRANSACTION]: 'Awaiting transaction confirmation...',
+      }[txState]),
+    [txState],
+  );
+
   return {
+    buttonText,
     pairAddress,
     setPairAddress,
     pairName,
     setterAccount,
     setSetterAccount,
-    handleConfirmClick,
+    handleCreatePairRewarder,
     txState,
     createdPairRewarderAddress,
   };

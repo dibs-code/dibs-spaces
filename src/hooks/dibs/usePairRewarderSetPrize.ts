@@ -4,7 +4,8 @@ import PairRewarderABI from 'abis/pairRewarder';
 import { erc20ABI } from 'abis/types/generated';
 import usePairName from 'hooks/dibs/usePairName';
 import { usePairRewarder } from 'hooks/dibs/usePairRewarder';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { TransactionState } from 'types/transaction';
 import { parseUnits } from 'viem';
 import { Address } from 'wagmi';
 
@@ -31,10 +32,12 @@ export default function usePairRewarderSetPrize(pairRewarderAddress?: Address | 
     newTokenAmounts[rewardIndex][tokenIndex] = newAmount;
     setAllTokenAmounts(newTokenAmounts);
   };
-  const [pending, setPending] = useState(false);
-  const handleButtonClick = useCallback(async () => {
+  const [txState, setTxState] = useState(TransactionState.INITIAL);
+  const pending = useMemo(() => txState !== TransactionState.INITIAL, [txState]);
+
+  const handlePairRewarderSetPrize = useCallback(async () => {
     if (pending || !pairRewarderAddress) return;
-    setPending(true);
+    setTxState(TransactionState.PREPARING_TRANSACTION);
     try {
       const finalRewardTokenAddresses = rewardTokenAddresses.slice(0, rewardTokenCount) as Address[];
       const tokenDecimals = await multicall({
@@ -56,11 +59,12 @@ export default function usePairRewarderSetPrize(pairRewarderAddress?: Address | 
         functionName: 'setLeaderBoard',
         args: [BigInt(leaderBoardSpotsCount), finalRewardTokenAddresses, finalTokenAmounts],
       });
+      setTxState(TransactionState.AWAITING_USER_CONFIRMATION);
       await writeContract(request);
     } catch (err) {
       console.log('set reward error :>> ', err);
     }
-    setPending(false);
+    setTxState(TransactionState.INITIAL);
   }, [allTokenAmounts, leaderBoardSpotsCount, pairRewarderAddress, pending, rewardTokenAddresses, rewardTokenCount]);
 
   // For loading activeLeaderBoard if any
@@ -112,6 +116,18 @@ export default function usePairRewarderSetPrize(pairRewarderAddress?: Address | 
     setRewardTokenCount,
   ]);
 
+  const buttonText = useMemo(
+    () =>
+      ({
+        [TransactionState.INITIAL]:
+          activeLeaderBoardInfo && activeLeaderBoardInfo?.winnersCount !== BigInt(0) ? 'Update Rewards' : 'Set Rewards',
+        [TransactionState.PREPARING_TRANSACTION]: 'Preparing Transaction...',
+        [TransactionState.AWAITING_USER_CONFIRMATION]: 'Awaiting user confirmation...',
+        [TransactionState.AWAITING_TRANSACTION]: 'Awaiting transaction confirmation...',
+      }[txState]),
+    [activeLeaderBoardInfo, txState],
+  );
+
   return {
     setLeaderBoardSpotsCount,
     setRewardTokenCount,
@@ -126,8 +142,9 @@ export default function usePairRewarderSetPrize(pairRewarderAddress?: Address | 
     allTokenAmounts,
     handleTokenAmountChange,
     handleTokenAddressChange,
-    handleButtonClick,
+    handlePairRewarderSetPrize,
     pending,
+    buttonText,
     loadingCurrentRewards,
     pairAddressFromContract,
     activeLeaderBoardInfo,

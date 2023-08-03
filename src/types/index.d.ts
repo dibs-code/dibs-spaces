@@ -1,7 +1,7 @@
-import { pairRewarderABI } from 'abis/types/generated';
-import { Address } from 'abitype';
-import { Chain } from 'wagmi';
-import { ReadContractResult } from 'wagmi/actions';
+import { pairRewarderABI } from "abis/types/generated";
+import { Address } from "abitype";
+import { Chain } from "wagmi";
+import { ReadContractResult } from "wagmi/actions";
 
 export enum TransactionStatus {
   SUCCESS,
@@ -86,3 +86,4 @@ export type PairRewarderLeaderBoardRewardItem = {
 export type AddressMap = {
   [key: Chain['id']]: Address;
 };
+
