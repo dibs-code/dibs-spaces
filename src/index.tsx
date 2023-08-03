@@ -5,6 +5,7 @@ import './assets/fonts/fonts.css';
 import { ApolloProvider } from '@apollo/client';
 import { darkTheme, getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { chains } from 'constants/chains';
+import { CoingeckoAssetPlatformsProvider } from 'contexts/CoingeckoAssetPlatformsContext';
 import * as process from 'process';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
@@ -49,7 +50,9 @@ root.render(
       <ApolloProvider client={dibsClient}>
         <WagmiConfig config={wagmiConfig}>
           <RainbowKitProvider theme={darkTheme()} chains={chains}>
-            <App />
+            <CoingeckoAssetPlatformsProvider>
+              <App />
+            </CoingeckoAssetPlatformsProvider>
           </RainbowKitProvider>
         </WagmiConfig>
       </ApolloProvider>

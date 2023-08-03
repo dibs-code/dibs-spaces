@@ -1,7 +1,7 @@
-import { pairRewarderABI } from "abis/types/generated";
-import { Address } from "abitype";
-import { Chain } from "wagmi";
-import { ReadContractResult } from "wagmi/actions";
+import { pairRewarderABI } from 'abis/types/generated';
+import { Address } from 'abitype';
+import { Chain } from 'wagmi';
+import { ReadContractResult } from 'wagmi/actions';
 
 export enum TransactionStatus {
   SUCCESS,
@@ -87,3 +87,4 @@ export type AddressMap = {
   [key: Chain['id']]: Address;
 };
 
+export type CoinGeckoAssetPlatform = { id: string; chain_identifier: number; name: string; shortname: string };
