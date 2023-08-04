@@ -3,6 +3,8 @@ import usePairName from 'hooks/dibs/usePairName';
 import React, { useEffect, useState } from 'react';
 import { Address } from 'wagmi';
 
+import Seekbar from '../../modal/Seekbar';
+
 export function ShowPair({ pairAddress }: { pairAddress: string }) {
   const { pairName } = usePairName(pairAddress as Address);
   return <>{pairName || 'Unknown Pair'}</>;
@@ -67,15 +69,16 @@ export function SetPairStage({
         </button>
       )}
 
-      <label className="block mb-2 text-sm font-bold text-gray-700" htmlFor="tokenCount">
-        Leaderboard spots
-      </label>
-      <input
-        type="number"
-        className="block w-full px-4 py-2 mt-2 border border-gray-300 rounded-md"
-        value={leaderBoardSpotsCount}
-        onChange={(e) => setLeaderBoardSpotsCount(Math.max(Math.min(Number(e.target.value), 16), 1))}
-      />
+      {/*<input*/}
+      {/*  type="number"*/}
+      {/*  className="block w-full px-4 py-2 mt-2 border border-gray-300 rounded-md"*/}
+      {/*  value={leaderBoardSpotsCount}*/}
+      {/*  onChange={(e) => setLeaderBoardSpotsCount(Math.max(Math.min(Number(e.target.value), 16), 1))}*/}
+      {/*/>*/}
+      <section className="leaderboard-spots mb-24">
+        <p className="text-white font-medium text-xl mb-5">How many leaderboard spots do you want to reward?</p>
+        <Seekbar min={1} max={16} value={leaderBoardSpotsCount} onValueChange={setLeaderBoardSpotsCount} />
+      </section>
       <section className="pagination flex justify-between w-full px-4 gap-20">
         <img src="/assets/images/modal/back-gray.svg" alt="" className="w-8 h-8" />
         <div className="flex mx-auto items-center gap-2">
