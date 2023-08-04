@@ -3,8 +3,10 @@ import { LeaderBoardEpochButtons } from 'components/pairIsolated/LeaderBoardEpoc
 import PairRewarderLeaderBoard from 'components/pairIsolated/PairRewarderLeaderboard';
 import TotalPrizes from 'components/pairIsolated/TotalPrizes';
 import { usePairRewarder } from 'hooks/dibs/usePairRewarder';
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
+
+import CreateLeaderBoardModal from '../../../components/pairIsolated/CreateLeaderBoardModal';
 // import RoutePath from 'routes';
 
 const PairRewarderLeaderboard = () => {
@@ -20,9 +22,14 @@ const PairRewarderLeaderboard = () => {
     epochWinners,
     hasSetterRole,
   } = usePairRewarder(pairRewarderAddress);
+  const [createLeaderBoardModalOpen, setCreateLeaderBoardModalOpen] = useState(false);
 
   return (
     <div className="page">
+      <CreateLeaderBoardModal
+        open={createLeaderBoardModalOpen}
+        closeModal={() => setCreateLeaderBoardModalOpen(false)}
+      />
       <main>
         <section className="px-8 py-7 rounded bg-primary mb-8 flex w-full justify-between">
           <div className="section--left pr-6">
@@ -59,7 +66,9 @@ const PairRewarderLeaderboard = () => {
           />
           <button onClick={() => {}} className="btn btn--secondary btn--with-icon">
             <img src="/assets/images/pair-isolated/create-leaderboard-icon.svg" alt="" />
-            <p className="mt-1">Create Leaderboard</p>
+            <p className="mt-1" onClick={() => setCreateLeaderBoardModalOpen(true)}>
+              Create Leaderboard
+            </p>
           </button>
         </section>
 

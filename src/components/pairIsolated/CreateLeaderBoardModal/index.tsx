@@ -31,7 +31,7 @@ export default function CreateLeaderBoardModal(props: ModalProps) {
 
   return (
     <Modal {...props}>
-      <div>
+      <div className="create-leaderboard-modal px-16 py-20 pt-12">
         {createLeaderBoardStage === CreateLeaderBoardStage.SET_PAIR ? (
           <SetPairStage
             leaderBoardSpotsCount={leaderBoardSpotsCount}

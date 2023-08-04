@@ -76,12 +76,15 @@ export function SetPairStage({
         value={leaderBoardSpotsCount}
         onChange={(e) => setLeaderBoardSpotsCount(Math.max(Math.min(Number(e.target.value), 16), 1))}
       />
-      <button className={'btn-medium btn-primary'} disabled={true}>
-        Prev
-      </button>
-      <button className={'btn-medium btn-primary'} onClick={onNext}>
-        Next
-      </button>
+      <section className="pagination flex justify-between w-full px-4 gap-20">
+        <img src="/assets/images/modal/back-gray.svg" alt="" className="w-8 h-8" />
+        <div className="flex mx-auto items-center gap-2">
+          <div className="pagination__page bg-primary w-[72px] h-2 rounded-full"></div>
+          <div className="pagination__page bg-gray6 w-[72px] h-2 rounded-full"></div>
+          <div className="pagination__page bg-gray6 w-[72px] h-2 rounded-full"></div>
+        </div>
+        <img src="/assets/images/modal/next-colored.svg" onClick={onNext} alt="" className="w-8 h-8 cursor-pointer" />
+      </section>
       <Modal open={pairSelectModalOpen} closeModal={() => setPairSelectModalOpen(false)}>
         <SelectPair
           pairAddress={pairAddress}

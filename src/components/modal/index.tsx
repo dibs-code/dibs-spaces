@@ -42,13 +42,13 @@ const Modal = (props: ModalProps) => {
                 leaveTo="opacity-0 scale-95"
               >
                 <Dialog.Panel
-                  className={`${className} max-w-md w-full transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all`}
+                  className={`${className} max-w-[634px] w-full transform overflow-hidden rounded-[18px] bg-gray5 text-left align-middle shadow-xl transition-all`}
                 >
                   <Dialog.Title as="h3" className="relative text-lg font-medium leading-6 text-gray-900 mb-8">
                     {title ? title : ''}
-                    <div onClick={closeModal} className={'absolute -right-1 -top-2 p-2 cursor-pointer'}>
-                      X{/*<FontAwesomeIcon style={{ fontSize: 20 }} className={''} icon={faXmark}></FontAwesomeIcon>*/}
-                    </div>
+                    {/*<div onClick={closeModal} className={'absolute -right-1 -top-2 p-2 cursor-pointer'}>*/}
+                    {/*  X/!*<FontAwesomeIcon style={{ fontSize: 20 }} className={''} icon={faXmark}></FontAwesomeIcon>*!/*/}
+                    {/*</div>*/}
                   </Dialog.Title>
 
                   {children}
