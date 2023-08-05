@@ -42,6 +42,7 @@ export default function CreateLeaderBoardModal(props: ModalProps) {
           />
         ) : createLeaderBoardStage === CreateLeaderBoardStage.SET_TOKENS ? (
           <SetTokensStage
+            leaderBoardSpotsCount={leaderBoardSpotsCount}
             rewardTokenAddresses={rewardTokenAddresses}
             handleTokenAddressChange={handleTokenAddressChange}
             rewardTokenCount={rewardTokenCount}
