@@ -3,6 +3,7 @@ import usePairName from 'hooks/dibs/usePairName';
 import React, { useEffect, useState } from 'react';
 import { Address } from 'wagmi';
 
+import LeaderboardStage from '../../modal/LeaderboardStage';
 import Seekbar from '../../modal/Seekbar';
 
 export function ShowPair({ pairAddress }: { pairAddress: string }) {
@@ -56,18 +57,43 @@ export function SetPairStage({
 
   return (
     <>
-      {pairAddress ? (
-        <div>
-          <ShowPair pairAddress={pairAddress} />
-          <button className={'btn-medium btn-primary mb-4'} onClick={() => setPairSelectModalOpen(true)}>
-            Change Pair
-          </button>
-        </div>
-      ) : (
-        <button className={'btn-medium btn-primary mb-4'} onClick={() => setPairSelectModalOpen(true)}>
-          Select Pair
-        </button>
-      )}
+      <section className="w-52 h-20 mx-auto mb-4">
+        <LeaderboardStage count={leaderBoardSpotsCount} />
+      </section>
+      <p className="text-2xl font-medium mb-[22px] text-white w-full text-center">Create leaderboard</p>
+      <p className="font-medium mb-[22px] text-white w-full text-center">for</p>
+      <div
+        className="pair-button py-[18px] px-7 min-h-[72px] max-w-[375px] mx-auto mb-9 rounded-lg bg-gray4 flex items-center justify-between w-full cursor-pointer"
+        onClick={() => setPairSelectModalOpen(true)}
+      >
+        {pairAddress ? (
+          <>
+            <div className="pair flex gap-3 items-center">
+              <img src="/assets/images/pair-coin-icon.svg" alt="" className="h-9 w-auto" />
+              <p className="text-xl text-white font-medium">{ShowPair({ pairAddress })}</p>
+            </div>
+            <p className="font-semibold text-secondary pt-2">Change</p>
+          </>
+        ) : (
+          <>
+            <p className="text-xl text-white font-medium">-</p>
+            <p className="font-semibold text-secondary pt-2">Select Pair</p>
+          </>
+        )}
+      </div>
+
+      {/*{pairAddress ? (*/}
+      {/*  <div>*/}
+      {/*    <ShowPair pairAddress={pairAddress} />*/}
+      {/*    <button className={'btn-medium btn-primary mb-4'} onClick={() => setPairSelectModalOpen(true)}>*/}
+      {/*      Change Pair*/}
+      {/*    </button>*/}
+      {/*  </div>*/}
+      {/*) : (*/}
+      {/*  <button className={'btn-medium btn-primary mb-4'} onClick={() => setPairSelectModalOpen(true)}>*/}
+      {/*    Select Pair*/}
+      {/*  </button>*/}
+      {/*)}*/}
 
       {/*<input*/}
       {/*  type="number"*/}
