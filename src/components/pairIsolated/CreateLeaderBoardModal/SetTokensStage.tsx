@@ -26,8 +26,8 @@ export function SetTokensStage({
       </section>
       <p className="text-2xl font-medium mb-11 text-white w-full text-center">Create leaderboard</p>
 
-      <section className="leaderboard-spots mb-24">
-        <p className="text-white font-medium text-xl mb-8">How many leaderboard spots do you want to reward?</p>
+      <section className="leaderboard-spots mb-14 h-[342px] overflow-y-auto">
+        <p className="text-white font-medium text-xl mb-8">Enter the tokens for distribution as rewards.</p>
         {rewardTokenAddresses.slice(0, rewardTokenCount).map((tokenAddress, i) => (
           <div className="flex mb-2.5 gap-3" key={i}>
             <span className="rounded min-w-14 w-14 min-h-12 h-12 flex justify-center items-center bg-gray4 ">

@@ -21,25 +21,44 @@ export function RewardAmountInputRow({
     leaderboardSpotTokenAmounts,
   );
   return (
-    <div className="border-t-2 py-2">
-      <label className="block mb-2 text-sm font-bold text-gray-700" htmlFor="tokenCount">
-        {index + 1}
-      </label>
-      <div className="flex py-2 flex-wrap">
-        {leaderboardSpotTokenAmounts.map((rewardAmount, j, arr) => (
-          <div className={'w-1/2 px-2 flex'} key={j}>
+    <div className="flex flex-col mb-2.5 gap-3">
+      {leaderboardSpotTokenAmounts.map((rewardAmount, j, arr) => (
+        <div className="flex items-center text-white gap-3" key={j}>
+          <span className="rounded min-w-12 w-12 min-h-12 h-12 flex justify-center items-center bg-gray4 text-white text-2xl font-medium">
+            {j + 1}
+          </span>
+          <div
+            className="w-[150px] pl-4 pr-3.5 text-sm font-semibold flex bg-gray4 rounded h-12 items-center justify-between"
+            key={j}
+          >
             <input
               type="number"
-              className="block w-1/2 px-4 py-2 border border-gray-300 rounded-md"
+              placeholder="amount"
+              className="bg-transparent w-1/2"
               value={rewardAmount}
               onChange={(event) => handleTokenAmountChange(index, j, Number(event.target.value))}
             />
             <TokenSymbol address={rewardTokenAddresses[j] as Address} />
-            {j !== arr.length - 1 && '+'}
           </div>
-        ))}
-        = {totalAmountUsd ?? '...'}$
-      </div>
+          <p className="font-medium text-2xl">+</p>
+          <div
+            className="w-[150px] pl-4 pr-3.5 text-sm font-semibold flex bg-gray4 rounded h-12 items-center justify-between"
+            key={j}
+          >
+            <input
+              type="number"
+              placeholder="amount"
+              className="bg-transparent w-1/2"
+              value={rewardAmount}
+              onChange={(event) => handleTokenAmountChange(index, j, Number(event.target.value))}
+            />
+            <TokenSymbol address={rewardTokenAddresses[j] as Address} />
+          </div>
+          <p className="text-xl font-medium">≈</p>
+          <p className="text-xl font-medium">250$</p>
+        </div>
+      ))}
+      {/*= {totalAmountUsd ?? '...'}$*/}
     </div>
   );
 }

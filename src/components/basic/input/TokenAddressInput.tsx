@@ -6,7 +6,7 @@ export function TokenSymbol({ address }: { address: Address }) {
   const { data: tokenSymbol } = useErc20Symbol({
     address,
   });
-  return <>{tokenSymbol || 'Unknown Token'}</>;
+  return <>{tokenSymbol || 'N/S'}</>;
 }
 
 export default function TokenAddressInput(props: React.InputHTMLAttributes<HTMLInputElement>) {

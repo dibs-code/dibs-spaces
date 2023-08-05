@@ -57,7 +57,7 @@ export function SetPairStage({
 
   return (
     <>
-      <section className="w-52 h-20 mx-auto mb-4">
+      <section className="w-52 h-20 mx-auto mb-4 mt-[75px]">
         <LeaderboardStage count={leaderBoardSpotsCount} />
       </section>
       <p className="text-2xl font-medium mb-[22px] text-white w-full text-center">Create leaderboard</p>
