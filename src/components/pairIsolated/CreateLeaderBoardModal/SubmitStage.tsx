@@ -1,27 +1,26 @@
 import { TokenSymbol } from 'components/basic/input/TokenAddressInput';
 import { RewardAmountsInputs } from 'components/pairIsolated/CreateLeaderBoardModal/RewardAmountsInputs';
 import { ShowPair } from 'components/pairIsolated/CreateLeaderBoardModal/SetPairStage';
-import usePairRewarderCreateAndSetPrize from 'hooks/dibs/usePairRewarderCreateAndSetPrize';
+import { useLeaderBoardContext } from 'contexts/CreateLeaderBoardModalContext';
 import React, { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import RoutePath from 'routes';
 import { Address } from 'wagmi';
 
-export function SubmitStage({
-  pairAddress,
-  allTokenAmounts,
-  rewardTokenCount,
-  leaderBoardSpotsCount,
-  handleTokenAmountChange,
-  rewardTokenAddresses,
-  createdPairRewarderAddress,
-  handleCreatePairRewarder,
-  handlePairRewarderSetPrize,
-  buttonText,
-  onPrev,
-}: ReturnType<typeof usePairRewarderCreateAndSetPrize> & {
-  onPrev?: () => void;
-}) {
+export function SubmitStage({ onPrev }: { onPrev?: () => void }) {
+  const {
+    pairAddress,
+    allTokenAmounts,
+    rewardTokenCount,
+    leaderBoardSpotsCount,
+    handleTokenAmountChange,
+    rewardTokenAddresses,
+    createdPairRewarderAddress,
+    handleCreatePairRewarder,
+    handlePairRewarderSetPrize,
+    buttonText,
+  } = useLeaderBoardContext();
+
   const navigate = useNavigate();
   const handleConfirmButtonClick = useCallback(async () => {
     if (!createdPairRewarderAddress) {
@@ -42,13 +41,7 @@ export function SubmitStage({
           {i + 1}. <TokenSymbol address={tokenAddress as Address} />
         </div>
       ))}
-      <RewardAmountsInputs
-        allTokenAmounts={allTokenAmounts}
-        rewardTokenCount={rewardTokenCount}
-        leaderBoardSpotsCount={leaderBoardSpotsCount}
-        handleTokenAmountChange={handleTokenAmountChange}
-        rewardTokenAddresses={rewardTokenAddresses}
-      />
+      <RewardAmountsInputs disabled={true} />
       <button className={'btn-medium btn-primary'} onClick={onPrev}>
         Edit
       </button>

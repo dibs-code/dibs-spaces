@@ -1,25 +1,12 @@
 import { RewardAmountsInputs } from 'components/pairIsolated/CreateLeaderBoardModal/RewardAmountsInputs';
+import { useLeaderBoardContext } from 'contexts/CreateLeaderBoardModalContext';
 import React from 'react';
 
 import LeaderboardStage from '../../modal/LeaderboardStage';
 
-export function SetAmountsStage({
-  allTokenAmounts,
-  rewardTokenCount,
-  leaderBoardSpotsCount,
-  handleTokenAmountChange,
-  rewardTokenAddresses,
-  onNext,
-  onPrev,
-}: {
-  allTokenAmounts: number[][];
-  rewardTokenCount: number;
-  rewardTokenAddresses: string[];
-  leaderBoardSpotsCount: number;
-  handleTokenAmountChange: (rewardIndex: number, tokenIndex: number, newAmount: number) => void;
-  onNext?: () => void;
-  onPrev?: () => void;
-}) {
+export function SetAmountsStage({ onNext, onPrev }: { onNext?: () => void; onPrev?: () => void }) {
+  const { allTokenAmounts, rewardTokenCount, leaderBoardSpotsCount, handleTokenAmountChange, rewardTokenAddresses } =
+    useLeaderBoardContext();
   return (
     <>
       <section className="w-52 h-20 mx-auto mb-4">
@@ -30,13 +17,7 @@ export function SetAmountsStage({
       <section className="leaderboard-spots mb-14">
         <p className="text-white font-medium text-xl mb-8">Specify the reward amount for each spot</p>
         <section className="w-full mb-3.5 border-b border-gray7 border-dashed h-[240px] overflow-y-auto">
-          <RewardAmountsInputs
-            allTokenAmounts={allTokenAmounts}
-            rewardTokenCount={rewardTokenCount}
-            leaderBoardSpotsCount={leaderBoardSpotsCount}
-            handleTokenAmountChange={handleTokenAmountChange}
-            rewardTokenAddresses={rewardTokenAddresses}
-          />
+          <RewardAmountsInputs />
         </section>
         <section className="total flex gap-3">
           <p className="text-white font-medium text-xl w-[398px]">Total: 2000 USDC + 900 DEUS</p>

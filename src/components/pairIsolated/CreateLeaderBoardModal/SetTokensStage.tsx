@@ -1,24 +1,11 @@
+import { useLeaderBoardContext } from 'contexts/CreateLeaderBoardModalContext';
 import React from 'react';
 
 import LeaderboardStage from '../../modal/LeaderboardStage';
 
-export function SetTokensStage({
-  leaderBoardSpotsCount,
-  rewardTokenAddresses,
-  handleTokenAddressChange,
-  rewardTokenCount,
-  setRewardTokenCount,
-  onNext,
-  onPrev,
-}: {
-  leaderBoardSpotsCount: number;
-  rewardTokenAddresses: string[];
-  handleTokenAddressChange: (index: number, address: string) => void;
-  rewardTokenCount: number;
-  setRewardTokenCount: React.Dispatch<React.SetStateAction<number>>;
-  onNext?: () => void;
-  onPrev?: () => void;
-}) {
+export function SetTokensStage({ onNext, onPrev }: { onNext?: () => void; onPrev?: () => void }) {
+  const { leaderBoardSpotsCount, rewardTokenAddresses, rewardTokenCount, setRewardTokenCount } =
+    useLeaderBoardContext();
   return (
     <>
       <section className="w-52 h-20 mx-auto mb-4">

@@ -1,21 +1,19 @@
 import { TokenSymbol } from 'components/basic/input/TokenAddressInput';
+import { useLeaderBoardContext } from 'contexts/CreateLeaderBoardModalContext';
 import { useCoinGeckoTokenAmountsToUsd } from 'hooks/useCoinGeckoPrice';
 import React from 'react';
 import { Address } from 'wagmi';
 
 export function RewardAmountInputRow({
-  index,
   leaderboardSpotTokenAmounts,
-  rewardTokenCount,
-  handleTokenAmountChange,
-  rewardTokenAddresses,
+  index,
+  disabled,
 }: {
   index: number;
   leaderboardSpotTokenAmounts: number[];
-  rewardTokenCount: number;
-  rewardTokenAddresses: string[];
-  handleTokenAmountChange: (rewardIndex: number, tokenIndex: number, newAmount: number) => void;
+  disabled?: boolean;
 }) {
+  const { handleTokenAmountChange, rewardTokenAddresses } = useLeaderBoardContext();
   const { totalAmountUsd } = useCoinGeckoTokenAmountsToUsd(
     rewardTokenAddresses as Address[],
     leaderboardSpotTokenAmounts,
@@ -32,6 +30,7 @@ export function RewardAmountInputRow({
             key={j}
           >
             <input
+              disabled={disabled}
               type="number"
               placeholder="amount"
               className="bg-transparent w-1/2"
@@ -63,29 +62,16 @@ export function RewardAmountInputRow({
   );
 }
 
-export function RewardAmountsInputs({
-  allTokenAmounts,
-  rewardTokenCount,
-  leaderBoardSpotsCount,
-  handleTokenAmountChange,
-  rewardTokenAddresses,
-}: {
-  allTokenAmounts: number[][];
-  rewardTokenCount: number;
-  rewardTokenAddresses: string[];
-  leaderBoardSpotsCount: number;
-  handleTokenAmountChange: (rewardIndex: number, tokenIndex: number, newAmount: number) => void;
-}) {
+export function RewardAmountsInputs({ disabled }: { disabled?: boolean }) {
+  const { allTokenAmounts, rewardTokenCount, leaderBoardSpotsCount } = useLeaderBoardContext();
   return (
     <>
       {allTokenAmounts.slice(0, leaderBoardSpotsCount).map((leaderboardSpotTokenAmounts, i) => (
         <RewardAmountInputRow
           key={i}
           index={i}
+          disabled={disabled}
           leaderboardSpotTokenAmounts={leaderboardSpotTokenAmounts.slice(0, rewardTokenCount)}
-          rewardTokenCount={rewardTokenCount}
-          handleTokenAmountChange={handleTokenAmountChange}
-          rewardTokenAddresses={rewardTokenAddresses}
         />
       ))}
     </>
