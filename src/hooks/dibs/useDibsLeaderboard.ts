@@ -1,10 +1,9 @@
 import { ApolloClient, useApolloClient } from '@apollo/client';
 import { multicall } from '@wagmi/core';
-import { dibsABI, useDibsLotteryGetLatestLeaderBoard } from 'abis/types/generated';
+import { dibsABI, useDibsFirstRoundStartTime, useDibsLotteryGetLatestLeaderBoard } from 'abis/types/generated';
 import { DailyData } from 'apollo/queries';
 import { DibsAddressMap } from 'constants/addresses';
 import { useDibsAddresses } from 'hooks/dibs/useDibsAddresses';
-import { useDibsLotteryData } from 'hooks/dibs/useDibsLotteryData';
 import { useContractAddress } from 'hooks/useContractAddress';
 import JSBI from 'jsbi';
 import { useCallback, useEffect, useState } from 'react';
@@ -24,9 +23,13 @@ export const useLeaderboardData = () => {
   const [prevData, setPrevData] = useState<LeaderBoardRecord[]>([]);
   const { address } = useAccount();
   const apolloClient = useApolloClient();
-  const { firstRoundStartTime } = useDibsLotteryData();
+
   const dibsAddress = useContractAddress(DibsAddressMap);
   const { dibsLotteryAddress } = useDibsAddresses();
+
+  const { data: firstRoundStartTime } = useDibsFirstRoundStartTime({
+    address: dibsAddress,
+  });
 
   const { data: leaderBoardConfiguration } = useDibsLotteryGetLatestLeaderBoard({
     address: dibsLotteryAddress,
