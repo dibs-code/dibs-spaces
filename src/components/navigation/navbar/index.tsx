@@ -45,17 +45,13 @@ const Navbar = () => {
         address: RoutePath.PAIR_ISOLATED,
       },
     ];
-    //TODO: remove this hardcoded contract
     return IS_PRODUCTION
       ? linksList
       : linksList.concat([
           {
             name: 'Pair Isolated (test contract)',
             icon: null,
-            address: RoutePath.PAIR_REWARDER_LEADERBOARD.replace(
-              ':address',
-              '0x6cB66a0762E7Ce3c0Abc9d0241bF4cfFc67fcdA1',
-            ),
+            address: RoutePath.PAIR_REWARDER_LEADERBOARD_TEST,
           },
         ]);
   }, []);

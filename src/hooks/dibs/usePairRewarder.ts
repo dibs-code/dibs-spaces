@@ -1,3 +1,4 @@
+import { ApolloClient, useApolloClient } from '@apollo/client';
 import { multicall } from '@wagmi/core';
 import {
   dibsABI,
@@ -8,19 +9,122 @@ import {
   usePairRewarderPair,
   usePairRewarderSetterRole,
 } from 'abis/types/generated';
-import { Address } from 'abitype';
+import { DailyDataForPair } from 'apollo/queries';
 import { DibsAddressMap } from 'constants/addresses';
 import { useContractAddress } from 'hooks/useContractAddress';
-import { useEffect, useState } from 'react';
-import { PairRewarderEpochWinners } from 'types';
-import { useAccount } from 'wagmi';
+import JSBI from 'jsbi';
+import { useCallback, useEffect, useState } from 'react';
+import { LeaderBoardInfo, LeaderBoardRecord } from 'types';
+import { Address, useAccount } from 'wagmi';
 
 import usePairName from './usePairName';
+
+const fromWei = (number: any, decimals = 18) =>
+  JSBI.subtract(JSBI.BigInt(number), JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18)));
+export const usePairRewarderLeaderboard = (pairRewarderAddress: Address | undefined) => {
+  const apolloClient = useApolloClient();
+
+  const [epochLeaderBoard, setEpochLeaderBoard] = useState<LeaderBoardRecord[]>([]);
+  const [leaderBoardInfo, setLeaderBoardInfo] = useState<LeaderBoardInfo | undefined>(undefined);
+  const [selectedEpoch, setSelectedEpoch] = useState<bigint | null>(null);
+
+  const dibsAddress = useContractAddress(DibsAddressMap);
+
+  const { data: activeDay } = usePairRewarderActiveDay({
+    address: pairRewarderAddress,
+  });
+  useEffect(() => {
+    if (activeDay) {
+      setSelectedEpoch(activeDay - BigInt(1));
+    }
+  }, [activeDay]);
+  const selectPreviousEpoch = useCallback(() => {
+    if (activeDay) {
+      setSelectedEpoch(activeDay - BigInt(1));
+    }
+  }, [activeDay, setSelectedEpoch]);
+  const selectCurrentEpoch = useCallback(() => {
+    if (activeDay) {
+      setSelectedEpoch(activeDay);
+    }
+  }, [activeDay, setSelectedEpoch]);
+
+  const { data: selectedEpochWinnersRaw } = usePairRewarderLeaderBoardWinners({
+    address: pairRewarderAddress,
+    args: selectedEpoch !== null ? [selectedEpoch] : undefined,
+  });
+  const { data: activeLeaderBoardInfo } = usePairRewarderLeaderBoardInfo({
+    address: pairRewarderAddress,
+  });
+  useEffect(() => {
+    if (selectedEpoch === activeDay) {
+      setLeaderBoardInfo(selectedEpoch === activeDay ? activeLeaderBoardInfo : selectedEpochWinnersRaw?.info);
+    }
+  }, [activeDay, activeLeaderBoardInfo, selectedEpoch, selectedEpochWinnersRaw?.info]);
+
+  const { data: pairAddress } = usePairRewarderPair({
+    address: pairRewarderAddress,
+  });
+  const getDailyLeaderboardData = useCallback(
+    async (apolloClient: ApolloClient<object>, epoch: number): Promise<LeaderBoardRecord[]> => {
+      if (!dibsAddress || !pairAddress) return [];
+      const leaderRes = await apolloClient.query({
+        query: DailyDataForPair,
+        variables: { day: epoch, skip: 0, pair: pairAddress },
+        fetchPolicy: 'cache-first',
+      });
+      const sortedData = leaderRes.data.dailyGeneratedVolumes
+        .filter((ele) => ele.user !== dibsAddress.toLowerCase())
+        .map((ele) => {
+          return {
+            ...ele,
+            volume: fromWei(ele.amountAsReferrer),
+          };
+        });
+      const rawCodeNames = await multicall({
+        allowFailure: false,
+        contracts: sortedData.map((item) => ({
+          abi: dibsABI,
+          address: dibsAddress,
+          functionName: 'getCodeName',
+          args: [item.user],
+        })),
+      });
+      return sortedData.map((data, index) => {
+        return {
+          ...data,
+          code: rawCodeNames[index],
+        };
+      });
+    },
+    [dibsAddress, pairAddress],
+  );
+  useEffect(() => {
+    const fetchInfo = async () => {
+      if (!selectedEpoch) return;
+      try {
+        setEpochLeaderBoard(await getDailyLeaderboardData(apolloClient, Number(selectedEpoch)));
+      } catch (error) {
+        console.log('leaderboard get error :>> ', error);
+      }
+    };
+    fetchInfo();
+  }, [apolloClient, getDailyLeaderboardData, selectedEpoch]);
+
+  return {
+    selectedEpoch,
+    setSelectedEpoch,
+    selectPreviousEpoch,
+    selectCurrentEpoch,
+    epochLeaderBoard,
+    leaderBoardInfo,
+    activeDay,
+  };
+};
 
 //TODO: use mutlicall to have fewer calls
 export function usePairRewarder(pairRewarderAddress: Address | undefined) {
   const { address } = useAccount();
-  const dibsAddress = useContractAddress(DibsAddressMap);
 
   const { data: pairAddress } = usePairRewarderPair({
     address: pairRewarderAddress,
@@ -40,78 +144,10 @@ export function usePairRewarder(pairRewarderAddress: Address | undefined) {
     address: pairRewarderAddress,
   });
 
-  const [epochTimer, setEpochTimer] = useState({
-    hours: '0',
-    minutes: '0',
-  });
-  const [now, setNow] = useState(new Date().getTime() / 1000);
-  useEffect(() => {
-    const nextEpoch = Math.ceil(now / 86400) * 86400;
-    const hours = Math.floor((nextEpoch - now) / 3600);
-    const minutes = Math.floor((nextEpoch - now - hours * 3600) / 60);
-    setEpochTimer({
-      hours: hours < 10 ? '0' + hours : String(hours),
-      minutes: minutes < 10 ? '0' + minutes : String(minutes),
-    });
-  }, [now]);
-
-  useEffect(() => {
-    const interval = setInterval(() => setNow(new Date().getTime() / 1000), 1000);
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
-
-  const [epochToShowWinners, setEpochToShowWinners] = useState<bigint | null>(null);
-
-  const { data: activeDay } = usePairRewarderActiveDay({
-    address: pairRewarderAddress,
-  });
-
-  useEffect(() => {
-    if (activeDay) {
-      setEpochToShowWinners(activeDay - BigInt(1));
-    }
-  }, [activeDay]);
-
-  const { data: epochWinnersRaw } = usePairRewarderLeaderBoardWinners({
-    address: pairRewarderAddress,
-    args: epochToShowWinners !== null ? [epochToShowWinners] : undefined,
-  });
-
-  const [epochWinners, setEpochWinners] = useState<PairRewarderEpochWinners>(undefined);
-  useEffect(() => {
-    async function getData() {
-      if (!epochWinnersRaw || !dibsAddress) return;
-      const calls = epochWinnersRaw.winners.map((item) => {
-        return {
-          abi: dibsABI,
-          address: dibsAddress,
-          functionName: 'getCodeName',
-          args: [item],
-        };
-      });
-      const winnerCodeNames = await multicall({
-        contracts: calls,
-      });
-      setEpochWinners({
-        ...epochWinnersRaw,
-        winnerCodeNames: winnerCodeNames.map((item) => item.result) as string[],
-      });
-    }
-
-    getData().catch(console.log);
-  }, [dibsAddress, epochWinnersRaw]);
-
   return {
-    epochTimer,
     pairAddress,
     pairName,
-    epochToShowWinners,
-    setEpochToShowWinners,
-    activeDay,
     activeLeaderBoardInfo,
-    epochWinners,
     hasSetterRole,
   };
 }

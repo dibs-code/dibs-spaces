@@ -5,6 +5,7 @@ export enum RoutePath {
   TEST_SWAP = '/test-swap',
   PAIR_ISOLATED = '/pair-isolated',
   PAIR_REWARDER_LEADERBOARD = '/pair-isolated/:address/leaderboard',
+  PAIR_REWARDER_LEADERBOARD_TEST = '/pair-isolated/test/leaderboard',
 }
 
 export function requiresCode(routePath: string) {

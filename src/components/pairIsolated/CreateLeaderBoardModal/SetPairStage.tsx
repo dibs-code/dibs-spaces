@@ -58,7 +58,9 @@ export function SetPairStage({ onNext, onPrev }: { onNext?: () => void; onPrev?:
           <>
             <div className="pair flex gap-3 items-center">
               <img src="/assets/images/pair-coin-icon.svg" alt="" className="h-9 w-auto" />
-              <p className="text-xl text-white font-medium">{ShowPair({ pairAddress })}</p>
+              <p className="text-xl text-white font-medium">
+                <ShowPair pairAddress={pairAddress} />
+              </p>
             </div>
             <p className="font-semibold text-secondary pt-2">Change</p>
           </>

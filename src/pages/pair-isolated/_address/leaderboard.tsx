@@ -2,7 +2,8 @@ import { Address } from 'abitype';
 import { LeaderBoardEpochButtons } from 'components/pairIsolated/LeaderBoardEpochButtons';
 import PairRewarderLeaderBoard from 'components/pairIsolated/PairRewarderLeaderboard';
 import TotalPrizes from 'components/pairIsolated/TotalPrizes';
-import { usePairRewarder } from 'hooks/dibs/usePairRewarder';
+import useEpochTimer from 'hooks/dibs/useEpochTimer';
+import { usePairRewarder, usePairRewarderLeaderboard } from 'hooks/dibs/usePairRewarder';
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -11,17 +12,22 @@ import CreateLeaderBoardModal from '../../../components/pairIsolated/CreateLeade
 
 const PairRewarderLeaderboard = () => {
   const params = useParams();
-  const pairRewarderAddress = params.address as Address;
+  const pairRewarderAddress =
+    params.address === 'test'
+      ? // '0x6cB66a0762E7Ce3c0Abc9d0241bF4cfFc67fcdA1' // has day 10 winners
+        '0x21DAcb323a7a23E8B70BA96f2D472bbA92A94D9c' // has day 21 subgraph data
+      : (params.address as Address);
+  const { pairName } = usePairRewarder(pairRewarderAddress);
   const {
-    epochToShowWinners,
-    setEpochToShowWinners,
+    selectedEpoch,
+    selectPreviousEpoch,
+    selectCurrentEpoch,
     activeDay,
-    pairName,
-    epochTimer,
-    activeLeaderBoardInfo,
-    epochWinners,
-    hasSetterRole,
-  } = usePairRewarder(pairRewarderAddress);
+    setSelectedEpoch,
+    leaderBoardInfo,
+    epochLeaderBoard,
+  } = usePairRewarderLeaderboard(pairRewarderAddress);
+  const epochTimer = useEpochTimer();
   const [createLeaderBoardModalOpen, setCreateLeaderBoardModalOpen] = useState(false);
 
   return (
@@ -35,7 +41,7 @@ const PairRewarderLeaderboard = () => {
           <div className="section--left pr-6">
             <h1 className="text-[32px] font-bold text-secondary mb-3 flex gap-3">
               <img src="/assets/images/pair-coin-icon.svg" alt="" />
-              WBNB/USDC leaderboard
+              {pairName} leaderboard
             </h1>
             <p className="text-xl">
               This is where you can view the leaderboard of all positions. <br />
@@ -46,13 +52,13 @@ const PairRewarderLeaderboard = () => {
             <div className="px-6 py-4 bg-gray4 rounded-md w-[218px]">
               <p className="title mb-4 text-primary font-semibold text-2xl">Daily reward:</p>
               <p className="value text-white font-semibold text-2xl text-right">
-                <TotalPrizes leaderBoardInfo={activeLeaderBoardInfo} />
+                <TotalPrizes leaderBoardInfo={leaderBoardInfo} />
               </p>
             </div>
             <div className="px-6 py-4 bg-gray4 rounded-md w-[218px]">
               <p className="title mb-4 text-primary font-semibold text-2xl">Epoch timer:</p>
               <p className="value text-white font-semibold text-2xl text-right">
-                {epochTimer.hours}:{epochTimer.minutes}
+                {epochTimer.hours}:{epochTimer.minutes}:{epochTimer.seconds}
               </p>
             </div>
           </div>
@@ -60,9 +66,11 @@ const PairRewarderLeaderboard = () => {
 
         <section className="actions flex justify-between mb-4">
           <LeaderBoardEpochButtons
-            epochToShowWinners={epochToShowWinners}
-            setEpochToShowWinners={setEpochToShowWinners}
+            selectedEpoch={selectedEpoch}
+            selectPreviousEpoch={selectPreviousEpoch}
+            selectCurrentEpoch={selectCurrentEpoch}
             activeDay={activeDay}
+            setSelectedEpoch={setSelectedEpoch}
           />
           <button onClick={() => {}} className="btn btn--secondary btn--with-icon">
             <img src="/assets/images/pair-isolated/create-leaderboard-icon.svg" alt="" />
@@ -87,7 +95,7 @@ const PairRewarderLeaderboard = () => {
           {/*    </p>*/}
           {/*  )}*/}
           {/*</p>*/}
-          <PairRewarderLeaderBoard epochWinners={epochWinners} />
+          <PairRewarderLeaderBoard epochLeaderBoard={epochLeaderBoard} leaderBoardInfo={leaderBoardInfo} />
         </section>
       </main>
     </div>

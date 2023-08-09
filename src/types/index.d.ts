@@ -1,6 +1,7 @@
 import { pairRewarderABI } from 'abis/types/generated';
 import { Address } from 'abitype';
-import { Chain } from 'wagmi';
+import JSBI from 'jsbi';
+import { Address, Chain } from 'wagmi';
 import { ReadContractResult } from 'wagmi/actions';
 
 export enum TransactionStatus {
@@ -66,7 +67,16 @@ export type MuonVerificationData = {
   };
 };
 
-export type PairRewarderEpochWinnersRaw = ReadContractResult<typeof pairRewarderABI, 'leaderBoardWinners'> | undefined;
+export type PairRewarderEpochWinnersRaw =
+  | {
+      info: {
+        winnersCount: bigint;
+        rewardTokens: readonly `0x${string}`[];
+        rewardAmounts: readonly (readonly bigint[])[];
+      };
+      winners: readonly `0x${string}`[];
+    }
+  | undefined;
 export type PairRewarderEpochWinners =
   | (PairRewarderEpochWinnersRaw & {
       winnerCodeNames: string[];
@@ -88,3 +98,10 @@ export type AddressMap = {
 };
 
 export type CoinGeckoAssetPlatform = { id: string; chain_identifier: number; name: string; shortname: string };
+
+export interface LeaderBoardRecord {
+  amountAsReferrer: string;
+  code: string;
+  user: Address;
+  volume: JSBI;
+}

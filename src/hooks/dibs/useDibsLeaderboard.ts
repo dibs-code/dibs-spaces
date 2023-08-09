@@ -7,14 +7,8 @@ import { useDibsAddresses } from 'hooks/dibs/useDibsAddresses';
 import { useContractAddress } from 'hooks/useContractAddress';
 import JSBI from 'jsbi';
 import { useCallback, useEffect, useState } from 'react';
-import { Address, useAccount } from 'wagmi';
-
-export interface LeaderBoardRecord {
-  amountAsReferrer: string;
-  code: string;
-  user: Address;
-  volume: JSBI;
-}
+import { LeaderBoardRecord } from 'types';
+import { useAccount } from 'wagmi';
 
 const fromWei = (number: any, decimals = 18) =>
   JSBI.subtract(JSBI.BigInt(number), JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18)));

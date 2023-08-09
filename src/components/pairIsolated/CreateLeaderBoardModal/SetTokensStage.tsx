@@ -4,8 +4,13 @@ import React from 'react';
 import LeaderboardStage from '../../modal/LeaderboardStage';
 
 export function SetTokensStage({ onNext, onPrev }: { onNext?: () => void; onPrev?: () => void }) {
-  const { leaderBoardSpotsCount, rewardTokenAddresses, rewardTokenCount, setRewardTokenCount } =
-    useLeaderBoardContext();
+  const {
+    handleTokenAddressChange,
+    leaderBoardSpotsCount,
+    rewardTokenAddresses,
+    rewardTokenCount,
+    setRewardTokenCount,
+  } = useLeaderBoardContext();
   return (
     <>
       <section className="w-52 h-20 mx-auto mb-4">
@@ -23,6 +28,8 @@ export function SetTokensStage({ onNext, onPrev }: { onNext?: () => void; onPrev
             <input
               className="w-full max-h-12 rounded text-white bg-gray4 pl-4 pt-[15px] pb-3.5 pr-2 font-medium"
               placeholder="Token contract address"
+              value={tokenAddress}
+              onChange={(event) => handleTokenAddressChange(i, event.target.value)}
             />
             {/*<TokenAddressInput*/}
             {/*  type="text"*/}
