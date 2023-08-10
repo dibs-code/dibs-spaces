@@ -59,7 +59,10 @@ export function SubmitStage({ onPrev }: { onPrev?: () => void }) {
         </section>
         <section className="flex-[490]">
           <p className="text-white font-medium text-xl mb-[30px]">Reward distribution</p>
-          <RewardAmountsInputs disabled />
+
+          <span className="h-[272px] styled-scroll overflow-y-auto ">
+            <RewardAmountsInputs disabled />
+          </span>
         </section>
       </section>
       {/*<div className="w-full max-w-lg px-8 py-4 mx-auto bg-white rounded-lg shadow-md mt-2">*/}

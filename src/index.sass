@@ -19,6 +19,28 @@ span
 @mixin btn
   @apply ease-out duration-300
 
+.styled-scroll
+  @apply pr-4 -mr-4
+
+  &::-webkit-scrollbar
+    width: 4px
+    cursor: pointer
+    border-radius: 0
+
+  &::-webkit-scrollbar-track
+    box-shadow: inset 0 0 5px #99999944
+    border-radius: 0
+    cursor: pointer
+
+  &::-webkit-scrollbar-thumb
+    background: #DA5056
+    border-radius: 0
+    cursor: pointer
+
+  &::-webkit-scrollbar-thumb:hover
+    background: #DA5056
+    cursor: pointer
+
 
 @layer base
 

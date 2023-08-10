@@ -18,7 +18,7 @@ export function SetTokensStage({ onNext, onPrev }: { onNext?: () => void; onPrev
       </section>
       <p className="text-2xl font-medium mb-11 text-white w-full text-center">Create leaderboard</p>
 
-      <section className="leaderboard-spots mb-14 h-[342px] overflow-y-auto">
+      <section className="leaderboard-spots mb-14 h-[342px] overflow-y-auto styled-scroll">
         <p className="text-white font-medium text-xl mb-8">Enter the tokens for distribution as rewards.</p>
         {rewardTokenAddresses.slice(0, rewardTokenCount).map((tokenAddress, i) => (
           <div className="flex mb-2.5 gap-3" key={i}>
@@ -40,14 +40,16 @@ export function SetTokensStage({ onNext, onPrev }: { onNext?: () => void; onPrev
             {/*/>*/}
           </div>
         ))}
-        <button
-          className={
-            'rounded min-w-12 w-12 min-h-12 h-12 flex justify-center items-center bg-secondary font-medium text-white text-2xl pt-1'
-          }
-          onClick={() => setRewardTokenCount((count) => Math.min(count + 1, 4))}
-        >
-          +
-        </button>
+        {rewardTokenCount < 4 && (
+          <button
+            className={
+              'rounded min-w-12 w-12 min-h-12 h-12 flex justify-center items-center bg-secondary font-medium text-white text-2xl pt-1'
+            }
+            onClick={() => setRewardTokenCount((count) => Math.min(count + 1, 4))}
+          >
+            +
+          </button>
+        )}
       </section>
 
       {/*<div className="w-full max-w-lg px-8 py-4 mx-auto bg-white rounded-lg shadow-md mt-2">*/}

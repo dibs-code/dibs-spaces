@@ -16,7 +16,7 @@ export function SetAmountsStage({ onNext, onPrev }: { onNext?: () => void; onPre
 
       <section className="leaderboard-spots mb-14">
         <p className="text-white font-medium text-xl mb-8">Specify the reward amount for each spot</p>
-        <section className="w-full mb-3.5 border-b border-gray7 border-dashed h-[240px] overflow-y-auto">
+        <section className="w-full mb-3.5 border-b border-gray7 border-dashed h-[240px] overflow-y-auto styled-scroll">
           <RewardAmountsInputs />
         </section>
         <section className="total flex gap-3">
