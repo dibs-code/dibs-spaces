@@ -1,11 +1,13 @@
-import { TokenSymbol } from 'components/basic/input/TokenAddressInput';
-import { RewardAmountsInputs } from 'components/pairIsolated/CreateLeaderBoardModal/RewardAmountsInputs';
-import { ShowPair } from 'components/pairIsolated/CreateLeaderBoardModal/SetPairStage';
+// import { TokenSymbol } from 'components/basic/input/TokenAddressInput';
+// import { RewardAmountsInputs } from 'components/pairIsolated/CreateLeaderBoardModal/RewardAmountsInputs';
+// import { ShowPair } from 'components/pairIsolated/CreateLeaderBoardModal/SetPairStage';
 import { useLeaderBoardContext } from 'contexts/CreateLeaderBoardModalContext';
 import React, { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import RoutePath from 'routes';
-import { Address } from 'wagmi';
+
+// import { Address } from 'wagmi';
+import LeaderboardStage from '../../modal/LeaderboardStage';
 
 export function SubmitStage({ onPrev }: { onPrev?: () => void }) {
   const {
@@ -34,20 +36,37 @@ export function SubmitStage({ onPrev }: { onPrev?: () => void }) {
   }, [createdPairRewarderAddress, handleCreatePairRewarder, handlePairRewarderSetPrize, navigate]);
 
   return (
-    <div className="w-full max-w-lg px-8 py-4 mx-auto bg-white rounded-lg shadow-md mt-2">
-      <ShowPair pairAddress={pairAddress} />
-      {rewardTokenAddresses.slice(0, rewardTokenCount).map((tokenAddress, i) => (
-        <div className="border-t-2 py-2" key={i}>
-          {i + 1}. <TokenSymbol address={tokenAddress as Address} />
-        </div>
-      ))}
-      <RewardAmountsInputs disabled={true} />
-      <button className={'btn-medium btn-primary'} onClick={onPrev}>
-        Edit
-      </button>
-      <button className={'btn-medium btn-primary'} onClick={handleConfirmButtonClick}>
-        {buttonText}
-      </button>
-    </div>
+    <>
+      <section className="w-52 h-20 mx-auto mb-4">
+        <LeaderboardStage count={leaderBoardSpotsCount} />
+      </section>
+      <p className="text-2xl font-medium mb-11 text-white w-full text-center">Create leaderboard</p>
+
+      <section className="flex gap-4 justify-between mb-14">
+        <section className="flex-[258]">
+          <p className="text-white font-medium text-xl mb-[30px]">Pair</p>
+        </section>
+        <section className="flex-[490]">
+          <p className="text-white font-medium text-xl mb-[30px]">Reward distrubution</p>
+        </section>
+      </section>
+      {/*<div className="w-full max-w-lg px-8 py-4 mx-auto bg-white rounded-lg shadow-md mt-2">*/}
+      {/*  <ShowPair pairAddress={pairAddress} />*/}
+      {/*  {rewardTokenAddresses.slice(0, rewardTokenCount).map((tokenAddress, i) => (*/}
+      {/*    <div className="border-t-2 py-2" key={i}>*/}
+      {/*      {i + 1}. <TokenSymbol address={tokenAddress as Address} />*/}
+      {/*    </div>*/}
+      {/*  ))}*/}
+      {/*  <RewardAmountsInputs disabled={true} />*/}
+      {/*</div>*/}
+      <section className="flex justify-between">
+        <button className={'btn btn--secondary-outlined'} onClick={onPrev}>
+          Edit
+        </button>
+        <button className={'btn btn--secondary'} onClick={handleConfirmButtonClick}>
+          {buttonText}
+        </button>
+      </section>
+    </>
   );
 }
