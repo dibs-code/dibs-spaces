@@ -8,6 +8,8 @@ import RoutePath from 'routes';
 
 // import { Address } from 'wagmi';
 import LeaderboardStage from '../../modal/LeaderboardStage';
+import { RewardAmountsInputs } from './RewardAmountsInputs';
+import { ShowPair } from './SetPairStage';
 
 export function SubmitStage({ onPrev }: { onPrev?: () => void }) {
   const {
@@ -45,9 +47,19 @@ export function SubmitStage({ onPrev }: { onPrev?: () => void }) {
       <section className="flex gap-4 justify-between mb-14">
         <section className="flex-[258]">
           <p className="text-white font-medium text-xl mb-[30px]">Pair</p>
+          <div className="pair flex gap-3 items-center mb-8">
+            <img src="/assets/images/pair-coin-icon.svg" alt="" className="h-9 w-auto" />
+            <p className="text-xl text-white font-medium">
+              <ShowPair pairAddress={pairAddress} />
+            </p>
+          </div>
+          <p className="text-white font-medium text-xl mb-5">Token(s)</p>
+          <p className="text-white font-medium text-xl">1. DEUS</p>
+          <p className="text-white font-medium text-xl">1. USDT</p>
         </section>
         <section className="flex-[490]">
-          <p className="text-white font-medium text-xl mb-[30px]">Reward distrubution</p>
+          <p className="text-white font-medium text-xl mb-[30px]">Reward distribution</p>
+          <RewardAmountsInputs />
         </section>
       </section>
       {/*<div className="w-full max-w-lg px-8 py-4 mx-auto bg-white rounded-lg shadow-md mt-2">*/}
