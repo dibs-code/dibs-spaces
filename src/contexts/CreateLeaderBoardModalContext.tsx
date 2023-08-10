@@ -21,7 +21,7 @@ export default function CreateLeaderBoardModalContext(props: ModalProps) {
 
   return (
     <LeaderBoardContext.Provider value={hookData}>
-      <Modal {...props}>
+      <Modal {...props} className={CreateLeaderBoardStage.SUBMIT === createLeaderBoardStage ? '!max-w-[898px]' : ''}>
         <div className="create-leaderboard-modal px-16 py-20 pt-12">
           {CreateLeaderBoardStage.SET_PAIR === createLeaderBoardStage && (
             <SetPairStage onNext={() => setCreateLeaderBoardStage(CreateLeaderBoardStage.SET_TOKENS)} />
