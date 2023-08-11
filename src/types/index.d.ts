@@ -1,6 +1,5 @@
 import { pairRewarderABI } from 'abis/types/generated';
-import { Address } from 'abitype';
-import JSBI from 'jsbi';
+import BigNumber from 'bignumber.js';
 import { Address, Chain } from 'wagmi';
 import { ReadContractResult } from 'wagmi/actions';
 
@@ -103,5 +102,5 @@ export interface LeaderBoardRecord {
   amountAsReferrer: string;
   code: string;
   user: Address;
-  volume: JSBI;
+  volume: BigNumber;
 }

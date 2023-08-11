@@ -12,16 +12,14 @@ import {
 import { DailyDataForPair } from 'apollo/queries';
 import { DibsAddressMap } from 'constants/addresses';
 import { useContractAddress } from 'hooks/useContractAddress';
-import JSBI from 'jsbi';
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { LeaderBoardInfo, LeaderBoardRecord } from 'types';
+import { fromWei } from 'utils/numbers';
 import { Address, useAccount } from 'wagmi';
 
 import usePairName from './usePairName';
 
-const fromWei = (number: any, decimals = 18) =>
-  JSBI.subtract(JSBI.BigInt(number), JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18)));
 export const usePairRewarderLeaderboard = (pairRewarderAddress: Address | undefined) => {
   const apolloClient = useApolloClient();
 

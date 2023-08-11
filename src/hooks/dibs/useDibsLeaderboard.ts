@@ -5,13 +5,11 @@ import { DailyData } from 'apollo/queries';
 import { DibsAddressMap } from 'constants/addresses';
 import { useDibsAddresses } from 'hooks/dibs/useDibsAddresses';
 import { useContractAddress } from 'hooks/useContractAddress';
-import JSBI from 'jsbi';
 import { useCallback, useEffect, useState } from 'react';
 import { LeaderBoardRecord } from 'types';
+import { fromWei } from 'utils/numbers';
 import { useAccount } from 'wagmi';
 
-const fromWei = (number: any, decimals = 18) =>
-  JSBI.subtract(JSBI.BigInt(number), JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18)));
 export const useLeaderboardData = () => {
   const [currentData, setCurrentData] = useState<LeaderBoardRecord[]>([]);
   const [prevData, setPrevData] = useState<LeaderBoardRecord[]>([]);
