@@ -1,7 +1,62 @@
+import { formatUnits } from '@ethersproject/units';
+import { multicall } from '@wagmi/core';
+import { erc20ABI } from 'abis/types/generated';
 import RewardToken from 'components/RewardToken';
-import React from 'react';
+import { useCoinGeckoTokenAmountsToUsd } from 'hooks/useCoinGeckoPrice';
+import React, { useEffect, useMemo, useState } from 'react';
 import { LeaderBoardInfo, LeaderBoardRecord } from 'types';
 import getPairIsolatedRewardTokensAndAmounts from 'utils/getPairIsolatedRewardTokensAndAmounts';
+
+function LeaderBoardRecordRow({
+  index,
+  leaderBoardRecord,
+  leaderBoardInfo,
+}: {
+  index: number;
+  leaderBoardRecord: LeaderBoardRecord;
+  leaderBoardInfo: LeaderBoardInfo | undefined;
+}) {
+  const rewardTokensAndAmounts = useMemo(
+    () => getPairIsolatedRewardTokensAndAmounts(leaderBoardInfo, index),
+    [index, leaderBoardInfo],
+  );
+  const tokenAddresses = useMemo(() => rewardTokensAndAmounts.map((r) => r.token), [rewardTokensAndAmounts]);
+  const tokenAmountsRaw = useMemo(() => rewardTokensAndAmounts.map((r) => r.amount), [rewardTokensAndAmounts]);
+  const [tokenAmounts, setTokenAmounts] = useState<number[]>([]);
+  useEffect(() => {
+    async function getTokenAmounts() {
+      const tokenDecimals = await multicall({
+        allowFailure: false,
+        contracts: tokenAddresses.map((tokenAddress) => ({
+          abi: erc20ABI,
+          address: tokenAddress,
+          functionName: 'decimals',
+        })),
+      });
+      setTokenAmounts(tokenAmountsRaw.map((tokenAmount, i) => Number(formatUnits(tokenAmount, tokenDecimals[i]))));
+    }
+
+    getTokenAmounts();
+  }, [tokenAddresses, tokenAmountsRaw]);
+  const { totalAmountUsd } = useCoinGeckoTokenAmountsToUsd(tokenAddresses, tokenAmounts);
+  return (
+    <tr className="text-white text-left bg-gray2">
+      <td className="pl-8 rounded-l">
+        <span>#{index + 1}</span>
+      </td>
+      <td className="">{leaderBoardRecord.code || leaderBoardRecord.user}</td>
+      <td className="">{leaderBoardRecord.volume.toString()}</td>
+      <td className="py-4 pr-8 rounded-r text-right">
+        <span className="flex justify-end gap-1">
+          {rewardTokensAndAmounts.map((obj) => (
+            <RewardToken key={obj.token} rewardTokenAddress={obj.token} rewardTokenAmount={obj.amount} />
+          ))}{' '}
+          ≈ {totalAmountUsd ?? '...'}$
+        </span>
+      </td>
+    </tr>
+  );
+}
 
 export default function PairRewarderLeaderBoard({
   epochLeaderBoard,
@@ -22,20 +77,12 @@ export default function PairRewarderLeaderBoard({
       </thead>
       <tbody>
         {epochLeaderBoard?.map((leaderBoardRecord, i) => (
-          <tr key={leaderBoardRecord.user} className="text-white text-left bg-gray2">
-            <td className="pl-8 rounded-l">
-              <span>#{i + 1}</span>
-            </td>
-            <td className="">{leaderBoardRecord.code || leaderBoardRecord.user}</td>
-            <td className="">{leaderBoardRecord.volume.toString()}</td>
-            <td className="py-4 pr-8 rounded-r text-right">
-              <span className="flex justify-end gap-1">
-                {getPairIsolatedRewardTokensAndAmounts(leaderBoardInfo, i).map((obj) => (
-                  <RewardToken key={obj.token} rewardTokenAddress={obj.token} rewardTokenAmount={obj.amount} />
-                ))}
-              </span>
-            </td>
-          </tr>
+          <LeaderBoardRecordRow
+            key={leaderBoardRecord.user}
+            index={i}
+            leaderBoardRecord={leaderBoardRecord}
+            leaderBoardInfo={leaderBoardInfo}
+          />
         ))}
       </tbody>
     </table>

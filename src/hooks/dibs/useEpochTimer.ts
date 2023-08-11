@@ -18,7 +18,6 @@ export default function useEpochTimer() {
   const [now, setNow] = useState(Math.floor(new Date().getTime() / 1000));
   useEffect(() => {
     if (firstRoundStartTime) {
-      console.log({ firstRoundStartTime, now });
       const nextEpoch = firstRoundStartTime + Math.ceil((now - firstRoundStartTime) / 86400) * 86400;
       const hours = Math.floor((nextEpoch - now) / 3600);
       const minutes = Math.floor((nextEpoch - now - hours * 3600) / 60);

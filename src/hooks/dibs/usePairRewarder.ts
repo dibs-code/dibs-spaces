@@ -14,6 +14,7 @@ import { DibsAddressMap } from 'constants/addresses';
 import { useContractAddress } from 'hooks/useContractAddress';
 import JSBI from 'jsbi';
 import { useCallback, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { LeaderBoardInfo, LeaderBoardRecord } from 'types';
 import { Address, useAccount } from 'wagmi';
 
@@ -54,9 +55,14 @@ export const usePairRewarderLeaderboard = (pairRewarderAddress: Address | undefi
   const { data: activeLeaderBoardInfo } = usePairRewarderLeaderBoardInfo({
     address: pairRewarderAddress,
   });
+  const params = useParams();
   useEffect(() => {
+    if (params.address === 'test') {
+      setLeaderBoardInfo(activeLeaderBoardInfo);
+      return;
+    }
     setLeaderBoardInfo(selectedEpoch === activeDay ? activeLeaderBoardInfo : selectedEpochWinnersRaw?.info);
-  }, [activeDay, activeLeaderBoardInfo, selectedEpoch, selectedEpochWinnersRaw?.info]);
+  }, [activeDay, activeLeaderBoardInfo, params.address, selectedEpoch, selectedEpochWinnersRaw?.info]);
 
   const { data: pairAddress } = usePairRewarderPair({
     address: pairRewarderAddress,
