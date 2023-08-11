@@ -47,6 +47,7 @@ export const useLeaderboardData = () => {
         offset += chunkResult.length;
       } while (chunkResult.length);
 
+      //TODO: merge this code with the one in usePairRewarderLeaderboard
       const sortedData = result
         .filter((ele) => ele.user !== dibsAddress.toLowerCase())
         .map((ele) => {

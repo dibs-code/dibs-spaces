@@ -85,6 +85,7 @@ export const usePairRewarderLeaderboard = (pairRewarderAddress: Address | undefi
         offset += chunkResult.length;
       } while (chunkResult.length);
 
+      //TODO: merge this code with the one in useDibsLeaderboard
       const sortedData = result
         .filter((ele) => ele.user !== dibsAddress.toLowerCase())
         .map((ele) => {
