@@ -33,11 +33,6 @@ export const usePairRewarderLeaderboard = (pairRewarderAddress: Address | undefi
   const { data: activeDay } = usePairRewarderActiveDay({
     address: pairRewarderAddress,
   });
-  useEffect(() => {
-    if (activeDay) {
-      setSelectedEpoch(activeDay - BigInt(1));
-    }
-  }, [activeDay]);
   const selectPreviousEpoch = useCallback(() => {
     if (activeDay) {
       setSelectedEpoch(activeDay - BigInt(1));
@@ -48,6 +43,9 @@ export const usePairRewarderLeaderboard = (pairRewarderAddress: Address | undefi
       setSelectedEpoch(activeDay);
     }
   }, [activeDay, setSelectedEpoch]);
+  useEffect(() => {
+    selectCurrentEpoch();
+  }, [selectCurrentEpoch]);
 
   const { data: selectedEpochWinnersRaw } = usePairRewarderLeaderBoardWinners({
     address: pairRewarderAddress,
@@ -57,9 +55,7 @@ export const usePairRewarderLeaderboard = (pairRewarderAddress: Address | undefi
     address: pairRewarderAddress,
   });
   useEffect(() => {
-    if (selectedEpoch === activeDay) {
-      setLeaderBoardInfo(selectedEpoch === activeDay ? activeLeaderBoardInfo : selectedEpochWinnersRaw?.info);
-    }
+    setLeaderBoardInfo(selectedEpoch === activeDay ? activeLeaderBoardInfo : selectedEpochWinnersRaw?.info);
   }, [activeDay, activeLeaderBoardInfo, selectedEpoch, selectedEpochWinnersRaw?.info]);
 
   const { data: pairAddress } = usePairRewarderPair({
