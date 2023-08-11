@@ -9,6 +9,7 @@ import {
   usePairRewarderPair,
   usePairRewarderSetterRole,
 } from 'abis/types/generated';
+import { DailyDataForPairQueryQuery } from 'apollo/__generated__/graphql';
 import { DailyDataForPair } from 'apollo/queries';
 import { DibsAddressMap } from 'constants/addresses';
 import { useContractAddress } from 'hooks/useContractAddress';
@@ -68,12 +69,23 @@ export const usePairRewarderLeaderboard = (pairRewarderAddress: Address | undefi
   const getDailyLeaderboardData = useCallback(
     async (apolloClient: ApolloClient<object>, epoch: number): Promise<LeaderBoardRecord[]> => {
       if (!dibsAddress || !pairAddress) return [];
-      const leaderRes = await apolloClient.query({
-        query: DailyDataForPair,
-        variables: { day: epoch, skip: 0, pair: pairAddress },
-        fetchPolicy: 'cache-first',
-      });
-      const sortedData = leaderRes.data.dailyGeneratedVolumes
+
+      let offset = 0;
+      const result: DailyDataForPairQueryQuery['dailyGeneratedVolumes'] = [];
+      let chunkResult: DailyDataForPairQueryQuery['dailyGeneratedVolumes'] = [];
+      do {
+        chunkResult = (
+          await apolloClient.query({
+            query: DailyDataForPair,
+            variables: { day: epoch, skip: offset, pair: pairAddress },
+            fetchPolicy: 'cache-first',
+          })
+        ).data.dailyGeneratedVolumes;
+        result.push(...chunkResult);
+        offset += chunkResult.length;
+      } while (chunkResult.length);
+
+      const sortedData = result
         .filter((ele) => ele.user !== dibsAddress.toLowerCase())
         .map((ele) => {
           return {
