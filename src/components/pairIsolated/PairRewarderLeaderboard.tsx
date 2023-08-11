@@ -30,7 +30,6 @@ export default function PairRewarderLeaderBoard({
             <td className="">{leaderBoardRecord.volume.toString()}</td>
             <td className="py-4 pr-8 rounded-r text-right">
               <span className="flex justify-end gap-1">
-                2000 DEUS + 200 USDC ≈{' '}
                 {getPairIsolatedRewardTokensAndAmounts(leaderBoardInfo, i).map((obj) => (
                   <RewardToken key={obj.token} rewardTokenAddress={obj.token} rewardTokenAmount={obj.amount} />
                 ))}

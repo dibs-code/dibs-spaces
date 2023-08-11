@@ -5,8 +5,7 @@ import React from 'react';
 import LeaderboardStage from '../../modal/LeaderboardStage';
 
 export function SetAmountsStage({ onNext, onPrev }: { onNext?: () => void; onPrev?: () => void }) {
-  const { allTokenAmounts, rewardTokenCount, leaderBoardSpotsCount, handleTokenAmountChange, rewardTokenAddresses } =
-    useLeaderBoardContext();
+  const { leaderBoardSpotsCount } = useLeaderBoardContext();
   return (
     <>
       <section className="w-52 h-20 mx-auto mb-4">

@@ -14,11 +14,7 @@ import { ShowPair } from './SetPairStage';
 export function SubmitStage({ onPrev }: { onPrev?: () => void }) {
   const {
     pairAddress,
-    allTokenAmounts,
-    rewardTokenCount,
     leaderBoardSpotsCount,
-    handleTokenAmountChange,
-    rewardTokenAddresses,
     createdPairRewarderAddress,
     handleCreatePairRewarder,
     handlePairRewarderSetPrize,
