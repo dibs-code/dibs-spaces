@@ -15,7 +15,7 @@ export default function useEpochTimer() {
     seconds: '00',
   });
 
-  const [now, setNow] = useState(Math.floor(new Date().getTime() / 1000));
+  const [now, setNow] = useState(new Date().getTime() / 1000);
   useEffect(() => {
     if (firstRoundStartTime) {
       const nextEpoch = firstRoundStartTime + Math.ceil((now - firstRoundStartTime) / 86400) * 86400;
@@ -31,7 +31,7 @@ export default function useEpochTimer() {
   }, [now, firstRoundStartTime]);
 
   useEffect(() => {
-    const interval = setInterval(() => setNow(Math.floor(new Date().getTime() / 1000)), 1000);
+    const interval = setInterval(() => setNow(new Date().getTime() / 1000), 1000);
     return () => {
       clearInterval(interval);
     };

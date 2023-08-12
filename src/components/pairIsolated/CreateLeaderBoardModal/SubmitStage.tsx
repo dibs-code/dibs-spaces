@@ -13,6 +13,7 @@ import { ShowPair } from './SetPairStage';
 
 export function SubmitStage({ onPrev }: { onPrev?: () => void }) {
   const {
+    finalRewardTokenSymbols,
     pairAddress,
     leaderBoardSpotsCount,
     createdPairRewarderAddress,
@@ -50,8 +51,11 @@ export function SubmitStage({ onPrev }: { onPrev?: () => void }) {
             </p>
           </div>
           <p className="text-white font-medium text-xl mb-5">Token(s)</p>
-          <p className="text-white font-medium text-xl">1. DEUS</p>
-          <p className="text-white font-medium text-xl">1. USDT</p>
+          {finalRewardTokenSymbols.map((symbol, i) => (
+            <p key={i} className="text-white font-medium text-xl">
+              {i + 1}. {symbol}
+            </p>
+          ))}
         </section>
         <section className="flex-[490]">
           <p className="text-white font-medium text-xl mb-[30px]">Reward distribution</p>

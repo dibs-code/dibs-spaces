@@ -1,11 +1,15 @@
 import { RewardAmountsInputs } from 'components/pairIsolated/CreateLeaderBoardModal/RewardAmountsInputs';
 import { useLeaderBoardContext } from 'contexts/CreateLeaderBoardModalContext';
+import { useCoinGeckoTokenAmountsToUsd } from 'hooks/useCoinGeckoPrice';
 import React from 'react';
 
 import LeaderboardStage from '../../modal/LeaderboardStage';
 
 export function SetAmountsStage({ onNext, onPrev }: { onNext?: () => void; onPrev?: () => void }) {
-  const { leaderBoardSpotsCount } = useLeaderBoardContext();
+  const { finalRewardTokenSymbols, finalRewardTokenAddresses, finalTokenAmountsAggregate, leaderBoardSpotsCount } =
+    useLeaderBoardContext();
+
+  const { totalAmountUsd } = useCoinGeckoTokenAmountsToUsd(finalRewardTokenAddresses, finalTokenAmountsAggregate);
   return (
     <>
       <section className="w-52 h-20 mx-auto mb-4">
@@ -19,9 +23,13 @@ export function SetAmountsStage({ onNext, onPrev }: { onNext?: () => void; onPre
           <RewardAmountsInputs />
         </section>
         <section className="total flex gap-3">
-          <p className="text-white font-medium text-xl w-[398px]">Total: 2000 USDC + 900 DEUS</p>
+          <p className="text-white font-medium text-xl w-[398px]">
+            Total:{' '}
+            {finalRewardTokenSymbols.map((symbol, i) => symbol + ' ' + finalTokenAmountsAggregate[i]).join(' + ')}
+          </p>
+          {/*<p className="text-white font-medium text-xl w-[398px]">Total: 2000 USDC + 900 DEUS</p>*/}
           <p className="text-xl font-medium text-white">≈</p>
-          <p className="text-xl font-medium text-white">2050$</p>
+          <p className="text-xl font-medium text-white">${totalAmountUsd}$</p>
         </section>
       </section>
 
