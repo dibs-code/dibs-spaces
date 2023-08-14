@@ -163,7 +163,7 @@ const Menu = () => {
   }, [location.pathname, links]);
 
   return (
-    <div className="relative">
+    <div className="relative flex items-center">
       <ul className="flex gap-9 mx-auto items-center">
         {links.map((link, index) => {
           const active = location.pathname === link.address;
@@ -177,19 +177,17 @@ const Menu = () => {
               }}
               className={`flex items-center transition duration-200 text-primary
                 ${!disabled && 'cursor-pointer'}
-                ${!disabled && !active && 'hover:text-primary-dark'}
                ${link.name === 'Reports' ? 'pl-0.5 gap-4' : 'pl-0 gap-3'}`}
               id={'navbar-item-' + index}
               key={link.name}
             >
-              {/*<FontAwesomeIcon style={{ fontSize: 20 }} icon={link.icon}></FontAwesomeIcon>*/}
-              <span className={`${active ? '' : 'font-normal'}`}>{link.name}</span>
+              <span className="font-medium text-xl">{link.name}</span>
             </li>
           );
         })}
       </ul>
       <span
-        className="bg-primary h-[3px] absolute rounded-full transition-all duration-200"
+        className="bg-primary h-[3px] absolute rounded-full transition-all duration-200 bottom-1"
         style={{
           left: selectedNavbarItemElement?.offsetLeft + 'px',
           width: selectedNavbarItemElement?.offsetWidth + 'px',
