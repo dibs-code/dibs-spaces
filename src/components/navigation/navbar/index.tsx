@@ -4,7 +4,7 @@ import { Transition } from '@headlessui/react';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { disconnect } from '@wagmi/core';
 import { isSupportedChain } from 'constants/chains';
-import React, { Fragment, PropsWithChildren, useMemo } from 'react';
+import React, { Fragment, PropsWithChildren, useEffect, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import RoutePath, { requiresCode } from 'routes';
 import { IS_PRODUCTION } from 'utils/env';
@@ -24,35 +24,11 @@ export interface ModalPropsInterface extends React.HTMLAttributes<HTMLElement> {
 export type ModalProps = PropsWithChildren<ModalPropsInterface>;
 
 const Navbar = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
   const { openConnectModal } = useConnectModal();
 
   const [show, setShow] = React.useState(false);
 
   const { address: account } = useAccount();
-  const { chain } = useNetwork();
-  const links = useMemo(() => {
-    const linksList: { name: string; icon: string | null; address: string }[] = [
-      { name: 'Your code', icon: null, address: RoutePath.HOME },
-      { name: 'Rewards', icon: null, address: RoutePath.REWARDS },
-      {
-        name: 'Pair Isolated',
-        icon: null,
-        address: RoutePath.PAIR_ISOLATED,
-      },
-    ];
-    return IS_PRODUCTION
-      ? linksList
-      : linksList.concat([
-          {
-            name: 'Pair Isolated (test contract)',
-            icon: null,
-            address: RoutePath.PAIR_REWARDER_LEADERBOARD_TEST,
-          },
-        ]);
-  }, []);
-
   const renderConnector = () => {
     return (
       <div className="flex-1 flex justify-end">
@@ -88,43 +64,13 @@ const Navbar = () => {
     );
   };
 
-  const menu = useMemo(
-    () => (
-      <ul className="flex gap-9 mx-auto items-center">
-        {links.map((link) => {
-          const active = location.pathname === link.address;
-          const disabled = (!account || !isSupportedChain(chain?.id)) && requiresCode(link.address);
-          return (
-            <li
-              onClick={() => {
-                if (!disabled) {
-                  navigate(link.address);
-                }
-              }}
-              className={`flex items-center transition duration-200  ${active ? 'text-light-gray-3' : 'text-primary'}
-                ${disabled && 'cursor-not-allowed'}
-                ${!disabled && !active && 'cursor-pointer'}
-                ${!disabled && !active && 'hover:text-primary-dark'}
-               ${link.name === 'Reports' ? 'pl-0.5 gap-4' : 'pl-0 gap-3'}`}
-              key={link.name}
-            >
-              {/*<FontAwesomeIcon style={{ fontSize: 20 }} icon={link.icon}></FontAwesomeIcon>*/}
-              <span className={`${active ? '' : 'font-normal'}`}>{link.name}</span>
-            </li>
-          );
-        })}
-      </ul>
-    ),
-    [account, chain?.id, links, location.pathname, navigate],
-  );
-
   return (
     <>
       <nav className="w-full py-8 px-[88px] bg-transparent hidden md:flex justify-between">
         <div className="flex-1">
           <img src="/assets/images/navbar/logo.svg" alt="" />
         </div>
-        {menu}
+        <Menu />
         <div className="flex-1 flex justify-end">
           <ConnectWalletButton />
         </div>
@@ -165,7 +111,7 @@ const Navbar = () => {
         >
           <div className={'w-full inset-0 h-screen overflow-y-auto bg-white absolute py-20 px-4'}>
             {renderConnector()}
-            {menu}
+            <Menu />
             {account && (
               <div className={'flex justify-center'}>
                 <button className={'btn-primary-inverted btn-medium text-center'} onClick={() => disconnect()}>
@@ -177,6 +123,79 @@ const Navbar = () => {
         </Transition>
       </nav>
     </>
+  );
+};
+
+const Menu = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { address: account } = useAccount();
+  const { chain } = useNetwork();
+  const links = useMemo(() => {
+    const linksList: { name: string; icon: string | null; address: string }[] = [
+      { name: 'Your code', icon: null, address: RoutePath.HOME },
+      { name: 'Rewards', icon: null, address: RoutePath.REWARDS },
+      {
+        name: 'Pair Isolated',
+        icon: null,
+        address: RoutePath.PAIR_ISOLATED,
+      },
+    ];
+    return IS_PRODUCTION
+      ? linksList
+      : linksList.concat([
+          {
+            name: 'Pair Isolated (test contract)',
+            icon: null,
+            address: RoutePath.PAIR_REWARDER_LEADERBOARD_TEST,
+          },
+        ]);
+  }, []);
+
+  const [selectedNavbarItemElement, setSelectedNavbarItemElement] = React.useState<HTMLElement | null>(null);
+
+  useEffect(() => {
+    if (location.pathname) {
+      setSelectedNavbarItemElement(
+        document.getElementById('navbar-item-' + links.findIndex((link) => link.address === location.pathname)),
+      );
+    }
+  }, [location.pathname, links]);
+
+  return (
+    <div className="relative">
+      <ul className="flex gap-9 mx-auto items-center">
+        {links.map((link, index) => {
+          const active = location.pathname === link.address;
+          const disabled = (!account || !isSupportedChain(chain?.id)) && requiresCode(link.address);
+          return (
+            <li
+              onClick={() => {
+                if (!disabled) {
+                  navigate(link.address);
+                }
+              }}
+              className={`flex items-center transition duration-200 text-primary
+                ${!disabled && 'cursor-pointer'}
+                ${!disabled && !active && 'hover:text-primary-dark'}
+               ${link.name === 'Reports' ? 'pl-0.5 gap-4' : 'pl-0 gap-3'}`}
+              id={'navbar-item-' + index}
+              key={link.name}
+            >
+              {/*<FontAwesomeIcon style={{ fontSize: 20 }} icon={link.icon}></FontAwesomeIcon>*/}
+              <span className={`${active ? '' : 'font-normal'}`}>{link.name}</span>
+            </li>
+          );
+        })}
+      </ul>
+      <span
+        className="bg-primary h-[3px] absolute rounded-full transition-all duration-200"
+        style={{
+          left: selectedNavbarItemElement?.offsetLeft + 'px',
+          width: selectedNavbarItemElement?.offsetWidth + 'px',
+        }}
+      ></span>
+    </div>
   );
 };
 
