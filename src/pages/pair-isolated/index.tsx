@@ -36,7 +36,7 @@ const PairIsolated = () => {
             <p className="mt-1">Create Leaderboard</p>
           </button>
         </section>
-        <section className="border border-primary rounded p-8 pt-0 pb-6">
+        <section className="border border-gray8 rounded p-8 pt-0 pb-6">
           {/*<button onClick={() => setCreateLeaderBoardModalOpen(true)} className="btn-primary btn-large w-72">*/}
           {/*  Create LeaderBoard (Modal)*/}
           {/*</button>*/}

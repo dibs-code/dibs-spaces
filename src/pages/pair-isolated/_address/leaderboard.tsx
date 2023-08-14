@@ -81,7 +81,7 @@ const PairRewarderLeaderboard = () => {
           </button>
         </section>
 
-        <section className="border border-primary rounded p-8 pt-0 pb-6">
+        <section className="border border-gray8 rounded p-8 pt-0 pb-6">
           {/*<p>*/}
           {/*  Epoch Timer: {epochTimer.hours}h {epochTimer.minutes}m | 24h Total Prizes:{' '}*/}
           {/*  <TotalPrizes leaderBoardInfo={activeLeaderBoardInfo} />*/}

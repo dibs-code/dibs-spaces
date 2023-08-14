@@ -65,7 +65,7 @@ const Rewards = () => {
           />
         </section>
 
-        <section className="border border-primary rounded p-8 pt-0 pb-6">
+        <section className="border border-gray8 rounded p-8 pt-0 pb-6">
           {/*<header className="flex flex-row items-center text-black mb-6">*/}
           {/*  /!*<FontAwesomeIcon style={{ fontSize: 24 }} icon={faTicket} />*!/*/}
           {/*  /!*<p className="text-22 ml-2 mt-0.5">Pair isolated leaderboard rewards</p>*!/*/}
