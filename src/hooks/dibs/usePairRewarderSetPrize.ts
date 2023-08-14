@@ -35,11 +35,45 @@ export default function usePairRewarderSetPrize(
   const [txState, setTxState] = useState(TransactionState.INITIAL);
   const pending = useMemo(() => txState !== TransactionState.INITIAL, [txState]);
 
+  const finalRewardTokenAddresses = useMemo(
+    () => rewardTokenAddresses.slice(0, rewardTokenCount).filter(Boolean) as Address[],
+    [rewardTokenAddresses, rewardTokenCount],
+  );
+
+  const [finalRewardTokenSymbols, setFinalRewardTokenSymbols] = useState<string[]>([]);
+  useEffect(() => {
+    async function getTokenSymbols() {
+      setFinalRewardTokenSymbols(
+        await multicall({
+          allowFailure: false,
+          contracts: finalRewardTokenAddresses.map((tokenAddress) => ({
+            abi: erc20ABI,
+            address: tokenAddress,
+            functionName: 'symbol',
+          })),
+        }),
+      );
+    }
+
+    getTokenSymbols();
+  }, [finalRewardTokenAddresses]);
+
+  const finalTokenAmounts = useMemo(
+    () =>
+      Array.from(Array(rewardTokenCount).keys()).map((i) =>
+        allTokenAmounts.slice(0, leaderBoardSpotsCount).map((tokenAmounts) => tokenAmounts[Number(i)]),
+      ),
+    [allTokenAmounts, leaderBoardSpotsCount, rewardTokenCount],
+  );
+  const finalTokenAmountsAggregate = useMemo(
+    () => finalTokenAmounts.map((tokenAmounts) => tokenAmounts.reduce((a, c) => a + c, 0)),
+    [finalTokenAmounts],
+  );
+
   const handlePairRewarderSetPrize = useCallback(async () => {
     if (pending || !pairRewarderAddress) return;
     setTxState(TransactionState.PREPARING_TRANSACTION);
     try {
-      const finalRewardTokenAddresses = rewardTokenAddresses.slice(0, rewardTokenCount) as Address[];
       const tokenDecimals = await multicall({
         allowFailure: false,
         contracts: finalRewardTokenAddresses.map((tokenAddress) => ({
@@ -48,16 +82,14 @@ export default function usePairRewarderSetPrize(
           functionName: 'decimals',
         })),
       });
-      const finalTokenAmounts = Array.from(Array(rewardTokenCount).keys()).map((i) =>
-        allTokenAmounts
-          .slice(0, leaderBoardSpotsCount)
-          .map((tokenAmounts) => parseUnits(`${tokenAmounts[Number(i)]}`, tokenDecimals[Number(i)])),
+      const finalTokenAmountsWei = finalTokenAmounts.map((tokenAmounts, i) =>
+        tokenAmounts.map((tokenAmount) => parseUnits(`${tokenAmount}`, tokenDecimals[Number(i)])),
       );
       const { request } = await prepareWriteContract({
         address: pairRewarderAddress,
         abi: PairRewarderABI,
         functionName: 'setLeaderBoard',
-        args: [BigInt(leaderBoardSpotsCount), finalRewardTokenAddresses, finalTokenAmounts],
+        args: [BigInt(leaderBoardSpotsCount), finalRewardTokenAddresses, finalTokenAmountsWei],
       });
       setTxState(TransactionState.AWAITING_USER_CONFIRMATION);
       const { hash } = await writeContract(request);
@@ -70,7 +102,7 @@ export default function usePairRewarderSetPrize(
       console.log('set reward error :>> ', err);
     }
     setTxState(TransactionState.INITIAL);
-  }, [allTokenAmounts, leaderBoardSpotsCount, pairRewarderAddress, pending, rewardTokenAddresses, rewardTokenCount]);
+  }, [finalRewardTokenAddresses, finalTokenAmounts, leaderBoardSpotsCount, pairRewarderAddress, pending]);
 
   // For loading activeLeaderBoard if any
   const { pairAddress: pairAddressFromContract, activeLeaderBoardInfo } = usePairRewarder(pairRewarderAddress);
@@ -141,7 +173,11 @@ export default function usePairRewarderSetPrize(
     leaderBoardSpotsCount,
     rewardTokenCount,
     rewardTokenAddresses,
+    finalRewardTokenAddresses,
+    finalRewardTokenSymbols,
     allTokenAmounts,
+    finalTokenAmounts,
+    finalTokenAmountsAggregate,
     handleTokenAmountChange,
     handleTokenAddressChange,
     handlePairRewarderSetPrize,

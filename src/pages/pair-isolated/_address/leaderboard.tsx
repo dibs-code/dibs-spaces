@@ -3,7 +3,8 @@ import { LeaderBoardEpochButtons } from 'components/pairIsolated/LeaderBoardEpoc
 import PairRewarderLeaderBoard from 'components/pairIsolated/PairRewarderLeaderboard';
 import TotalPrizes from 'components/pairIsolated/TotalPrizes';
 import useEpochTimer from 'hooks/dibs/useEpochTimer';
-import { usePairRewarder, usePairRewarderLeaderboard } from 'hooks/dibs/usePairRewarder';
+import { usePairRewarder } from 'hooks/dibs/usePairRewarder';
+import { usePairRewarderLeaderboard } from 'hooks/dibs/usePairRewarderLeaderboard';
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 

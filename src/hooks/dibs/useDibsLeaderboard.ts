@@ -1,6 +1,7 @@
 import { ApolloClient, useApolloClient } from '@apollo/client';
 import { multicall } from '@wagmi/core';
 import { dibsABI, useDibsFirstRoundStartTime, useDibsLotteryGetLatestLeaderBoard } from 'abis/types/generated';
+import { DailyDataQueryQuery } from 'apollo/__generated__/graphql';
 import { DailyData } from 'apollo/queries';
 import { DibsAddressMap } from 'constants/addresses';
 import { useDibsAddresses } from 'hooks/dibs/useDibsAddresses';
@@ -28,23 +29,26 @@ export const useLeaderboardData = () => {
   });
 
   const getDailyLeaderboardData = useCallback(
-    async (apolloClient: ApolloClient<object>, epoch: number) => {
+    async (apolloClient: ApolloClient<object>, epoch: number): Promise<LeaderBoardRecord[]> => {
       if (!dibsAddress) return [];
-      let result: any[] = [];
-      let index = 0;
-      let leaderRes;
+
+      let offset = 0;
+      const result: DailyDataQueryQuery['dailyGeneratedVolumes'] = [];
+      let chunkResult: DailyDataQueryQuery['dailyGeneratedVolumes'] = [];
       do {
-        leaderRes = await apolloClient.query({
-          query: DailyData,
-          variables: { day: epoch, skip: index },
-          fetchPolicy: 'cache-first',
-        });
-        if (leaderRes.data.dailyGeneratedVolumes.length > 0) {
-          result = [...result, ...leaderRes.data.dailyGeneratedVolumes];
-        }
-        index += leaderRes.data.dailyGeneratedVolumes.length;
-      } while (leaderRes.data.dailyGeneratedVolumes.length > 0);
-      const sortedData: LeaderBoardRecord[] = result
+        chunkResult = (
+          await apolloClient.query({
+            query: DailyData,
+            variables: { day: epoch, skip: offset },
+            fetchPolicy: 'cache-first',
+          })
+        ).data.dailyGeneratedVolumes;
+        result.push(...chunkResult);
+        offset += chunkResult.length;
+      } while (chunkResult.length);
+
+      //TODO: merge this code with the one in usePairRewarderLeaderboard
+      const sortedData = result
         .filter((ele) => ele.user !== dibsAddress.toLowerCase())
         .map((ele) => {
           return {
