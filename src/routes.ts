@@ -1,5 +1,6 @@
 export enum RoutePath {
   HOME = '/',
+  YOUR_CODE_TEST = 'your-code-test',
   REWARDS = '/rewards',
   REPORTS = '/reports',
   TEST_SWAP = '/test-swap',

@@ -134,6 +134,7 @@ const Menu = () => {
   const links = useMemo(() => {
     const linksList: { name: string; icon: string | null; address: string }[] = [
       { name: 'Your code', icon: null, address: RoutePath.HOME },
+      { name: 'Your code (test)', icon: null, address: RoutePath.YOUR_CODE_TEST },
       { name: 'Rewards', icon: null, address: RoutePath.REWARDS },
       {
         name: 'Pair Isolated',

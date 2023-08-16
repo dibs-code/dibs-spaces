@@ -5,6 +5,7 @@ import Home from 'pages/home';
 import PairRewarderLeaderboard from 'pages/pair-isolated/_address/leaderboard';
 import PairIsolated from 'pages/pair-isolated/index';
 import Rewards from 'pages/rewards';
+import YourCodeTest from 'pages/your-code-test';
 import React, { useEffect } from 'react';
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import RoutePath, { requiresCode } from 'routes';
@@ -29,6 +30,7 @@ function App() {
       <Navbar />
       <Routes>
         <Route path={RoutePath.HOME} element={<Home />} />
+        <Route path={RoutePath.YOUR_CODE_TEST} element={<YourCodeTest />} />
         <Route path={RoutePath.REWARDS} element={<Rewards />} />
         <Route path={RoutePath.PAIR_ISOLATED} element={<PairIsolated />} />
         <Route path={RoutePath.PAIR_REWARDER_LEADERBOARD} element={<PairRewarderLeaderboard />} />

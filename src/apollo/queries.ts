@@ -13,3 +13,11 @@ export const DailyDataForPair = gql(`query DailyDataForPairQuery($skip: Int!, $d
       amountAsReferrer
     }
   }`);
+
+export const UserVolumeData = gql(`query UserVolumeDataQuery($skip: Int!, $user: Bytes!) {
+    dailyGeneratedVolumes(first: 100, skip: $skip,  where: {user: $user, day_gte: 0, amountAsReferrer_gt: 0} orderBy: day orderDirection: desc) {
+      user
+      day
+      amountAsReferrer
+    }
+  }`);

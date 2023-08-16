@@ -1,10 +1,9 @@
 import { useDibsGetCodeName, useDibsParents } from 'abis/types/generated';
 import { DibsAddressMap } from 'constants/addresses';
 import { useContractAddress } from 'hooks/useContractAddress';
-import { useAccount } from 'wagmi';
+import { Address } from 'wagmi';
 
-export function useDibsCodeData() {
-  const { address } = useAccount();
+export function useDibsCodeData(address: Address | undefined) {
   const dibsAddress = useContractAddress(DibsAddressMap);
 
   const { data: addressToName } = useDibsGetCodeName({
