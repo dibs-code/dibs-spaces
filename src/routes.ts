@@ -10,7 +10,7 @@ export enum RoutePath {
 }
 
 export function requiresCode(routePath: string) {
-  return routePath !== RoutePath.HOME && !routePath.startsWith('/pair-isolated');
+  return routePath === RoutePath.REWARDS;
 }
 
 export function getRoute(path: RoutePath, params?: { [key: string]: string }) {

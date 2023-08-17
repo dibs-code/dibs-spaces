@@ -134,7 +134,6 @@ const Menu = () => {
   const links = useMemo(() => {
     const linksList: { name: string; icon: string | null; address: string }[] = [
       { name: 'Your code', icon: null, address: RoutePath.HOME },
-      { name: 'Your code (test)', icon: null, address: RoutePath.YOUR_CODE_TEST },
       { name: 'Rewards', icon: null, address: RoutePath.REWARDS },
       {
         name: 'Pair Isolated',
@@ -145,8 +144,9 @@ const Menu = () => {
     return IS_PRODUCTION
       ? linksList
       : linksList.concat([
+          { name: 'Your code (test)', icon: null, address: RoutePath.YOUR_CODE_TEST },
           {
-            name: 'Pair Isolated (test contract)',
+            name: 'Pair Isolated (test)',
             icon: null,
             address: RoutePath.PAIR_REWARDER_LEADERBOARD_TEST,
           },
@@ -177,7 +177,7 @@ const Menu = () => {
                 }
               }}
               className={`flex items-center transition duration-200 text-primary
-                ${!disabled && 'cursor-pointer'}
+                ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'}
                ${link.name === 'Reports' ? 'pl-0.5 gap-4' : 'pl-0 gap-3'}`}
               id={'navbar-item-' + index}
               key={link.name}
