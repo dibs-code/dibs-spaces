@@ -71,12 +71,12 @@ export function usePairRewarderRewards(pairRewarderAddress: Address) {
   const { data: blockNumber } = useBlockNumber({
     watch: true,
   });
-  const getAccountRewards = usePairRewarderGetAccountRewards();
+  const pairRewarderGetAccountRewards = usePairRewarderGetAccountRewards();
   useEffect(() => {
     if (address && pairRewarderAddress) {
-      getAccountRewards(pairRewarderAddress, address).then(setRewards);
+      pairRewarderGetAccountRewards(pairRewarderAddress, address).then(setRewards);
     }
-  }, [address, pairRewarderAddress, blockNumber, getAccountRewards]);
+  }, [address, pairRewarderAddress, blockNumber, pairRewarderGetAccountRewards]);
 
   return {
     rewards,
@@ -87,7 +87,7 @@ export function useWonPairRewarders(address: Address | undefined) {
   const [wonPairRewarderAddresses, setWonPairRewarderAddresses] = useState<`0x${string}`[] | null>(null);
   const location = useLocation();
   const [allPairRewarderRewards, setAllPairRewarderRewards] = useState<AllPairRewarderRewards | null>(null);
-  const getAccountRewards = usePairRewarderGetAccountRewards();
+  const pairRewarderGetAccountRewards = usePairRewarderGetAccountRewards();
 
   const { allPairRewarders: allPairRewardersFromContract } = usePairRewarderFactory();
   const allPairRewarders: Address[] | null = useMemo(
@@ -130,7 +130,9 @@ export function useWonPairRewarders(address: Address | undefined) {
         });
 
         const allRewards = await Promise.all(
-          wonPairRewarderAddresses.map((pairRewarderAddress) => getAccountRewards(pairRewarderAddress, address)),
+          wonPairRewarderAddresses.map((pairRewarderAddress) =>
+            pairRewarderGetAccountRewards(pairRewarderAddress, address),
+          ),
         );
         wonPairRewarderAddresses.forEach((pairRewarderAddress, i) => {
           result[pairRewarderAddress] = {
@@ -144,8 +146,17 @@ export function useWonPairRewarders(address: Address | undefined) {
     }
 
     getData();
-  }, [address, getAccountRewards, wonPairRewarderAddresses]);
+  }, [address, pairRewarderGetAccountRewards, wonPairRewarderAddresses]);
+
+  const pairsJoined = useMemo(
+    () =>
+      allPairRewarderRewards
+        ? Object.values(allPairRewarderRewards).reduce((a, c) => a.add(c.pair), new Set()).size
+        : null,
+    [allPairRewarderRewards],
+  );
   return {
+    pairsJoined,
     wonPairRewarderAddresses,
     allPairRewarderRewards,
   };

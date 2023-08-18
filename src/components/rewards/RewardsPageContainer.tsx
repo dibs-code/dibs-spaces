@@ -3,6 +3,7 @@
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { LeaderBoardEpochButtons } from 'components/pairIsolated/LeaderBoardEpochButtons';
 import { PairRewarderRewards } from 'components/rewards/PairRewarderRewards';
+import useDibsUserTotalVolume from 'hooks/dibs/useDibsUserTotalVolume';
 import { usePairRewarderLeaderboard } from 'hooks/dibs/usePairRewarderLeaderboard';
 import { useWonPairRewarders } from 'hooks/dibs/usePairRewarderRewards';
 import React from 'react';
@@ -22,8 +23,8 @@ const RewardsPageContainer = ({ testAddress }: { testAddress?: Address }) => {
     usePairRewarderLeaderboard(pairRewarderAddress);
   const { address } = useAccount();
 
-  const { allPairRewarderRewards } = useWonPairRewarders(testAddress ?? address);
-
+  const { allPairRewarderRewards, pairsJoined } = useWonPairRewarders(testAddress ?? address);
+  const { userTotalVolume } = useDibsUserTotalVolume(testAddress ?? address);
   return (
     <div className="page">
       <main>
@@ -41,13 +42,15 @@ const RewardsPageContainer = ({ testAddress }: { testAddress?: Address }) => {
           <div className="card-green rounded flex flex-col gap-20 bg-gray2 py-7 px-9 flex-1">
             <p className="card-title text-white font-medium text-2xl">Pairs Joined</p>
             <span className="flex gap-4 items-center ml-auto">
-              <p className="font-medium text-[32px] text-white">12</p>
+              <p className="font-medium text-[32px] text-white">{pairsJoined ?? '...'}</p>
             </span>
           </div>
           <div className="card-red rounded flex flex-col gap-20 bg-gray2 py-7 px-9 flex-1">
             <p className="card-title text-white font-medium text-2xl">Volume Generated</p>
             <span className="flex gap-4 items-center ml-auto">
-              <p className="font-medium text-[32px] text-white">$322,730</p>
+              <p className="font-medium text-[32px] text-white">
+                ${userTotalVolume?.toNumber().toLocaleString() ?? '...'}
+              </p>
             </span>
           </div>
           <div className="card-yellow rounded flex flex-col gap-20 bg-gray2 py-7 px-9 flex-1">

@@ -5,7 +5,7 @@ import RewardsPageContainer from 'components/rewards/RewardsPageContainer';
 import React from 'react';
 
 const RewardsTest = () => {
-  return <RewardsPageContainer testAddress={'0x7f46A9Dc0cBbb246c96C2B97aCd1E47893dfc628'} />;
+  return <RewardsPageContainer testAddress={'0x0Ab34241eAB01E853F0b587A3ede7667E7f8310a'} />;
 };
 
 export default RewardsTest; /* Rectangle 18 */
