@@ -2,6 +2,7 @@ export enum RoutePath {
   HOME = '/',
   YOUR_CODE_TEST = 'your-code-test',
   REWARDS = '/rewards',
+  REWARDS_TEST = '/rewards-test',
   REPORTS = '/reports',
   TEST_SWAP = '/test-swap',
   PAIR_ISOLATED = '/pair-isolated',

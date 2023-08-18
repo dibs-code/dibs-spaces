@@ -145,6 +145,7 @@ const Menu = () => {
       ? linksList
       : linksList.concat([
           { name: 'Your code (test)', icon: null, address: RoutePath.YOUR_CODE_TEST },
+          { name: 'Rewards (test)', icon: null, address: RoutePath.REWARDS_TEST },
           {
             name: 'Pair Isolated (test)',
             icon: null,
