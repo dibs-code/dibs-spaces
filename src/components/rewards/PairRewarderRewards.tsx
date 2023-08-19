@@ -1,8 +1,10 @@
 import { usePairRewarderWrite, usePreparePairRewarderClaimLeaderBoardReward } from 'abis/types/generated';
 import { RewardAmounts } from 'components/rewards/RewardAmounts';
-import RewardToken from 'components/RewardToken';
 import usePairName from 'hooks/dibs/usePairName';
+import { useUserVolumeForDayAndPair } from 'hooks/dibs/usePairRewarderLeaderboard';
 import React from 'react';
+import { useLocation } from 'react-router-dom';
+import RoutePath from 'routes';
 // import { Link } from 'react-router-dom';
 // import RoutePath from 'routes';
 import { AllPairRewarderRewardsItem, PairRewarderRewardItem } from 'types';
@@ -34,11 +36,30 @@ export const PairRewarderRewardItemComponent = ({
   pairRewarderAddress,
   rewardItem,
   pairName,
+  pair,
+  account,
 }: {
   rewardItem: PairRewarderRewardItem;
   pairName: string | undefined;
   pairRewarderAddress: Address;
+  pair: Address;
+  account: Address | undefined;
 }) => {
+  const location = useLocation();
+
+  const volume = useUserVolumeForDayAndPair(
+    location.pathname.startsWith(RoutePath.REWARDS_TEST)
+      ? {
+          day: 21,
+          pair: '0x46e26733aa90bd74fd6a56e1894c10b4457fa0d0',
+          user: '0x6e40691a5ddc2cbc0f2f998ca686bdf6c777ee29',
+        }
+      : {
+          day: Number(rewardItem.day),
+          pair,
+          user: account,
+        },
+  );
   return (
     <tr className="text-white text-left bg-gray2">
       <td className="pl-8 rounded-l py-5">
@@ -52,11 +73,7 @@ export const PairRewarderRewardItemComponent = ({
           </span>
         </span>
       </td>
-      <td>
-        {rewardItem.rewardTokensAndAmounts.map((obj) => (
-          <RewardToken key={obj.token} rewardTokenAddress={obj.token} rewardTokenAmount={obj.amount} />
-        ))}
-      </td>
+      <td>${volume ? volume.toNumber().toLocaleString() : '...'}</td>
       <td>{rewardItem.rank}</td>
       <td>
         <RewardAmounts rewardTokensAndAmounts={rewardItem.rewardTokensAndAmounts} showTotalUsd={!rewardItem.claimed} />
@@ -76,9 +93,11 @@ export const PairRewarderRewardItemComponent = ({
 export const PairRewarderRewards = ({
   pairRewarderAddress,
   allPairRewarderRewardsItem: { rewards, pair },
+  account,
 }: {
   pairRewarderAddress: Address;
   allPairRewarderRewardsItem: AllPairRewarderRewardsItem;
+  account: Address | undefined;
 }) => {
   const { pairName } = usePairName(pair);
   return (
@@ -87,6 +106,8 @@ export const PairRewarderRewards = ({
         <PairRewarderRewardItemComponent
           key={rewardItem.day.toString()}
           rewardItem={rewardItem}
+          account={account}
+          pair={pair}
           pairName={pairName}
           pairRewarderAddress={pairRewarderAddress}
         />

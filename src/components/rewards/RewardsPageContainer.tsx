@@ -10,10 +10,8 @@ import { Address, useAccount } from 'wagmi';
 
 const RewardsPageContainer = ({ testAddress }: { testAddress?: Address }) => {
   const { address } = useAccount();
-
-  const { claimedPairRewarderRewards, unClaimedPairRewarderRewards, pairsJoined } = useWonPairRewarders(
-    testAddress ?? address,
-  );
+  const account = useMemo(() => testAddress ?? address, [address, testAddress]);
+  const { claimedPairRewarderRewards, unClaimedPairRewarderRewards, pairsJoined } = useWonPairRewarders(account);
   const { userTotalVolume } = useDibsUserTotalVolume(testAddress ?? address);
 
   const [showActiveRewards, setShowActiveRewards] = useState(true);
@@ -87,6 +85,7 @@ const RewardsPageContainer = ({ testAddress }: { testAddress?: Address }) => {
                 {Object.keys(allPairRewarderRewardsFiltered).map((pairRewarderAddress) => (
                   <PairRewarderRewards
                     key={pairRewarderAddress}
+                    account={account}
                     pairRewarderAddress={pairRewarderAddress as Address}
                     allPairRewarderRewardsItem={allPairRewarderRewardsFiltered[pairRewarderAddress as Address]}
                   />

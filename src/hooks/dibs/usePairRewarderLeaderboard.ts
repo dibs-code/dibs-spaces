@@ -1,4 +1,4 @@
-import { ApolloClient, useApolloClient } from '@apollo/client';
+import { useApolloClient } from '@apollo/client';
 import { multicall } from '@wagmi/core';
 import {
   dibsABI,
@@ -8,7 +8,8 @@ import {
   usePairRewarderPair,
 } from 'abis/types/generated';
 import { DailyDataForPairQueryQuery } from 'apollo/__generated__/graphql';
-import { DailyDataForPair } from 'apollo/queries';
+import { DailyDataForPair, UserVolumeDataForPairAndDay } from 'apollo/queries';
+import BigNumberJS from 'bignumber.js';
 import { DibsAddressMap } from 'constants/addresses';
 import { useContractAddress } from 'hooks/useContractAddress';
 import { useCallback, useEffect, useState } from 'react';
@@ -63,7 +64,7 @@ export const usePairRewarderLeaderboard = (pairRewarderAddress: Address | undefi
     address: pairRewarderAddress,
   });
   const getDailyLeaderboardData = useCallback(
-    async (apolloClient: ApolloClient<object>, epoch: number): Promise<LeaderBoardRecord[]> => {
+    async (epoch: number): Promise<LeaderBoardRecord[]> => {
       if (!dibsAddress || !pairAddress) return [];
 
       let offset = 0;
@@ -106,19 +107,19 @@ export const usePairRewarderLeaderboard = (pairRewarderAddress: Address | undefi
         };
       });
     },
-    [dibsAddress, pairAddress],
+    [apolloClient, dibsAddress, pairAddress],
   );
   useEffect(() => {
     const fetchInfo = async () => {
       if (!selectedEpoch) return;
       try {
-        setEpochLeaderBoard(await getDailyLeaderboardData(apolloClient, Number(selectedEpoch)));
+        setEpochLeaderBoard(await getDailyLeaderboardData(Number(selectedEpoch)));
       } catch (error) {
         console.log('leaderboard get error :>> ', error);
       }
     };
     fetchInfo();
-  }, [apolloClient, getDailyLeaderboardData, selectedEpoch]);
+  }, [getDailyLeaderboardData, selectedEpoch]);
 
   return {
     selectedEpoch,
@@ -130,3 +131,29 @@ export const usePairRewarderLeaderboard = (pairRewarderAddress: Address | undefi
     activeDay,
   };
 };
+
+export function useUserVolumeForDayAndPair(params: {
+  day: number | undefined;
+  user: Address | undefined;
+  pair: Address | undefined;
+}) {
+  const apolloClient = useApolloClient();
+  const [volume, setVolume] = useState<BigNumberJS | null>(null);
+  useEffect(() => {
+    const fetchInfo = async () => {
+      if (!params.day || !params.user || !params.pair) return;
+      const result = (
+        await apolloClient.query({
+          query: UserVolumeDataForPairAndDay,
+          variables: params,
+          fetchPolicy: 'cache-first',
+        })
+      ).data.dailyGeneratedVolumes;
+      if (result.length) {
+        setVolume(fromWei(result[0].amountAsReferrer));
+      }
+    };
+    fetchInfo();
+  }, [apolloClient, params]);
+  return volume;
+}
