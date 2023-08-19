@@ -1,30 +1,28 @@
 // import {faCopy} from "@fortawesome/pro-regular-svg-icons";
 // import { faTicket } from '@fortawesome/pro-solid-svg-icons';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { LeaderBoardEpochButtons } from 'components/pairIsolated/LeaderBoardEpochButtons';
+import TableViewSwitch from 'components/basic/TableViewSwitch';
 import { PairRewarderRewards } from 'components/rewards/PairRewarderRewards';
 import useDibsUserTotalVolume from 'hooks/dibs/useDibsUserTotalVolume';
-import { usePairRewarderLeaderboard } from 'hooks/dibs/usePairRewarderLeaderboard';
 import { useWonPairRewarders } from 'hooks/dibs/usePairRewarderRewards';
-import React from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useMemo, useState } from 'react';
 import { Address, useAccount } from 'wagmi';
 
 const RewardsPageContainer = ({ testAddress }: { testAddress?: Address }) => {
-  const params = useParams();
-
-  const pairRewarderAddress =
-    params.address === 'test'
-      ? // '0x6cB66a0762E7Ce3c0Abc9d0241bF4cfFc67fcdA1' // has day 10 winners
-        '0x21DAcb323a7a23E8B70BA96f2D472bbA92A94D9c' // has day 21 subgraph data
-      : (params.address as Address);
-
-  const { selectedEpoch, selectPreviousEpoch, selectCurrentEpoch, activeDay, setSelectedEpoch } =
-    usePairRewarderLeaderboard(pairRewarderAddress);
   const { address } = useAccount();
 
-  const { allPairRewarderRewards, pairsJoined } = useWonPairRewarders(testAddress ?? address);
+  const { claimedPairRewarderRewards, unClaimedPairRewarderRewards, pairsJoined } = useWonPairRewarders(
+    testAddress ?? address,
+  );
   const { userTotalVolume } = useDibsUserTotalVolume(testAddress ?? address);
+
+  const [showActiveRewards, setShowActiveRewards] = useState(true);
+
+  const allPairRewarderRewardsFiltered = useMemo(
+    () => (showActiveRewards ? unClaimedPairRewarderRewards : claimedPairRewarderRewards),
+    [claimedPairRewarderRewards, showActiveRewards, unClaimedPairRewarderRewards],
+  );
+
   return (
     <div className="page">
       <main>
@@ -62,17 +60,17 @@ const RewardsPageContainer = ({ testAddress }: { testAddress?: Address }) => {
         </section>
 
         <section className="actions flex justify-start mb-4 h-[52px]">
-          <LeaderBoardEpochButtons
-            selectedEpoch={selectedEpoch}
-            selectPreviousEpoch={selectPreviousEpoch}
-            selectCurrentEpoch={selectCurrentEpoch}
-            activeDay={activeDay}
-            setSelectedEpoch={setSelectedEpoch}
+          <TableViewSwitch
+            optionOneSelected={showActiveRewards}
+            selectOptionOne={() => setShowActiveRewards(true)}
+            selectOptionTwo={() => setShowActiveRewards(false)}
+            optionOneLabel={'Active'}
+            optionTwoLabel={'History'}
           />
         </section>
 
         <section className="border border-gray8 rounded p-8 pt-0 pb-6">
-          {allPairRewarderRewards === null ? (
+          {allPairRewarderRewardsFiltered === null ? (
             <div>Loading...</div>
           ) : (
             <table className="w-full text-center border-separate border-spacing-y-3 rounded">
@@ -86,11 +84,11 @@ const RewardsPageContainer = ({ testAddress }: { testAddress?: Address }) => {
                 </tr>
               </thead>
               <tbody>
-                {Object.keys(allPairRewarderRewards).map((pairRewarderAddress) => (
+                {Object.keys(allPairRewarderRewardsFiltered).map((pairRewarderAddress) => (
                   <PairRewarderRewards
                     key={pairRewarderAddress}
                     pairRewarderAddress={pairRewarderAddress as Address}
-                    allPairRewarderRewardsItem={allPairRewarderRewards[pairRewarderAddress as Address]}
+                    allPairRewarderRewardsItem={allPairRewarderRewardsFiltered[pairRewarderAddress as Address]}
                   />
                 ))}
               </tbody>

@@ -1,8 +1,8 @@
 import { formatUnits } from '@ethersproject/units';
 import { multicall } from '@wagmi/core';
 import { erc20ABI } from 'abis/types/generated';
+import { TotalRewardInUsd } from 'components/rewards/RewardAmounts';
 import RewardToken from 'components/RewardToken';
-import { useCoinGeckoTokenAmountsToUsd } from 'hooks/useCoinGeckoPrice';
 import React, { useEffect, useMemo, useState } from 'react';
 import { LeaderBoardInfo, LeaderBoardRecord } from 'types';
 import getPairIsolatedRewardTokensAndAmounts from 'utils/getPairIsolatedRewardTokensAndAmounts';
@@ -38,7 +38,6 @@ function LeaderBoardRecordRow({
 
     getTokenAmounts();
   }, [tokenAddresses, tokenAmountsRaw]);
-  const { totalAmountUsd } = useCoinGeckoTokenAmountsToUsd(tokenAddresses, tokenAmounts);
   return (
     <tr className="text-white text-left bg-gray2">
       <td className="pl-8 rounded-l">
@@ -51,7 +50,7 @@ function LeaderBoardRecordRow({
           {rewardTokensAndAmounts.map((obj) => (
             <RewardToken key={obj.token} rewardTokenAddress={obj.token} rewardTokenAmount={obj.amount} />
           ))}{' '}
-          ≈ {totalAmountUsd ?? '...'}$
+          ≈ <TotalRewardInUsd rewardTokens={tokenAddresses} rewardAmounts={tokenAmounts} />
         </span>
       </td>
     </tr>

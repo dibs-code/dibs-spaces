@@ -1,4 +1,5 @@
 import { usePairRewarderWrite, usePreparePairRewarderClaimLeaderBoardReward } from 'abis/types/generated';
+import { RewardAmounts } from 'components/rewards/RewardAmounts';
 import RewardToken from 'components/RewardToken';
 import usePairName from 'hooks/dibs/usePairName';
 import React from 'react';
@@ -61,7 +62,12 @@ export const PairRewarderRewards = ({
             ))}
           </td>
           <td>{rewardItem.rank}</td>
-          <td>2000 DEUS + 300 BUSD ≈ $32,195</td>
+          <td>
+            <RewardAmounts
+              rewardTokensAndAmounts={rewardItem.rewardTokensAndAmounts}
+              showTotalUsd={!rewardItem.claimed}
+            />
+          </td>
           <td className="py-4 pr-8 rounded-r w-36">
             {rewardItem.claimed ? (
               <button className="btn-primary btn-large font-medium mt-4 w-full xl:w-auto px-5 border-2 mx-2 text-white bg-gray shadow-primary-xl">

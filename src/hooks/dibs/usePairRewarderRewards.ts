@@ -155,9 +155,40 @@ export function useWonPairRewarders(address: Address | undefined) {
         : null,
     [allPairRewarderRewards],
   );
+
+  const [claimedPairRewarderRewards, unClaimedPairRewarderRewards] = useMemo(() => {
+    if (!allPairRewarderRewards) return [null, null];
+    const claimed: AllPairRewarderRewards = {};
+    const unclaimed: AllPairRewarderRewards = {};
+
+    for (const key of Object.keys(allPairRewarderRewards)) {
+      const pairRewarderAddress = key as Address;
+      const { pair, rewards } = allPairRewarderRewards[pairRewarderAddress];
+      const [claimedRewards, unClaimedRewards] = rewards.reduce(
+        (acc, reward) => {
+          (reward.claimed ? acc[0] : acc[1]).push(reward);
+          return acc;
+        },
+        [[] as PairRewarderRewardItem[], [] as PairRewarderRewardItem[]],
+      );
+
+      if (claimedRewards.length) {
+        claimed[pairRewarderAddress] = { pair, rewards: claimedRewards };
+      }
+
+      if (unClaimedRewards.length) {
+        unclaimed[pairRewarderAddress] = { pair, rewards: unClaimedRewards };
+      }
+    }
+
+    return [claimed, unclaimed];
+  }, [allPairRewarderRewards]);
+
   return {
     pairsJoined,
     wonPairRewarderAddresses,
     allPairRewarderRewards,
+    claimedPairRewarderRewards,
+    unClaimedPairRewarderRewards,
   };
 }

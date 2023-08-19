@@ -1,6 +1,6 @@
 import { TokenSymbol } from 'components/basic/input/TokenAddressInput';
+import { TotalRewardInUsd } from 'components/rewards/RewardAmounts';
 import { useLeaderBoardContext } from 'contexts/CreateLeaderBoardModalContext';
-import { useCoinGeckoTokenAmountsToUsd } from 'hooks/useCoinGeckoPrice';
 import React from 'react';
 import { Address } from 'wagmi';
 
@@ -14,10 +14,6 @@ export function RewardAmountInputRow({
   disabled?: boolean;
 }) {
   const { handleTokenAmountChange, rewardTokenAddresses } = useLeaderBoardContext();
-  const { totalAmountUsd } = useCoinGeckoTokenAmountsToUsd(
-    rewardTokenAddresses as Address[],
-    leaderboardSpotTokenAmounts,
-  );
   return (
     <div className="flex flex-col mb-2.5 gap-3">
       <div className="flex items-center text-white gap-3">
@@ -43,7 +39,12 @@ export function RewardAmountInputRow({
           ))}
         </span>
         <p className="text-xl font-medium">≈</p>
-        <p className="text-xl font-medium">{totalAmountUsd ?? '...'}$</p>
+        <p className="text-xl font-medium">
+          <TotalRewardInUsd
+            rewardTokens={rewardTokenAddresses as Address[]}
+            rewardAmounts={leaderboardSpotTokenAmounts}
+          />
+        </p>
       </div>
     </div>
   );
