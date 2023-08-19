@@ -7,7 +7,13 @@ import { goerli } from 'wagmi/chains';
 export default function useTestOrRealData() {
   const location = useLocation();
   const isTestRewardsRoute = useMemo(() => location.pathname.startsWith(RoutePath.REWARDS_TEST), [location.pathname]);
-  const isTestRoute = useMemo(() => location.pathname.startsWith(RoutePath.REWARDS_TEST), [location.pathname]);
+  const isTestRoute = useMemo(
+    () =>
+      location.pathname.startsWith(RoutePath.REWARDS_TEST) ||
+      location.pathname.startsWith(RoutePath.YOUR_CODE_TEST) ||
+      location.pathname.startsWith(RoutePath.PAIR_REWARDER_LEADERBOARD_TEST),
+    [location.pathname],
+  );
   const { chain } = useNetwork();
   const chainId = useMemo(() => (isTestRoute ? goerli.id : chain?.id), [chain, isTestRoute]);
   return {

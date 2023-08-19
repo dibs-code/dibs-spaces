@@ -1,9 +1,9 @@
 import { chains } from 'constants/chains';
+import useTestOrRealData from 'hooks/useTestOrRealData';
 import { useMemo } from 'react';
 import { AddressMap } from 'types';
-import { useNetwork } from 'wagmi';
 
 export function useContractAddress(addressMap: AddressMap) {
-  const { chain } = useNetwork();
-  return useMemo(() => addressMap[chain?.id ?? chains[0].id], [addressMap, chain?.id]);
+  const { chainId } = useTestOrRealData();
+  return useMemo(() => addressMap[chainId ?? chains[0].id], [addressMap, chainId]);
 }

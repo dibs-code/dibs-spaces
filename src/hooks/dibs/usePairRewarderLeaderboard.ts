@@ -12,6 +12,7 @@ import { DailyDataForPair, UserVolumeDataForPairAndDay } from 'apollo/queries';
 import BigNumberJS from 'bignumber.js';
 import { DibsAddressMap } from 'constants/addresses';
 import { useContractAddress } from 'hooks/useContractAddress';
+import useTestOrRealData from 'hooks/useTestOrRealData';
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { LeaderBoardInfo, LeaderBoardRecord } from 'types';
@@ -20,7 +21,7 @@ import { Address } from 'wagmi';
 
 export const usePairRewarderLeaderboard = (pairRewarderAddress: Address | undefined) => {
   const apolloClient = useApolloClient();
-
+  const { chainId } = useTestOrRealData();
   const [epochLeaderBoard, setEpochLeaderBoard] = useState<LeaderBoardRecord[]>([]);
   const [leaderBoardInfo, setLeaderBoardInfo] = useState<LeaderBoardInfo | undefined>(undefined);
   const [selectedEpoch, setSelectedEpoch] = useState<bigint | null>(null);
@@ -29,6 +30,7 @@ export const usePairRewarderLeaderboard = (pairRewarderAddress: Address | undefi
 
   const { data: activeDay } = usePairRewarderActiveDay({
     address: pairRewarderAddress,
+    chainId,
   });
   const selectPreviousEpoch = useCallback(() => {
     if (activeDay) {
@@ -47,9 +49,11 @@ export const usePairRewarderLeaderboard = (pairRewarderAddress: Address | undefi
   const { data: selectedEpochWinnersRaw } = usePairRewarderLeaderBoardWinners({
     address: pairRewarderAddress,
     args: selectedEpoch !== null ? [selectedEpoch] : undefined,
+    chainId,
   });
   const { data: activeLeaderBoardInfo } = usePairRewarderLeaderBoardInfo({
     address: pairRewarderAddress,
+    chainId,
   });
   const params = useParams();
   useEffect(() => {
@@ -62,6 +66,7 @@ export const usePairRewarderLeaderboard = (pairRewarderAddress: Address | undefi
 
   const { data: pairAddress } = usePairRewarderPair({
     address: pairRewarderAddress,
+    chainId,
   });
   const getDailyLeaderboardData = useCallback(
     async (epoch: number): Promise<LeaderBoardRecord[]> => {
@@ -99,6 +104,7 @@ export const usePairRewarderLeaderboard = (pairRewarderAddress: Address | undefi
           functionName: 'getCodeName',
           args: [item.user],
         })),
+        chainId,
       });
       return sortedData.map((data, index) => {
         return {
@@ -107,7 +113,7 @@ export const usePairRewarderLeaderboard = (pairRewarderAddress: Address | undefi
         };
       });
     },
-    [apolloClient, dibsAddress, pairAddress],
+    [apolloClient, chainId, dibsAddress, pairAddress],
   );
   useEffect(() => {
     const fetchInfo = async () => {
