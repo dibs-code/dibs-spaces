@@ -2,9 +2,8 @@ import { usePairRewarderWrite, usePreparePairRewarderClaimLeaderBoardReward } fr
 import { RewardAmounts } from 'components/rewards/RewardAmounts';
 import usePairName from 'hooks/dibs/usePairName';
 import { useUserVolumeForDayAndPair } from 'hooks/dibs/usePairRewarderLeaderboard';
+import useTestOrRealData from 'hooks/useTestOrRealData';
 import React from 'react';
-import { useLocation } from 'react-router-dom';
-import RoutePath from 'routes';
 // import { Link } from 'react-router-dom';
 // import RoutePath from 'routes';
 import { AllPairRewarderRewardsItem, PairRewarderRewardItem } from 'types';
@@ -37,18 +36,17 @@ export const PairRewarderRewardItemComponent = ({
   rewardItem,
   pairName,
   pair,
-  account,
 }: {
   rewardItem: PairRewarderRewardItem;
   pairName: string | undefined;
   pairRewarderAddress: Address;
   pair: Address;
-  account: Address | undefined;
 }) => {
-  const location = useLocation();
+  const { isTestRewardsRoute } = useTestOrRealData();
 
+  const { address } = useAccount();
   const volume = useUserVolumeForDayAndPair(
-    location.pathname.startsWith(RoutePath.REWARDS_TEST)
+    isTestRewardsRoute
       ? {
           day: 21,
           pair: '0x46e26733aa90bd74fd6a56e1894c10b4457fa0d0',
@@ -57,7 +55,7 @@ export const PairRewarderRewardItemComponent = ({
       : {
           day: Number(rewardItem.day),
           pair,
-          user: account,
+          user: address,
         },
   );
   return (
@@ -93,11 +91,9 @@ export const PairRewarderRewardItemComponent = ({
 export const PairRewarderRewards = ({
   pairRewarderAddress,
   allPairRewarderRewardsItem: { rewards, pair },
-  account,
 }: {
   pairRewarderAddress: Address;
   allPairRewarderRewardsItem: AllPairRewarderRewardsItem;
-  account: Address | undefined;
 }) => {
   const { pairName } = usePairName(pair);
   return (
@@ -106,7 +102,6 @@ export const PairRewarderRewards = ({
         <PairRewarderRewardItemComponent
           key={rewardItem.day.toString()}
           rewardItem={rewardItem}
-          account={account}
           pair={pair}
           pairName={pairName}
           pairRewarderAddress={pairRewarderAddress}

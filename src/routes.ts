@@ -1,12 +1,12 @@
 export enum RoutePath {
   HOME = '/',
-  YOUR_CODE_TEST = 'your-code-test',
   REWARDS = '/rewards',
-  REWARDS_TEST = '/rewards-test',
   REPORTS = '/reports',
-  TEST_SWAP = '/test-swap',
   PAIR_ISOLATED = '/pair-isolated',
   PAIR_REWARDER_LEADERBOARD = '/pair-isolated/:address/leaderboard',
+
+  YOUR_CODE_TEST = 'your-code-test',
+  REWARDS_TEST = '/rewards-test',
   PAIR_REWARDER_LEADERBOARD_TEST = '/pair-isolated/test/leaderboard',
 }
 

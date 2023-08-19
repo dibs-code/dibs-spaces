@@ -5,7 +5,7 @@ import TableViewSwitch from 'components/basic/TableViewSwitch';
 import { PairRewarderRewards } from 'components/rewards/PairRewarderRewards';
 import useDibsUserTotalVolume from 'hooks/dibs/useDibsUserTotalVolume';
 import { useWonPairRewarders } from 'hooks/dibs/usePairRewarderRewards';
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { Address, useAccount } from 'wagmi';
 
 const RewardsPageContainer = ({ testAddress }: { testAddress?: Address }) => {
@@ -15,6 +15,7 @@ const RewardsPageContainer = ({ testAddress }: { testAddress?: Address }) => {
   const { userTotalVolume } = useDibsUserTotalVolume(testAddress ?? address);
 
   const [showActiveRewards, setShowActiveRewards] = useState(true);
+  const toggleShowActiveRewards = useCallback(() => setShowActiveRewards((value) => !value), []);
 
   const allPairRewarderRewardsFiltered = useMemo(
     () => (showActiveRewards ? unClaimedPairRewarderRewards : claimedPairRewarderRewards),
@@ -60,8 +61,8 @@ const RewardsPageContainer = ({ testAddress }: { testAddress?: Address }) => {
         <section className="actions flex justify-start mb-4 h-[52px]">
           <TableViewSwitch
             optionOneSelected={showActiveRewards}
-            selectOptionOne={() => setShowActiveRewards(true)}
-            selectOptionTwo={() => setShowActiveRewards(false)}
+            selectOptionOne={toggleShowActiveRewards}
+            selectOptionTwo={toggleShowActiveRewards}
             optionOneLabel={'Active'}
             optionTwoLabel={'History'}
           />
@@ -85,7 +86,6 @@ const RewardsPageContainer = ({ testAddress }: { testAddress?: Address }) => {
                 {Object.keys(allPairRewarderRewardsFiltered).map((pairRewarderAddress) => (
                   <PairRewarderRewards
                     key={pairRewarderAddress}
-                    account={account}
                     pairRewarderAddress={pairRewarderAddress as Address}
                     allPairRewarderRewardsItem={allPairRewarderRewardsFiltered[pairRewarderAddress as Address]}
                   />

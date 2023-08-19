@@ -132,7 +132,11 @@ export const usePairRewarderLeaderboard = (pairRewarderAddress: Address | undefi
   };
 };
 
-export function useUserVolumeForDayAndPair(params: {
+export function useUserVolumeForDayAndPair({
+  day,
+  user,
+  pair,
+}: {
   day: number | undefined;
   user: Address | undefined;
   pair: Address | undefined;
@@ -140,20 +144,28 @@ export function useUserVolumeForDayAndPair(params: {
   const apolloClient = useApolloClient();
   const [volume, setVolume] = useState<BigNumberJS | null>(null);
   useEffect(() => {
+    let mounted = true;
     const fetchInfo = async () => {
-      if (!params.day || !params.user || !params.pair) return;
+      if (!day || !user || !pair) return;
       const result = (
         await apolloClient.query({
           query: UserVolumeDataForPairAndDay,
-          variables: params,
+          variables: {
+            day,
+            user,
+            pair,
+          },
           fetchPolicy: 'cache-first',
         })
       ).data.dailyGeneratedVolumes;
-      if (result.length) {
+      if (mounted && result.length) {
         setVolume(fromWei(result[0].amountAsReferrer));
       }
     };
     fetchInfo();
-  }, [apolloClient, params]);
+    return () => {
+      mounted = false;
+    };
+  }, [apolloClient, pair, day, user]);
   return volume;
 }

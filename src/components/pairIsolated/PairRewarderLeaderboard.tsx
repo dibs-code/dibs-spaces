@@ -3,6 +3,7 @@ import { multicall } from '@wagmi/core';
 import { erc20ABI } from 'abis/types/generated';
 import { TotalRewardInUsd } from 'components/rewards/RewardAmounts';
 import RewardToken from 'components/RewardToken';
+import useTestOrRealData from 'hooks/useTestOrRealData';
 import React, { useEffect, useMemo, useState } from 'react';
 import { LeaderBoardInfo, LeaderBoardRecord } from 'types';
 import getPairIsolatedRewardTokensAndAmounts from 'utils/getPairIsolatedRewardTokensAndAmounts';
@@ -23,6 +24,8 @@ function LeaderBoardRecordRow({
   const tokenAddresses = useMemo(() => rewardTokensAndAmounts.map((r) => r.token), [rewardTokensAndAmounts]);
   const tokenAmountsRaw = useMemo(() => rewardTokensAndAmounts.map((r) => r.amount), [rewardTokensAndAmounts]);
   const [tokenAmounts, setTokenAmounts] = useState<number[]>([]);
+  const { chainId } = useTestOrRealData();
+
   useEffect(() => {
     async function getTokenAmounts() {
       const tokenDecimals = await multicall({
@@ -32,12 +35,13 @@ function LeaderBoardRecordRow({
           address: tokenAddress,
           functionName: 'decimals',
         })),
+        chainId,
       });
       setTokenAmounts(tokenAmountsRaw.map((tokenAmount, i) => Number(formatUnits(tokenAmount, tokenDecimals[i]))));
     }
 
     getTokenAmounts();
-  }, [tokenAddresses, tokenAmountsRaw]);
+  }, [chainId, tokenAddresses, tokenAmountsRaw]);
   return (
     <tr className="text-white text-left bg-gray2">
       <td className="pl-8 rounded-l">

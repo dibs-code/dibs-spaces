@@ -2,6 +2,7 @@ import { formatUnits } from '@ethersproject/units';
 import { multicall } from '@wagmi/core';
 import { erc20ABI } from 'abis/types/generated';
 import { useCoinGeckoTokenAmountsToUsd } from 'hooks/useCoinGeckoPrice';
+import useTestOrRealData from 'hooks/useTestOrRealData';
 import React, { useEffect, useMemo, useState } from 'react';
 import { RewardTokenAndAmount } from 'types';
 import { Address } from 'wagmi';
@@ -33,6 +34,7 @@ export function RewardAmounts({
   );
 
   const [rewardTokenSymbols, setRewardTokenSymbols] = useState<string[]>([]);
+  const { chainId } = useTestOrRealData();
 
   useEffect(() => {
     multicall({
@@ -42,6 +44,7 @@ export function RewardAmounts({
         address: tokenAddress,
         functionName: 'symbol',
       })),
+      chainId,
     }).then(setRewardTokenSymbols);
     multicall({
       allowFailure: false,
@@ -50,8 +53,9 @@ export function RewardAmounts({
         address: tokenAddress,
         functionName: 'decimals',
       })),
+      chainId,
     }).then(setTokenDecimals);
-  }, [rewardTokens]);
+  }, [chainId, rewardTokens]);
 
   return (
     <>
