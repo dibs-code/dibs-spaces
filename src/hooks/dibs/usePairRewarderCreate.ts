@@ -90,5 +90,6 @@ export default function usePairRewarderCreate() {
     handleCreatePairRewarder,
     txState,
     createdPairRewarderAddress,
+    setCreatedPairRewarderAddress,
   };
 }

@@ -33,7 +33,7 @@ export const usePairRewarderLeaderboard = (pairRewarderAddress: Address | undefi
     chainId,
   });
   const selectPreviousEpoch = useCallback(() => {
-    if (activeDay) {
+    if (activeDay && activeDay > BigInt(0)) {
       setSelectedEpoch(activeDay - BigInt(1));
     }
   }, [activeDay, setSelectedEpoch]);

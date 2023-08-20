@@ -1,19 +1,15 @@
-import CreateLeaderBoardModal from 'components/pairIsolated/CreateLeaderBoardModal';
 import PairRewarderCard from 'components/pairIsolated/PairRewarderCard';
+import { useCreateLeaderBoardModalContext } from 'contexts/CreateLeaderBoardModalContext';
 import { usePairRewarderFactory } from 'hooks/dibs/usePairRewarderFactory';
-import React, { useState } from 'react';
+import React from 'react';
 // import { Link } from 'react-router-dom';
 // import RoutePath from 'routes';
 
 const PairIsolated = () => {
   const { allPairRewarders } = usePairRewarderFactory();
-  const [createLeaderBoardModalOpen, setCreateLeaderBoardModalOpen] = useState(false);
+  const { setCreateLeaderBoardModalOpen } = useCreateLeaderBoardModalContext();
   return (
     <div className="page">
-      <CreateLeaderBoardModal
-        open={createLeaderBoardModalOpen}
-        closeModal={() => setCreateLeaderBoardModalOpen(false)}
-      />
       <main>
         <section className="px-8 py-7 rounded bg-primary mb-8">
           <h1 className="text-[32px] font-bold text-secondary mb-3">Pair Isolated Leaderboards</h1>

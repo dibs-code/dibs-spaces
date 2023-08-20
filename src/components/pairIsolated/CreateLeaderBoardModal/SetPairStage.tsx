@@ -1,5 +1,5 @@
 import Modal from 'components/modal';
-import { useLeaderBoardContext } from 'contexts/CreateLeaderBoardModalContext';
+import { useCreateLeaderBoardModalContext } from 'contexts/CreateLeaderBoardModalContext';
 import usePairName from 'hooks/dibs/usePairName';
 import React, { useEffect, useState } from 'react';
 import { Address } from 'wagmi';
@@ -40,7 +40,8 @@ function SelectPair({ pairAddress, onConfirm }: { pairAddress: string; onConfirm
 }
 
 export function SetPairStage({ onNext, onPrev }: { onNext?: () => void; onPrev?: () => void }) {
-  const { leaderBoardSpotsCount, setLeaderBoardSpotsCount, pairAddress, setPairAddress } = useLeaderBoardContext();
+  const { leaderBoardSpotsCount, setLeaderBoardSpotsCount, pairAddress, setPairAddress } =
+    useCreateLeaderBoardModalContext();
   const [pairSelectModalOpen, setPairSelectModalOpen] = useState(false);
 
   return (

@@ -1,7 +1,7 @@
 // import { TokenSymbol } from 'components/basic/input/TokenAddressInput';
 // import { RewardAmountsInputs } from 'components/pairIsolated/CreateLeaderBoardModal/RewardAmountsInputs';
 // import { ShowPair } from 'components/pairIsolated/CreateLeaderBoardModal/SetPairStage';
-import { useLeaderBoardContext } from 'contexts/CreateLeaderBoardModalContext';
+import { useCreateLeaderBoardModalContext } from 'contexts/CreateLeaderBoardModalContext';
 import React, { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import RoutePath from 'routes';
@@ -20,7 +20,7 @@ export function SubmitStage({ onPrev }: { onPrev?: () => void }) {
     handleCreatePairRewarder,
     handlePairRewarderSetPrize,
     buttonText,
-  } = useLeaderBoardContext();
+  } = useCreateLeaderBoardModalContext();
 
   const navigate = useNavigate();
   const handleConfirmButtonClick = useCallback(async () => {

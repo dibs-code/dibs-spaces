@@ -1,4 +1,4 @@
-import { useLeaderBoardContext } from 'contexts/CreateLeaderBoardModalContext';
+import { useCreateLeaderBoardModalContext } from 'contexts/CreateLeaderBoardModalContext';
 import React from 'react';
 
 import LeaderboardStage from '../../modal/LeaderboardStage';
@@ -10,7 +10,7 @@ export function SetTokensStage({ onNext, onPrev }: { onNext?: () => void; onPrev
     rewardTokenAddresses,
     rewardTokenCount,
     setRewardTokenCount,
-  } = useLeaderBoardContext();
+  } = useCreateLeaderBoardModalContext();
   return (
     <>
       <section className="w-52 h-20 mx-auto mb-4">

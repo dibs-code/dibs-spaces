@@ -1,6 +1,8 @@
 import './App.css';
 
+import CreateLeaderBoardModal from 'components/pairIsolated/CreateLeaderBoardModal';
 import { isSupportedChain } from 'constants/chains';
+import { useCreateLeaderBoardModalContext } from 'contexts/CreateLeaderBoardModalContext';
 import Home from 'pages/home';
 import PairRewarderLeaderboard from 'pages/pair-isolated/_address/leaderboard';
 import PairIsolated from 'pages/pair-isolated/index';
@@ -26,6 +28,7 @@ function App() {
       navigate(RoutePath.HOME, { replace: true });
     }
   }, [chain, location, navigate, address]);
+  const { createLeaderBoardModalOpen, setCreateLeaderBoardModalOpen } = useCreateLeaderBoardModalContext();
   return (
     <div className="app">
       <Navbar />
@@ -37,6 +40,10 @@ function App() {
         <Route path={RoutePath.PAIR_ISOLATED} element={<PairIsolated />} />
         <Route path={RoutePath.PAIR_REWARDER_LEADERBOARD} element={<PairRewarderLeaderboard />} />
       </Routes>
+      <CreateLeaderBoardModal
+        open={createLeaderBoardModalOpen}
+        closeModal={() => setCreateLeaderBoardModalOpen(false)}
+      />
     </div>
   );
 }

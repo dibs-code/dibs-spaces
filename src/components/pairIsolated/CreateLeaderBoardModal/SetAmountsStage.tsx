@@ -1,13 +1,13 @@
 import { RewardAmountsInputs } from 'components/pairIsolated/CreateLeaderBoardModal/RewardAmountsInputs';
 import { TotalRewardInUsd } from 'components/rewards/RewardAmounts';
-import { useLeaderBoardContext } from 'contexts/CreateLeaderBoardModalContext';
+import { useCreateLeaderBoardModalContext } from 'contexts/CreateLeaderBoardModalContext';
 import React from 'react';
 
 import LeaderboardStage from '../../modal/LeaderboardStage';
 
 export function SetAmountsStage({ onNext, onPrev }: { onNext?: () => void; onPrev?: () => void }) {
   const { finalRewardTokenSymbols, finalRewardTokenAddresses, finalTokenAmountsAggregate, leaderBoardSpotsCount } =
-    useLeaderBoardContext();
+    useCreateLeaderBoardModalContext();
 
   return (
     <>

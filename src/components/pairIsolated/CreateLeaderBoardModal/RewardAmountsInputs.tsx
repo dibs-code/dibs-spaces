@@ -1,6 +1,6 @@
 import { TokenSymbol } from 'components/basic/input/TokenAddressInput';
 import { TotalRewardInUsd } from 'components/rewards/RewardAmounts';
-import { useLeaderBoardContext } from 'contexts/CreateLeaderBoardModalContext';
+import { useCreateLeaderBoardModalContext } from 'contexts/CreateLeaderBoardModalContext';
 import React from 'react';
 import { Address } from 'wagmi';
 
@@ -13,7 +13,7 @@ export function RewardAmountInputRow({
   leaderboardSpotTokenAmounts: number[];
   disabled?: boolean;
 }) {
-  const { handleTokenAmountChange, rewardTokenAddresses } = useLeaderBoardContext();
+  const { handleTokenAmountChange, rewardTokenAddresses } = useCreateLeaderBoardModalContext();
   return (
     <div className="flex flex-col mb-2.5 gap-3">
       <div className="flex items-center text-white gap-3">
@@ -51,7 +51,7 @@ export function RewardAmountInputRow({
 }
 
 export function RewardAmountsInputs({ disabled }: { disabled?: boolean }) {
-  const { allTokenAmounts, rewardTokenCount, leaderBoardSpotsCount } = useLeaderBoardContext();
+  const { allTokenAmounts, rewardTokenCount, leaderBoardSpotsCount } = useCreateLeaderBoardModalContext();
   return (
     <>
       {allTokenAmounts.slice(0, leaderBoardSpotsCount).map((leaderboardSpotTokenAmounts, i) => (

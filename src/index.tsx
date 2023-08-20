@@ -6,6 +6,7 @@ import { ApolloProvider } from '@apollo/client';
 import { darkTheme, getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { chains } from 'constants/chains';
 import { CoingeckoAssetPlatformsProvider } from 'contexts/CoingeckoAssetPlatformsContext';
+import { CreateLeaderBoardModalContextProvider } from 'contexts/CreateLeaderBoardModalContext';
 import * as process from 'process';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
@@ -51,7 +52,9 @@ root.render(
         <WagmiConfig config={wagmiConfig}>
           <RainbowKitProvider theme={darkTheme()} chains={chains}>
             <CoingeckoAssetPlatformsProvider>
-              <App />
+              <CreateLeaderBoardModalContextProvider>
+                <App />
+              </CreateLeaderBoardModalContextProvider>
             </CoingeckoAssetPlatformsProvider>
           </RainbowKitProvider>
         </WagmiConfig>
