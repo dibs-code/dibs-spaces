@@ -1,3 +1,4 @@
+import { useCreateLeaderBoardModalContext } from 'contexts/CreateLeaderBoardModalContext';
 import { usePairRewarder } from 'hooks/dibs/usePairRewarder';
 import React from 'react';
 import { Link } from 'react-router-dom';
@@ -7,7 +8,11 @@ import { Address } from 'wagmi';
 import TotalPrizes from './TotalPrizes';
 
 export default function PairRewarderCard({ pairRewarderAddress }: { pairRewarderAddress: Address }) {
-  const { pairName, activeLeaderBoardInfo } = usePairRewarder(pairRewarderAddress);
+  const { pairName, activeLeaderBoardInfo, hasSetterRole } = usePairRewarder(pairRewarderAddress);
+
+  const { setCreatedPairRewarderAddress, setLoadCurrentLeaderBoard, setCreateLeaderBoardModalOpen } =
+    useCreateLeaderBoardModalContext();
+
   return (
     <tr className="text-white text-left bg-gray2">
       <td className="pl-8 rounded-l py-5">
@@ -28,12 +33,27 @@ export default function PairRewarderCard({ pairRewarderAddress }: { pairRewarder
       <td>-</td>
       <td>-</td>
       <td className="py-4 pr-8 rounded-r w-36">
-        <Link
-          to={RoutePath.PAIR_REWARDER_LEADERBOARD.replace(':address', pairRewarderAddress)}
-          className={'btn btn--secondary-outlined py-1.5'}
-        >
-          Leaderboard
-        </Link>
+        {/*TODO: fix styles if needed*/}
+        <div className={'flex flex-row-reverse'}>
+          <Link
+            to={RoutePath.PAIR_REWARDER_LEADERBOARD.replace(':address', pairRewarderAddress)}
+            className={'btn btn--secondary-outlined py-1.5'}
+          >
+            Leaderboard
+          </Link>
+          {hasSetterRole && (
+            <div
+              className={'btn btn--secondary-outlined mr-3 px-1 py-1 w-11'}
+              onClick={() => {
+                setCreatedPairRewarderAddress(pairRewarderAddress);
+                setLoadCurrentLeaderBoard(true);
+                setCreateLeaderBoardModalOpen(true);
+              }}
+            >
+              <img src="/assets/images/pen.svg" alt="" />
+            </div>
+          )}
+        </div>
       </td>
     </tr>
   );
