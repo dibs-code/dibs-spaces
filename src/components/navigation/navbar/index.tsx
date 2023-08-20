@@ -168,7 +168,6 @@ const Menu = () => {
     <div className="relative flex items-center">
       <ul className="flex gap-9 mx-auto items-center">
         {links.map((link, index) => {
-          const active = location.pathname === link.address;
           const disabled = (!account || !isSupportedChain(chain?.id)) && requiresCode(link.address);
           return (
             <li
