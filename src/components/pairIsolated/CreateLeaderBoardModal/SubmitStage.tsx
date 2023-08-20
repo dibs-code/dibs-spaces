@@ -20,6 +20,7 @@ export function SubmitStage({ onPrev }: { onPrev?: () => void }) {
     handleCreatePairRewarder,
     handlePairRewarderSetPrize,
     buttonText,
+    setCreateLeaderBoardModalOpen,
   } = useCreateLeaderBoardModalContext();
 
   const navigate = useNavigate();
@@ -30,9 +31,16 @@ export function SubmitStage({ onPrev }: { onPrev?: () => void }) {
     } else {
       await handlePairRewarderSetPrize?.();
       alert('Rewards are set!');
+      setCreateLeaderBoardModalOpen(false);
       navigate(RoutePath.PAIR_REWARDER_LEADERBOARD.replace(':address', createdPairRewarderAddress));
     }
-  }, [createdPairRewarderAddress, handleCreatePairRewarder, handlePairRewarderSetPrize, navigate]);
+  }, [
+    createdPairRewarderAddress,
+    handleCreatePairRewarder,
+    handlePairRewarderSetPrize,
+    navigate,
+    setCreateLeaderBoardModalOpen,
+  ]);
 
   return (
     <>
