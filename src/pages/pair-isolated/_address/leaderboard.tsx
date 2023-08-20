@@ -8,7 +8,6 @@ import { usePairRewarder } from 'hooks/dibs/usePairRewarder';
 import { usePairRewarderLeaderboard } from 'hooks/dibs/usePairRewarderLeaderboard';
 import React from 'react';
 import { useParams } from 'react-router-dom';
-// import RoutePath from 'routes';
 
 const PairRewarderLeaderboard = () => {
   const params = useParams();
@@ -17,7 +16,7 @@ const PairRewarderLeaderboard = () => {
       ? // '0x6cB66a0762E7Ce3c0Abc9d0241bF4cfFc67fcdA1' // has day 10 winners
         '0x21DAcb323a7a23E8B70BA96f2D472bbA92A94D9c' // has day 21 subgraph data
       : (params.address as Address);
-  const { pairName } = usePairRewarder(pairRewarderAddress);
+  const { pairName, hasSetterRole } = usePairRewarder(pairRewarderAddress);
   const {
     selectedEpoch,
     selectPreviousEpoch,
@@ -28,8 +27,8 @@ const PairRewarderLeaderboard = () => {
     epochLeaderBoard,
   } = usePairRewarderLeaderboard(pairRewarderAddress);
   const epochTimer = useEpochTimer();
-  const { setCreateLeaderBoardModalOpen } = useCreateLeaderBoardModalContext();
-
+  const { setCreateLeaderBoardModalOpen, setCreatedPairRewarderAddress, setLoadCurrentLeaderBoard } =
+    useCreateLeaderBoardModalContext();
   return (
     <div className="page">
       <main>
@@ -70,9 +69,20 @@ const PairRewarderLeaderboard = () => {
           />
           <button onClick={() => {}} className="btn btn--secondary btn--with-icon">
             <img src="/assets/images/pair-isolated/create-leaderboard-icon.svg" alt="" />
-            <p className="mt-1" onClick={() => setCreateLeaderBoardModalOpen(true)}>
-              Create Leaderboard
-            </p>
+            {hasSetterRole !== undefined && (
+              <p
+                className="mt-1"
+                onClick={() => {
+                  if (hasSetterRole) {
+                    setCreatedPairRewarderAddress(pairRewarderAddress);
+                    setLoadCurrentLeaderBoard(true);
+                  }
+                  setCreateLeaderBoardModalOpen(true);
+                }}
+              >
+                {hasSetterRole ? 'Edit Leaderboard' : 'Create Leaderboard'}
+              </p>
+            )}
           </button>
         </section>
 

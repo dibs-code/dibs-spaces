@@ -7,15 +7,23 @@ import { Address } from 'wagmi';
 import LeaderboardStage from '../../modal/LeaderboardStage';
 import Seekbar from '../../modal/Seekbar';
 
-export function ShowPair({ pairAddress }: { pairAddress: string }) {
-  const { pairName } = usePairName(pairAddress as Address);
+export function ShowPair({ pairAddress }: { pairAddress: string | undefined }) {
+  const { pairName } = usePairName(pairAddress as Address | undefined);
   return <>{pairName || 'Unknown Pair'}</>;
 }
 
-function SelectPair({ pairAddress, onConfirm }: { pairAddress: string; onConfirm: (pairAddress: string) => void }) {
+function SelectPair({
+  pairAddress,
+  onConfirm,
+}: {
+  pairAddress: string | undefined;
+  onConfirm: (pairAddress: string) => void;
+}) {
   const [pairAddressLocal, setPairAddressLocal] = useState('');
   useEffect(() => {
-    setPairAddressLocal(pairAddress);
+    if (pairAddress) {
+      setPairAddressLocal(pairAddress);
+    }
   }, [pairAddress]);
   const { pairName } = usePairName(pairAddressLocal as Address);
 
@@ -40,7 +48,7 @@ function SelectPair({ pairAddress, onConfirm }: { pairAddress: string; onConfirm
 }
 
 export function SetPairStage({ onNext, onPrev }: { onNext?: () => void; onPrev?: () => void }) {
-  const { leaderBoardSpotsCount, setLeaderBoardSpotsCount, pairAddress, setPairAddress } =
+  const { leaderBoardSpotsCount, setLeaderBoardSpotsCount, pairAddress, setPairAddress, createdPairRewarderAddress } =
     useCreateLeaderBoardModalContext();
   const [pairSelectModalOpen, setPairSelectModalOpen] = useState(false);
 
@@ -52,8 +60,14 @@ export function SetPairStage({ onNext, onPrev }: { onNext?: () => void; onPrev?:
       <p className="text-2xl font-medium mb-[22px] text-white w-full text-center">Create leaderboard</p>
       <p className="font-medium mb-[22px] text-white w-full text-center">for</p>
       <div
-        className="pair-button py-[18px] px-7 min-h-[72px] max-w-[375px] mx-auto mb-9 rounded-lg bg-gray4 flex items-center justify-between w-full cursor-pointer"
-        onClick={() => setPairSelectModalOpen(true)}
+        className={`pair-button py-[18px] px-7 min-h-[72px] max-w-[375px] mx-auto mb-9 rounded-lg bg-gray4 flex items-center justify-between w-full ${
+          createdPairRewarderAddress ? '' : 'cursor-pointer'
+        }`}
+        onClick={() => {
+          if (!createdPairRewarderAddress) {
+            setPairSelectModalOpen(true);
+          }
+        }}
       >
         {pairAddress ? (
           <>
@@ -63,7 +77,7 @@ export function SetPairStage({ onNext, onPrev }: { onNext?: () => void; onPrev?:
                 <ShowPair pairAddress={pairAddress} />
               </p>
             </div>
-            <p className="font-semibold text-secondary pt-2">Change</p>
+            {!createdPairRewarderAddress && <p className="font-semibold text-secondary pt-2">Change</p>}
           </>
         ) : (
           <>

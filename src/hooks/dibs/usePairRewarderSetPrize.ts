@@ -1,4 +1,3 @@
-import { formatUnits } from '@ethersproject/units';
 import { multicall, prepareWriteContract, waitForTransaction, writeContract } from '@wagmi/core';
 import PairRewarderABI from 'abis/pairRewarder';
 import { erc20ABI } from 'abis/types/generated';
@@ -6,12 +5,12 @@ import usePairName from 'hooks/dibs/usePairName';
 import { usePairRewarder } from 'hooks/dibs/usePairRewarder';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { TransactionState } from 'types/transaction';
-import { parseUnits } from 'viem';
+import { formatUnits, parseUnits } from 'viem';
 import { Address } from 'wagmi';
 
 export default function usePairRewarderSetPrize(
-  pairRewarderAddress?: Address | undefined,
-  loadCurrentLeaderBoard = true,
+  pairRewarderAddress: Address | undefined,
+  loadCurrentLeaderBoard: boolean,
 ) {
   const [rewardTokenCount, setRewardTokenCount] = useState(1);
   const [rewardTokenAddresses, setRewardTokenAddresses] = useState<string[]>(Array(4).fill(''));
@@ -127,16 +126,13 @@ export default function usePairRewarderSetPrize(
         })),
       });
       setAllTokenAmounts((allTokenAmounts) => {
-        return allTokenAmounts.map((tokenAmounts, i) =>
-          i < tokenCount
-            ? Object.assign(
-                [...tokenAmounts],
-                activeLeaderBoardInfo.rewardAmounts[i].map((item) =>
-                  Number(formatUnits(Number(item), tokenDecimals[i])),
-                ),
-              )
-            : [...tokenAmounts],
+        const copied = allTokenAmounts.map((tokenAmounts) => [...tokenAmounts]);
+        activeLeaderBoardInfo.rewardAmounts.forEach((tokenAmounts, i) =>
+          tokenAmounts.forEach(
+            (tokenAmountForSpot, j) => (copied[j][i] = Number(formatUnits(tokenAmountForSpot, tokenDecimals[i]))),
+          ),
         );
+        return copied;
       });
       setLoadingCurrentRewards(false);
     }
