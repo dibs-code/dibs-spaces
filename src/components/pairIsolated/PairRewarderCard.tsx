@@ -1,18 +1,41 @@
+import { formatUnits } from '@ethersproject/units';
+import { multicall } from '@wagmi/core';
+import { erc20ABI } from 'abis/types/generated';
+import { TotalRewardInUsd } from 'components/rewards/RewardAmounts';
 import { useCreateLeaderBoardModalContext } from 'contexts/CreateLeaderBoardModalContext';
 import { usePairRewarder } from 'hooks/dibs/usePairRewarder';
-import React from 'react';
+import useTestOrRealData from 'hooks/useTestOrRealData';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import RoutePath from 'routes';
 import { Address } from 'wagmi';
-
-import TotalPrizes from './TotalPrizes';
 
 export default function PairRewarderCard({ pairRewarderAddress }: { pairRewarderAddress: Address }) {
   const { pairName, activeLeaderBoardInfo, hasSetterRole } = usePairRewarder(pairRewarderAddress);
 
   const { setCreatedPairRewarderAddress, setLoadCurrentLeaderBoard, setCreateLeaderBoardModalOpen } =
     useCreateLeaderBoardModalContext();
+  const [tokenDecimals, setTokenDecimals] = useState<number[] | null>(null);
+  const rewardAmountsAggregate = useMemo(() => {
+    if (!tokenDecimals || !activeLeaderBoardInfo) return [];
+    return activeLeaderBoardInfo.rewardAmounts.map((rewardAmounts, i) =>
+      rewardAmounts.reduce((a, c) => a + Number(formatUnits(c, tokenDecimals[i])), 0),
+    );
+  }, [activeLeaderBoardInfo, tokenDecimals]);
 
+  const { chainId } = useTestOrRealData();
+  useEffect(() => {
+    if (!activeLeaderBoardInfo) return;
+    multicall({
+      allowFailure: false,
+      contracts: activeLeaderBoardInfo.rewardTokens.map((tokenAddress) => ({
+        abi: erc20ABI,
+        address: tokenAddress,
+        functionName: 'decimals',
+      })),
+      chainId,
+    }).then(setTokenDecimals);
+  }, [chainId, activeLeaderBoardInfo]);
   return (
     <tr className="text-white text-left bg-gray2">
       <td className="pl-8 rounded-l py-5">
@@ -26,9 +49,14 @@ export default function PairRewarderCard({ pairRewarderAddress }: { pairRewarder
           </span>
         </span>
       </td>
-      <td>$232,195</td>
+      <td>200$</td>
       <td>
-        <TotalPrizes leaderBoardInfo={activeLeaderBoardInfo} />
+        {activeLeaderBoardInfo && (
+          <TotalRewardInUsd
+            rewardTokens={activeLeaderBoardInfo.rewardTokens as Address[]}
+            rewardAmounts={rewardAmountsAggregate}
+          />
+        )}
       </td>
       <td>-</td>
       <td>-</td>
