@@ -2,6 +2,7 @@ import { formatUnits } from '@ethersproject/units';
 import { multicall } from '@wagmi/core';
 import { erc20ABI } from 'abis/types/generated';
 import { TotalRewardInUsd } from 'components/rewards/RewardAmounts';
+import { useAllPairsTotalVolumeForCurrentDayContext } from 'contexts/AllPairsTotalVolumeForCurrentDayContext';
 import { useCreateLeaderBoardModalContext } from 'contexts/CreateLeaderBoardModalContext';
 import { usePairRewarder } from 'hooks/dibs/usePairRewarder';
 import useTestOrRealData from 'hooks/useTestOrRealData';
@@ -11,7 +12,7 @@ import RoutePath from 'routes';
 import { Address } from 'wagmi';
 
 export default function PairRewarderCard({ pairRewarderAddress }: { pairRewarderAddress: Address }) {
-  const { pairName, activeLeaderBoardInfo, hasSetterRole } = usePairRewarder(pairRewarderAddress);
+  const { pairAddress, pairName, activeLeaderBoardInfo, hasSetterRole } = usePairRewarder(pairRewarderAddress);
 
   const { setCreatedPairRewarderAddress, setLoadCurrentLeaderBoard, setCreateLeaderBoardModalOpen } =
     useCreateLeaderBoardModalContext();
@@ -42,6 +43,8 @@ export default function PairRewarderCard({ pairRewarderAddress }: { pairRewarder
     }).then(setTokenDecimals);
   }, [chainId, rewardTokens]);
 
+  const allPairsTotalVolumeForCurrentDay = useAllPairsTotalVolumeForCurrentDayContext();
+
   return (
     <tr className="text-white text-left bg-gray2">
       <td className="pl-8 rounded-l py-5">
@@ -55,7 +58,11 @@ export default function PairRewarderCard({ pairRewarderAddress }: { pairRewarder
           </span>
         </span>
       </td>
-      <td>200$</td>
+      <td>
+        {pairAddress && allPairsTotalVolumeForCurrentDay
+          ? allPairsTotalVolumeForCurrentDay[pairAddress]?.toNumber().toLocaleString() ?? '-'
+          : '...'}
+      </td>
       <td>
         {rewardTokens && rewardAmountsAggregate ? (
           <TotalRewardInUsd rewardTokens={rewardTokens} rewardAmounts={rewardAmountsAggregate} />

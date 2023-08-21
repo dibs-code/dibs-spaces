@@ -35,3 +35,16 @@ export const UserVolumeDataForPairAndDay =
     amountAsReferrer
   }
 }`);
+
+export const TotalVolumeForPairsAndDay = gql(`query TotalVolumeForPairsAndDay($pairs: [Bytes!], $day: BigInt!) {
+  dailyGeneratedVolumes(
+    where: {
+      user: "0x0000000000000000000000000000000000000000"
+      day: $day,
+      pair_in: $pairs
+    } 
+  ) {
+    pair
+    amountAsReferrer
+  }
+}`);

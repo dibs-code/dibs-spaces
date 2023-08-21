@@ -1,5 +1,6 @@
 import { pairRewarderABI } from 'abis/types/generated';
 import BigNumber from 'bignumber.js';
+import BigNumberJS from 'bignumber.js';
 import { Address, Chain } from 'wagmi';
 import { ReadContractResult } from 'wagmi/actions';
 
@@ -111,4 +112,8 @@ export type AllPairRewarderRewardsItem = {
 };
 export type AllPairRewarderRewards = {
   [pairRewarderAddress: Address]: AllPairRewarderRewardsItem;
+};
+
+export type PairVolumes = {
+  [pairAddress: Address]: BigNumberJS | undefined;
 };
