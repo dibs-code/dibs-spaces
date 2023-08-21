@@ -1,12 +1,40 @@
 import { useDibsFirstRoundStartTime } from 'abis/types/generated';
 import { DibsAddressMap } from 'constants/addresses';
 import { useContractAddress } from 'hooks/useContractAddress';
-import { useEffect, useState } from 'react';
+import useTestOrRealData from 'hooks/useTestOrRealData';
+import { useEffect, useMemo, useState } from 'react';
+
+export function useNow() {
+  const [now, setNow] = useState(new Date().getTime() / 1000);
+  useEffect(() => {
+    const interval = setInterval(() => setNow(new Date().getTime() / 1000), 1000);
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+  return now;
+}
+
+export function useDibsCurrentDay() {
+  const dibsAddress = useContractAddress(DibsAddressMap);
+  const { chainId } = useTestOrRealData();
+  const { data: firstRoundStartTime } = useDibsFirstRoundStartTime({
+    address: dibsAddress,
+    chainId,
+  });
+  const now = useNow();
+  return useMemo(
+    () => (firstRoundStartTime ? Math.floor((now - firstRoundStartTime) / 86400) : undefined),
+    [firstRoundStartTime, now],
+  );
+}
 
 export default function useEpochTimer() {
   const dibsAddress = useContractAddress(DibsAddressMap);
+  const { chainId } = useTestOrRealData();
   const { data: firstRoundStartTime } = useDibsFirstRoundStartTime({
     address: dibsAddress,
+    chainId,
   });
 
   const [epochTimer, setEpochTimer] = useState({
@@ -15,9 +43,10 @@ export default function useEpochTimer() {
     seconds: '00',
   });
 
-  const [now, setNow] = useState(new Date().getTime() / 1000);
+  const now = useNow();
+  const currentDay = useDibsCurrentDay();
   useEffect(() => {
-    if (firstRoundStartTime) {
+    if (firstRoundStartTime && currentDay) {
       const nextEpoch = firstRoundStartTime + Math.ceil((now - firstRoundStartTime) / 86400) * 86400;
       const hours = Math.floor((nextEpoch - now) / 3600);
       const minutes = Math.floor((nextEpoch - now - hours * 3600) / 60);
@@ -28,14 +57,7 @@ export default function useEpochTimer() {
         seconds: seconds < 10 ? '0' + seconds : String(seconds),
       });
     }
-  }, [now, firstRoundStartTime]);
-
-  useEffect(() => {
-    const interval = setInterval(() => setNow(new Date().getTime() / 1000), 1000);
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
+  }, [now, firstRoundStartTime, currentDay]);
 
   return epochTimer;
 }

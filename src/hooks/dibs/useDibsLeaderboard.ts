@@ -1,10 +1,11 @@
 import { ApolloClient, useApolloClient } from '@apollo/client';
 import { multicall } from '@wagmi/core';
-import { dibsABI, useDibsFirstRoundStartTime, useDibsLotteryGetLatestLeaderBoard } from 'abis/types/generated';
+import { dibsABI, useDibsLotteryGetLatestLeaderBoard } from 'abis/types/generated';
 import { DailyDataQueryQuery } from 'apollo/__generated__/graphql';
 import { DailyData } from 'apollo/queries';
 import { DibsAddressMap } from 'constants/addresses';
 import { useDibsAddresses } from 'hooks/dibs/useDibsAddresses';
+import { useDibsCurrentDay } from 'hooks/dibs/useEpochTimer';
 import { useContractAddress } from 'hooks/useContractAddress';
 import { useCallback, useEffect, useState } from 'react';
 import { LeaderBoardRecord } from 'types';
@@ -20,10 +21,7 @@ export const useLeaderboardData = () => {
   const dibsAddress = useContractAddress(DibsAddressMap);
   const { dibsLotteryAddress } = useDibsAddresses();
 
-  const { data: firstRoundStartTime } = useDibsFirstRoundStartTime({
-    address: dibsAddress,
-  });
-
+  const currentDay = useDibsCurrentDay();
   const { data: leaderBoardConfiguration } = useDibsLotteryGetLatestLeaderBoard({
     address: dibsLotteryAddress,
   });
@@ -76,10 +74,9 @@ export const useLeaderboardData = () => {
   );
   useEffect(() => {
     const fetchInfo = async () => {
-      if (!firstRoundStartTime) return;
+      if (!currentDay) return;
       try {
-        const time = new Date().getTime() / 1000;
-        const currentDailyEpoch = Math.floor((time - firstRoundStartTime) / 86400);
+        const currentDailyEpoch = currentDay;
         const [cur, prev] = await Promise.all([
           getDailyLeaderboardData(apolloClient, currentDailyEpoch),
           getDailyLeaderboardData(apolloClient, currentDailyEpoch - 1),
@@ -91,7 +88,7 @@ export const useLeaderboardData = () => {
       }
     };
     fetchInfo();
-  }, [firstRoundStartTime, address, apolloClient, getDailyLeaderboardData]);
+  }, [currentDay, address, apolloClient, getDailyLeaderboardData]);
 
   return { leaderBoardConfiguration, currentData, prevData };
 };
