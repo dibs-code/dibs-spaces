@@ -8,12 +8,9 @@ type PairRewardersOfPairs = {
   [pairAddress: Address]: Address[];
 };
 
-export function usePairRewarderFactory() {
+export function usePairRewarderFactoryAllPairs() {
   const { pairRewarderFactoryAddress } = useDibsAddresses();
   const [allPairs, setAllPairs] = useState<Address[] | null>(null);
-  const [pairRewarders, setPairRewarders] = useState<PairRewardersOfPairs | null>(null);
-  const [allPairToken0symbols, setAllPairToken0symbols] = useState<string[] | null>(null);
-  const [allPairToken1symbols, setAllPairToken1symbols] = useState<string[] | null>(null);
 
   useEffect(() => {
     async function getData() {
@@ -34,6 +31,26 @@ export function usePairRewarderFactory() {
       });
       const validPairs = allPairs.filter((pair, i) => !!pairNames[i].result);
       setAllPairs(validPairs);
+    }
+
+    getData().catch(console.log);
+  }, [pairRewarderFactoryAddress]);
+
+  return {
+    allPairs,
+  };
+}
+
+export function usePairRewarderFactory() {
+  const { pairRewarderFactoryAddress } = useDibsAddresses();
+  const { allPairs } = usePairRewarderFactoryAllPairs();
+  const [pairRewarders, setPairRewarders] = useState<PairRewardersOfPairs | null>(null);
+  const [allPairToken0symbols, setAllPairToken0symbols] = useState<string[] | null>(null);
+  const [allPairToken1symbols, setAllPairToken1symbols] = useState<string[] | null>(null);
+
+  useEffect(() => {
+    async function getData() {
+      if (!pairRewarderFactoryAddress || !allPairs) return;
       const allPairRewarders = await multicall({
         allowFailure: false,
         contracts: allPairs.map((pair) => {
@@ -46,14 +63,14 @@ export function usePairRewarderFactory() {
         }),
       });
       const pairRewardersArray: PairRewardersOfPairs = {};
-      validPairs.forEach((item, i) => {
+      allPairs.forEach((item, i) => {
         pairRewardersArray[item] = [...allPairRewarders[i]];
       });
       setPairRewarders(pairRewardersArray);
     }
 
     getData().catch(console.log);
-  }, [pairRewarderFactoryAddress]);
+  }, [allPairs, pairRewarderFactoryAddress]);
 
   //TODO: refactor: merge this useEffect with the one for token1 if possible
   useEffect(() => {
