@@ -16,8 +16,13 @@ export default function PairRewarderCard({ pairRewarderAddress }: { pairRewarder
   const { setCreatedPairRewarderAddress, setLoadCurrentLeaderBoard, setCreateLeaderBoardModalOpen } =
     useCreateLeaderBoardModalContext();
   const [tokenDecimals, setTokenDecimals] = useState<number[] | null>(null);
+
+  const rewardTokens = useMemo(
+    () => (activeLeaderBoardInfo ? [...activeLeaderBoardInfo.rewardTokens] : null),
+    [activeLeaderBoardInfo],
+  );
   const rewardAmountsAggregate = useMemo(() => {
-    if (!tokenDecimals || !activeLeaderBoardInfo) return [];
+    if (!tokenDecimals || !activeLeaderBoardInfo) return null;
     return activeLeaderBoardInfo.rewardAmounts.map((rewardAmounts, i) =>
       rewardAmounts.reduce((a, c) => a + Number(formatUnits(c, tokenDecimals[i])), 0),
     );
@@ -25,17 +30,18 @@ export default function PairRewarderCard({ pairRewarderAddress }: { pairRewarder
 
   const { chainId } = useTestOrRealData();
   useEffect(() => {
-    if (!activeLeaderBoardInfo) return;
+    if (!rewardTokens) return;
     multicall({
       allowFailure: false,
-      contracts: activeLeaderBoardInfo.rewardTokens.map((tokenAddress) => ({
+      contracts: rewardTokens.map((tokenAddress) => ({
         abi: erc20ABI,
         address: tokenAddress,
         functionName: 'decimals',
       })),
       chainId,
     }).then(setTokenDecimals);
-  }, [chainId, activeLeaderBoardInfo]);
+  }, [chainId, rewardTokens]);
+
   return (
     <tr className="text-white text-left bg-gray2">
       <td className="pl-8 rounded-l py-5">
@@ -51,11 +57,10 @@ export default function PairRewarderCard({ pairRewarderAddress }: { pairRewarder
       </td>
       <td>200$</td>
       <td>
-        {activeLeaderBoardInfo && (
-          <TotalRewardInUsd
-            rewardTokens={activeLeaderBoardInfo.rewardTokens as Address[]}
-            rewardAmounts={rewardAmountsAggregate}
-          />
+        {rewardTokens && rewardAmountsAggregate ? (
+          <TotalRewardInUsd rewardTokens={rewardTokens} rewardAmounts={rewardAmountsAggregate} />
+        ) : (
+          '-'
         )}
       </td>
       <td>-</td>

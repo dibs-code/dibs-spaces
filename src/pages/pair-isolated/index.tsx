@@ -6,7 +6,7 @@ import React from 'react';
 // import RoutePath from 'routes';
 
 const PairIsolated = () => {
-  const { allPairRewarders } = usePairRewarderFactory();
+  const { allPairRewarders, pairFilterString, setPairFilterString } = usePairRewarderFactory();
   const { setCreateLeaderBoardModalOpen } = useCreateLeaderBoardModalContext();
   return (
     <div className="page">
@@ -24,7 +24,9 @@ const PairIsolated = () => {
             <input
               className="bg-transparent placeholder-gray3 text-white"
               type="text"
-              placeholder="Search amoung pairs ..."
+              placeholder="Search among pairs ..."
+              value={pairFilterString}
+              onChange={(e) => setPairFilterString(e.target.value)}
             />
           </div>
           <button onClick={() => setCreateLeaderBoardModalOpen(true)} className="btn btn--secondary btn--with-icon">
