@@ -60,7 +60,7 @@ export default function PairRewarderCard({
   );
   const { address } = useAccount();
   const yourPosition = useMemo(() => {
-    if (!currentDayLeaderBoard) return null;
+    if (!currentDayLeaderBoard || !address) return null;
     const index = currentDayLeaderBoard.findIndex((item) => item.user.toLowerCase() === address);
     return index !== -1 ? index + 1 : null;
   }, [address, currentDayLeaderBoard]);
