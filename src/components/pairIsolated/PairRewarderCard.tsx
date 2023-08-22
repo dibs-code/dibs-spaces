@@ -1,18 +1,27 @@
 import { formatUnits } from '@ethersproject/units';
 import { multicall } from '@wagmi/core';
-import { erc20ABI } from 'abis/types/generated';
+import { erc20ABI, useDibsGetCodeName } from 'abis/types/generated';
 import { TotalRewardInUsd } from 'components/rewards/RewardAmounts';
+import { DibsAddressMap } from 'constants/addresses';
 import { useAllPairsDataForCurrentDayContext } from 'contexts/AllPairsDataForCurrentDayContext';
 import { useCreateLeaderBoardModalContext } from 'contexts/CreateLeaderBoardModalContext';
 import { usePairRewarder } from 'hooks/dibs/usePairRewarder';
+import { useContractAddress } from 'hooks/useContractAddress';
 import useTestOrRealData from 'hooks/useTestOrRealData';
 import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import RoutePath from 'routes';
-import { Address } from 'wagmi';
+import { Address, useAccount } from 'wagmi';
 
-export default function PairRewarderCard({ pairRewarderAddress }: { pairRewarderAddress: Address }) {
-  const { pairAddress, pairName, activeLeaderBoardInfo, hasSetterRole } = usePairRewarder(pairRewarderAddress);
+export default function PairRewarderCard({
+  pairRewarderAddress,
+  pairAddress,
+}: {
+  pairRewarderAddress: Address;
+  pairAddress: Address;
+}) {
+  const { pairName, activeLeaderBoardInfo, hasSetterRole } = usePairRewarder(pairRewarderAddress);
+  const dibsAddress = useContractAddress(DibsAddressMap);
 
   const { setCreatedPairRewarderAddress, setLoadCurrentLeaderBoard, setCreateLeaderBoardModalOpen } =
     useCreateLeaderBoardModalContext();
@@ -44,6 +53,30 @@ export default function PairRewarderCard({ pairRewarderAddress }: { pairRewarder
   }, [chainId, rewardTokens]);
 
   const { allPairsTotalVolumeForCurrentDay } = useAllPairsDataForCurrentDayContext();
+  const { pairLeaderBoardsCache } = useAllPairsDataForCurrentDayContext();
+  const currentDayLeaderBoard = useMemo(
+    () => pairLeaderBoardsCache?.[pairAddress],
+    [pairAddress, pairLeaderBoardsCache],
+  );
+  const { address } = useAccount();
+  const yourPosition = useMemo(() => {
+    if (!currentDayLeaderBoard) return null;
+    const index = currentDayLeaderBoard.findIndex((item) => item.user.toLowerCase() === address);
+    return index !== -1 ? index + 1 : null;
+  }, [address, currentDayLeaderBoard]);
+  const yourPositionRewardAmounts = useMemo(() => {
+    if (!tokenDecimals || !activeLeaderBoardInfo || !yourPosition) return null;
+    return activeLeaderBoardInfo.rewardAmounts.map((rewardAmounts, i) =>
+      Number(formatUnits(rewardAmounts[yourPosition - 1], tokenDecimals[i])),
+    );
+  }, [activeLeaderBoardInfo, tokenDecimals, yourPosition]);
+
+  const { data: rankOneWinnerCode } = useDibsGetCodeName({
+    address: dibsAddress,
+    args: currentDayLeaderBoard?.[0]?.user ? [currentDayLeaderBoard[0].user] : undefined,
+    watch: true,
+    chainId,
+  });
 
   return (
     <tr className="text-white text-left bg-gray2">
@@ -70,8 +103,22 @@ export default function PairRewarderCard({ pairRewarderAddress }: { pairRewarder
           '-'
         )}
       </td>
-      <td>-</td>
-      <td>-</td>
+      <td>{rankOneWinnerCode || '-'}</td>
+      <td>
+        {yourPosition ? (
+          <>
+            #${yourPosition} (
+            {rewardTokens && yourPositionRewardAmounts ? (
+              <TotalRewardInUsd rewardTokens={rewardTokens} rewardAmounts={yourPositionRewardAmounts} />
+            ) : (
+              '...'
+            )}
+            )
+          </>
+        ) : (
+          '-'
+        )}
+      </td>
       <td className="py-4 pr-8 rounded-r w-36">
         {/*TODO: fix styles if needed*/}
         <div className={'flex flex-row-reverse'}>

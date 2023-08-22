@@ -1,6 +1,7 @@
 import { multicall, prepareWriteContract, waitForTransaction, writeContract } from '@wagmi/core';
 import PairRewarderABI from 'abis/pairRewarder';
 import { erc20ABI } from 'abis/types/generated';
+import { PAIR_ISOLATED_LEADERBOARD_MAXIMUM_SPOT_COUNT } from 'constants/config';
 import usePairName from 'hooks/dibs/usePairName';
 import { usePairRewarder } from 'hooks/dibs/usePairRewarder';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -17,7 +18,9 @@ export default function usePairRewarderSetPrize(
 
   const [leaderBoardSpotsCount, setLeaderBoardSpotsCount] = useState(1);
 
-  const [allTokenAmounts, setAllTokenAmounts] = useState<number[][]>(Array(16).fill(Array(4).fill(0)));
+  const [allTokenAmounts, setAllTokenAmounts] = useState<number[][]>(
+    Array(PAIR_ISOLATED_LEADERBOARD_MAXIMUM_SPOT_COUNT).fill(Array(4).fill(0)),
+  );
 
   const handleTokenAddressChange = (index: number, newTokenAddress: string) => {
     const newTokenAddresses = [...rewardTokenAddresses];

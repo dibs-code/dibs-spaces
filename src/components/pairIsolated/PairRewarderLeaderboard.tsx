@@ -5,7 +5,7 @@ import { TotalRewardInUsd } from 'components/rewards/RewardAmounts';
 import RewardToken from 'components/RewardToken';
 import useTestOrRealData from 'hooks/useTestOrRealData';
 import React, { useEffect, useMemo, useState } from 'react';
-import { LeaderBoardInfo, LeaderBoardRecord } from 'types';
+import { LeaderBoardInfo, LeaderBoardRecordWithCodeNames } from 'types';
 import getPairIsolatedRewardTokensAndAmounts from 'utils/getPairIsolatedRewardTokensAndAmounts';
 
 function LeaderBoardRecordRow({
@@ -14,7 +14,7 @@ function LeaderBoardRecordRow({
   leaderBoardInfo,
 }: {
   index: number;
-  leaderBoardRecord: LeaderBoardRecord;
+  leaderBoardRecord: LeaderBoardRecordWithCodeNames;
   leaderBoardInfo: LeaderBoardInfo | undefined;
 }) {
   const rewardTokensAndAmounts = useMemo(
@@ -65,7 +65,7 @@ export default function PairRewarderLeaderBoard({
   dayLeaderBoard,
   leaderBoardInfo,
 }: {
-  dayLeaderBoard: LeaderBoardRecord[];
+  dayLeaderBoard: LeaderBoardRecordWithCodeNames[];
   leaderBoardInfo: LeaderBoardInfo | undefined;
 }) {
   return (

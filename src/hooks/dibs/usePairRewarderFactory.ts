@@ -10,6 +10,7 @@ type PairRewardersOfPairs = {
 
 export function usePairRewarderFactoryAllPairs() {
   const { pairRewarderFactoryAddress } = useDibsAddresses();
+  const [allPairsNotFilteredByValid, setAllPairsNotFilteredByValid] = useState<Address[] | null>(null);
   const [allPairs, setAllPairs] = useState<Address[] | null>(null);
 
   useEffect(() => {
@@ -20,6 +21,7 @@ export function usePairRewarderFactoryAllPairs() {
         abi: pairRewarderFactoryABI,
         functionName: 'getAllPairs',
       });
+      setAllPairsNotFilteredByValid([...allPairs]);
       const pairNames = await multicall({
         contracts: allPairs.map((pair) => {
           return {
@@ -38,6 +40,7 @@ export function usePairRewarderFactoryAllPairs() {
 
   return {
     allPairs,
+    allPairsNotFilteredByValid,
   };
 }
 
@@ -134,28 +137,32 @@ export function usePairRewarderFactory() {
   }, [allPairs]);
 
   const [pairFilterString, setPairFilterString] = useState('');
-  const allPairRewarders = useMemo(() => {
-    if (!pairRewarders) return null;
 
-    return pairRewarders
-      ? Object.entries(pairRewarders).reduce((a, c, i) => {
-          if (
-            !pairFilterString ||
-            allPairToken0symbols?.[i].toLowerCase().includes(pairFilterString.toLowerCase()) ||
-            allPairToken1symbols?.[i].toLowerCase().includes(pairFilterString.toLowerCase())
-          ) {
-            return a.concat(c[1]);
-          }
-          return a;
-        }, [] as Address[])
-      : null;
-  }, [allPairToken0symbols, allPairToken1symbols, pairRewarders, pairFilterString]);
+  const pairRewardersFinal = useMemo(() => {
+    if (!pairRewarders) return null;
+    const pairFilterStringLowerCase = pairFilterString?.toLowerCase();
+    return Object.keys(pairRewarders).reduce((a, pairAddress, i) => {
+      if (
+        !pairFilterStringLowerCase ||
+        allPairToken0symbols?.[i].toLowerCase().includes(pairFilterStringLowerCase) ||
+        allPairToken1symbols?.[i].toLowerCase().includes(pairFilterStringLowerCase)
+      ) {
+        return Object.assign({ [pairAddress as Address]: pairRewarders[pairAddress as Address] }, a);
+      }
+      return a;
+    }, {} as PairRewardersOfPairs);
+  }, [allPairToken0symbols, allPairToken1symbols, pairFilterString, pairRewarders]);
+
+  const allPairRewarders = useMemo(() => {
+    if (!pairRewardersFinal) return null;
+    return Object.values(pairRewardersFinal).reduce((a, c) => a.concat(c), [] as Address[]);
+  }, [pairRewardersFinal]);
 
   return {
     pairFilterString,
     setPairFilterString,
     allPairs,
-    pairRewarders,
+    pairRewarders: pairRewardersFinal,
     allPairRewarders,
   };
 }

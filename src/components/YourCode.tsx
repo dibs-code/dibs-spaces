@@ -1,9 +1,9 @@
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import SubmittedModal from 'components/modal/submitted';
 import { chains, isSupportedChain } from 'constants/chains';
+import useDibsUserTotalVolume from 'hooks/dibs/subgraph/useDibsUserTotalVolume';
 import { useDibsCodeData } from 'hooks/dibs/useDibsCodeData';
 import { useDibsRegisterCallback } from 'hooks/dibs/useDibsRegisterCallback';
-import useDibsUserTotalVolume from 'hooks/dibs/useDibsUserTotalVolume';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { copyToClipboard } from 'utils/index';

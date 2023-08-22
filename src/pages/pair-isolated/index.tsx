@@ -4,9 +4,10 @@ import { usePairRewarderFactory } from 'hooks/dibs/usePairRewarderFactory';
 import React from 'react';
 // import { Link } from 'react-router-dom';
 // import RoutePath from 'routes';
+import { Address } from 'wagmi';
 
 const PairIsolated = () => {
-  const { allPairRewarders, pairFilterString, setPairFilterString } = usePairRewarderFactory();
+  const { pairRewarders, pairFilterString, setPairFilterString } = usePairRewarderFactory();
   const { setCreateLeaderBoardModalOpen } = useCreateLeaderBoardModalContext();
   return (
     <div className="page">
@@ -53,9 +54,16 @@ const PairIsolated = () => {
               </tr>
             </thead>
             <tbody>
-              {allPairRewarders?.map((item) => (
-                <PairRewarderCard key={item} pairRewarderAddress={item} />
-              ))}
+              {pairRewarders &&
+                Object.keys(pairRewarders).map((pairAddress) =>
+                  pairRewarders[pairAddress as Address].map((pairRewarderAddress) => (
+                    <PairRewarderCard
+                      key={pairRewarderAddress}
+                      pairAddress={pairAddress as Address}
+                      pairRewarderAddress={pairRewarderAddress}
+                    />
+                  )),
+                )}
             </tbody>
           </table>
         </section>

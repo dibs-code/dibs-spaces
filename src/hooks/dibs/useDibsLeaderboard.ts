@@ -1,22 +1,18 @@
-import { ApolloClient, useApolloClient } from '@apollo/client';
 import { multicall } from '@wagmi/core';
 import { dibsABI, useDibsLotteryGetLatestLeaderBoard } from 'abis/types/generated';
-import { DailyDataQueryQuery } from 'apollo/__generated__/graphql';
-import { DailyData } from 'apollo/queries';
 import { DibsAddressMap } from 'constants/addresses';
+import useGetDailyLeaderBoardCallback from 'hooks/dibs/subgraph/useGetDailyLeaderBoardCallback';
 import { useDibsAddresses } from 'hooks/dibs/useDibsAddresses';
 import { useDibsCurrentDay } from 'hooks/dibs/useEpochTimer';
 import { useContractAddress } from 'hooks/useContractAddress';
 import { useCallback, useEffect, useState } from 'react';
-import { LeaderBoardRecord } from 'types';
-import { fromWei } from 'utils/numbers';
+import { LeaderBoardRecordWithCodeNames } from 'types';
 import { useAccount } from 'wagmi';
 
 export const useLeaderboardData = () => {
-  const [currentData, setCurrentData] = useState<LeaderBoardRecord[]>([]);
-  const [prevData, setPrevData] = useState<LeaderBoardRecord[]>([]);
+  const [currentData, setCurrentData] = useState<LeaderBoardRecordWithCodeNames[]>([]);
+  const [prevData, setPrevData] = useState<LeaderBoardRecordWithCodeNames[]>([]);
   const { address } = useAccount();
-  const apolloClient = useApolloClient();
 
   const dibsAddress = useContractAddress(DibsAddressMap);
   const { dibsLotteryAddress } = useDibsAddresses();
@@ -25,35 +21,11 @@ export const useLeaderboardData = () => {
   const { data: leaderBoardConfiguration } = useDibsLotteryGetLatestLeaderBoard({
     address: dibsLotteryAddress,
   });
-
+  const getDailyLeaderBoardCallback = useGetDailyLeaderBoardCallback();
   const getDailyLeaderboardData = useCallback(
-    async (apolloClient: ApolloClient<object>, day: number): Promise<LeaderBoardRecord[]> => {
+    async (day: number): Promise<LeaderBoardRecordWithCodeNames[]> => {
       if (!dibsAddress) return [];
-
-      let offset = 0;
-      const result: DailyDataQueryQuery['dailyGeneratedVolumes'] = [];
-      let chunkResult: DailyDataQueryQuery['dailyGeneratedVolumes'] = [];
-      do {
-        chunkResult = (
-          await apolloClient.query({
-            query: DailyData,
-            variables: { day, skip: offset },
-            fetchPolicy: 'cache-first',
-          })
-        ).data.dailyGeneratedVolumes;
-        result.push(...chunkResult);
-        offset += chunkResult.length;
-      } while (chunkResult.length);
-
-      //TODO: merge this code with the one in usePairRewarderLeaderboard
-      const sortedData = result
-        .filter((ele) => ele.user !== dibsAddress.toLowerCase())
-        .map((ele) => {
-          return {
-            ...ele,
-            volume: fromWei(ele.amountAsReferrer),
-          };
-        });
+      const sortedData = await getDailyLeaderBoardCallback(day);
       const rawCodeNames = await multicall({
         allowFailure: false,
         contracts: sortedData.map((item) => ({
@@ -70,15 +42,15 @@ export const useLeaderboardData = () => {
         };
       });
     },
-    [dibsAddress],
+    [getDailyLeaderBoardCallback, dibsAddress],
   );
   useEffect(() => {
     const fetchInfo = async () => {
       if (!currentDay) return;
       try {
         const [cur, prev] = await Promise.all([
-          getDailyLeaderboardData(apolloClient, currentDay),
-          getDailyLeaderboardData(apolloClient, currentDay - 1),
+          getDailyLeaderboardData(currentDay),
+          getDailyLeaderboardData(currentDay - 1),
         ]);
         setCurrentData(cur);
         setPrevData(prev);
@@ -87,7 +59,7 @@ export const useLeaderboardData = () => {
       }
     };
     fetchInfo();
-  }, [currentDay, address, apolloClient, getDailyLeaderboardData]);
+  }, [currentDay, address, getDailyLeaderboardData]);
 
   return { leaderBoardConfiguration, currentData, prevData };
 };

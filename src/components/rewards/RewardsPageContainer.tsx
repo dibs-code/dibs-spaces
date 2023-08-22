@@ -3,7 +3,7 @@
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import TableViewSwitch from 'components/basic/TableViewSwitch';
 import { PairRewarderRewards } from 'components/rewards/PairRewarderRewards';
-import useDibsUserTotalVolume from 'hooks/dibs/useDibsUserTotalVolume';
+import useDibsUserTotalVolume from 'hooks/dibs/subgraph/useDibsUserTotalVolume';
 import { useWonPairRewarders } from 'hooks/dibs/usePairRewarderRewards';
 import React, { useCallback, useMemo, useState } from 'react';
 import { Address, useAccount } from 'wagmi';

@@ -1,4 +1,5 @@
 import Modal from 'components/modal';
+import { PAIR_ISOLATED_LEADERBOARD_MAXIMUM_SPOT_COUNT } from 'constants/config';
 import { useCreateLeaderBoardModalContext } from 'contexts/CreateLeaderBoardModalContext';
 import usePairName from 'hooks/dibs/usePairName';
 import React, { useEffect, useState } from 'react';
@@ -108,7 +109,12 @@ export function SetPairStage({ onNext, onPrev }: { onNext?: () => void; onPrev?:
       {/*/>*/}
       <section className="leaderboard-spots mb-24">
         <p className="text-white font-medium text-xl mb-5">How many leaderboard spots do you want to reward?</p>
-        <Seekbar min={1} max={16} value={leaderBoardSpotsCount} onValueChange={setLeaderBoardSpotsCount} />
+        <Seekbar
+          min={1}
+          max={PAIR_ISOLATED_LEADERBOARD_MAXIMUM_SPOT_COUNT}
+          value={leaderBoardSpotsCount}
+          onValueChange={setLeaderBoardSpotsCount}
+        />
       </section>
       <section className="pagination flex justify-between w-full px-4 gap-20">
         <img src="/assets/images/modal/back-gray.svg" alt="" className="w-8 h-8" />

@@ -1,7 +1,7 @@
 import { usePairRewarderWrite, usePreparePairRewarderClaimLeaderBoardReward } from 'abis/types/generated';
 import { RewardAmounts } from 'components/rewards/RewardAmounts';
+import { useUserVolumeForDayAndPair } from 'hooks/dibs/subgraph/useUserVolumeForDayAndPair';
 import usePairName from 'hooks/dibs/usePairName';
-import { useUserVolumeForDayAndPair } from 'hooks/dibs/usePairRewarderLeaderboard';
 import useTestOrRealData from 'hooks/useTestOrRealData';
 import React from 'react';
 // import { Link } from 'react-router-dom';

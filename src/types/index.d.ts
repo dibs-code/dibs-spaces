@@ -101,9 +101,12 @@ export type CoinGeckoAssetPlatform = { id: string; chain_identifier: number; nam
 
 export interface LeaderBoardRecord {
   amountAsReferrer: string;
-  code: string;
   user: Address;
   volume: BigNumber;
+}
+
+export interface LeaderBoardRecordWithCodeNames extends LeaderBoardRecord {
+  code: string;
 }
 
 export type AllPairRewarderRewardsItem = {
@@ -116,4 +119,8 @@ export type AllPairRewarderRewards = {
 
 export type PairVolumes = {
   [pairAddress: Address]: BigNumberJS | undefined;
+};
+
+export type PairLeaderBoardsCache = {
+  [pairAddress: Address]: LeaderBoardRecord[];
 };

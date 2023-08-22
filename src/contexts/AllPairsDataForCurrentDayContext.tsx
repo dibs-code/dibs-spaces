@@ -1,10 +1,15 @@
-import { useDibsAllPairsTotalVolumeForCurrentDay } from 'hooks/dibs/useDibsPairsTotalVolumeForDay';
-import React, { createContext, ReactNode, useContext } from 'react';
+import { useDibsAllPairsTotalVolumeForCurrentDay } from 'hooks/dibs/subgraph/useDibsPairsTotalVolumeForDay';
+import useGetDailyLeaderBoardForPairCallback from 'hooks/dibs/subgraph/useGetDailyLeaderBoardForPairCallback';
+import { useDibsCurrentDay } from 'hooks/dibs/useEpochTimer';
+import { usePairRewarderFactoryAllPairs } from 'hooks/dibs/usePairRewarderFactory';
+import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react';
+import { PairLeaderBoardsCache } from 'types';
 
 export const AllPairsDataForCurrentDayContext = createContext<{
   allPairsTotalVolumeForCurrentDay: ReturnType<
     typeof useDibsAllPairsTotalVolumeForCurrentDay
   >['pairsTotalVolumesForDay'];
+  pairLeaderBoardsCache: PairLeaderBoardsCache;
 } | null>(null);
 
 interface PlatformsProviderProps {
@@ -14,8 +19,27 @@ interface PlatformsProviderProps {
 // Define the Provider component
 export const AllPairsDataForCurrentDayContextProvider: React.FC<PlatformsProviderProps> = ({ children }) => {
   const { pairsTotalVolumesForDay: allPairsTotalVolumeForCurrentDay } = useDibsAllPairsTotalVolumeForCurrentDay();
+
+  const currentDay = useDibsCurrentDay();
+
+  const [pairLeaderBoardsCache, setPairLeaderBoardsCache] = useState<PairLeaderBoardsCache>({});
+  const getDailyLeaderboardDataForPair = useGetDailyLeaderBoardForPairCallback();
+  const { allPairsNotFilteredByValid: allPairs } = usePairRewarderFactoryAllPairs();
+  useEffect(() => {
+    async function getData() {
+      if (!currentDay || !allPairs) return;
+      allPairs.forEach((pairAddress) => {
+        getDailyLeaderboardDataForPair(pairAddress, currentDay).then((data) =>
+          setPairLeaderBoardsCache((cacheData) => Object.assign({ [pairAddress]: data }, cacheData)),
+        );
+      });
+    }
+
+    getData();
+  }, [allPairs, currentDay, getDailyLeaderboardDataForPair]);
+
   return (
-    <AllPairsDataForCurrentDayContext.Provider value={{ allPairsTotalVolumeForCurrentDay }}>
+    <AllPairsDataForCurrentDayContext.Provider value={{ allPairsTotalVolumeForCurrentDay, pairLeaderBoardsCache }}>
       {children}
     </AllPairsDataForCurrentDayContext.Provider>
   );
