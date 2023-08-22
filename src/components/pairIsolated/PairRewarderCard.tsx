@@ -66,9 +66,10 @@ export default function PairRewarderCard({
   }, [address, currentDayLeaderBoard]);
   const yourPositionRewardAmounts = useMemo(() => {
     if (!tokenDecimals || !activeLeaderBoardInfo || !yourPosition) return null;
-    return activeLeaderBoardInfo.rewardAmounts.map((rewardAmounts, i) =>
-      Number(formatUnits(rewardAmounts[yourPosition - 1], tokenDecimals[i])),
+    const amounts = activeLeaderBoardInfo.rewardAmounts.map((rewardAmounts, i) =>
+      rewardAmounts[yourPosition - 1] ? Number(formatUnits(rewardAmounts[yourPosition - 1], tokenDecimals[i])) : 0,
     );
+    return amounts.findIndex((item) => item !== 0) !== -1 ? amounts : null;
   }, [activeLeaderBoardInfo, tokenDecimals, yourPosition]);
 
   const { data: rankOneWinnerCode } = useDibsGetCodeName({
@@ -107,13 +108,13 @@ export default function PairRewarderCard({
       <td>
         {yourPosition ? (
           <>
-            #${yourPosition} (
-            {rewardTokens && yourPositionRewardAmounts ? (
-              <TotalRewardInUsd rewardTokens={rewardTokens} rewardAmounts={yourPositionRewardAmounts} />
-            ) : (
-              '...'
+            #${yourPosition}
+            {rewardTokens && yourPositionRewardAmounts && (
+              <>
+                {' '}
+                (<TotalRewardInUsd rewardTokens={rewardTokens} rewardAmounts={yourPositionRewardAmounts} />)
+              </>
             )}
-            )
           </>
         ) : (
           '-'
