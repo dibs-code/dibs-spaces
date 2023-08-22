@@ -5,7 +5,7 @@ import './assets/fonts/fonts.css';
 import { ApolloProvider } from '@apollo/client';
 import { darkTheme, getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { chains } from 'constants/chains';
-import { AllPairsTotalVolumeForCurrentDayContextProvider } from 'contexts/AllPairsTotalVolumeForCurrentDayContext';
+import { AllPairsDataForCurrentDayContextProvider } from 'contexts/AllPairsDataForCurrentDayContext';
 import { CoingeckoAssetPlatformsProvider } from 'contexts/CoingeckoAssetPlatformsContext';
 import { CreateLeaderBoardModalContextProvider } from 'contexts/CreateLeaderBoardModalContext';
 import * as process from 'process';
@@ -52,13 +52,13 @@ root.render(
       <ApolloProvider client={dibsClient}>
         <WagmiConfig config={wagmiConfig}>
           <RainbowKitProvider theme={darkTheme()} chains={chains}>
-            <AllPairsTotalVolumeForCurrentDayContextProvider>
+            <AllPairsDataForCurrentDayContextProvider>
               <CoingeckoAssetPlatformsProvider>
                 <CreateLeaderBoardModalContextProvider>
                   <App />
                 </CreateLeaderBoardModalContextProvider>
               </CoingeckoAssetPlatformsProvider>
-            </AllPairsTotalVolumeForCurrentDayContextProvider>
+            </AllPairsDataForCurrentDayContextProvider>
           </RainbowKitProvider>
         </WagmiConfig>
       </ApolloProvider>

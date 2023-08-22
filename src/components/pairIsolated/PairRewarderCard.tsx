@@ -2,7 +2,7 @@ import { formatUnits } from '@ethersproject/units';
 import { multicall } from '@wagmi/core';
 import { erc20ABI } from 'abis/types/generated';
 import { TotalRewardInUsd } from 'components/rewards/RewardAmounts';
-import { useAllPairsTotalVolumeForCurrentDayContext } from 'contexts/AllPairsTotalVolumeForCurrentDayContext';
+import { useAllPairsDataForCurrentDayContext } from 'contexts/AllPairsDataForCurrentDayContext';
 import { useCreateLeaderBoardModalContext } from 'contexts/CreateLeaderBoardModalContext';
 import { usePairRewarder } from 'hooks/dibs/usePairRewarder';
 import useTestOrRealData from 'hooks/useTestOrRealData';
@@ -43,7 +43,7 @@ export default function PairRewarderCard({ pairRewarderAddress }: { pairRewarder
     }).then(setTokenDecimals);
   }, [chainId, rewardTokens]);
 
-  const allPairsTotalVolumeForCurrentDay = useAllPairsTotalVolumeForCurrentDayContext();
+  const { allPairsTotalVolumeForCurrentDay } = useAllPairsDataForCurrentDayContext();
 
   return (
     <tr className="text-white text-left bg-gray2">

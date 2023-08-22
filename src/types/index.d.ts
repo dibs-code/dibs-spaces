@@ -67,7 +67,7 @@ export type MuonVerificationData = {
   };
 };
 
-export type PairRewarderEpochWinnersRaw =
+export type PairRewarderDayWinnersRaw =
   | {
       info: {
         winnersCount: bigint;
@@ -77,8 +77,8 @@ export type PairRewarderEpochWinnersRaw =
       winners: readonly `0x${string}`[];
     }
   | undefined;
-export type PairRewarderEpochWinners =
-  | (PairRewarderEpochWinnersRaw & {
+export type PairRewarderDayWinners =
+  | (PairRewarderDayWinnersRaw & {
       winnerCodeNames: string[];
     })
   | undefined;

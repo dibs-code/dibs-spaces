@@ -1,5 +1,5 @@
 import { Address } from 'abitype';
-import { LeaderBoardEpochButtons } from 'components/pairIsolated/LeaderBoardEpochButtons';
+import { LeaderBoardSelectDayButtons } from 'components/pairIsolated/LeaderBoardSelectDayButtons';
 import PairRewarderLeaderBoard from 'components/pairIsolated/PairRewarderLeaderboard';
 import TotalPrizes from 'components/pairIsolated/TotalPrizes';
 import { useCreateLeaderBoardModalContext } from 'contexts/CreateLeaderBoardModalContext';
@@ -17,15 +17,8 @@ const PairRewarderLeaderboard = () => {
         '0x21DAcb323a7a23E8B70BA96f2D472bbA92A94D9c' // has day 21 subgraph data
       : (params.address as Address);
   const { pairName, hasSetterRole } = usePairRewarder(pairRewarderAddress);
-  const {
-    selectedEpoch,
-    selectPreviousEpoch,
-    selectCurrentEpoch,
-    activeDay,
-    setSelectedEpoch,
-    leaderBoardInfo,
-    epochLeaderBoard,
-  } = usePairRewarderLeaderboard(pairRewarderAddress);
+  const { selectedDay, selectPreviousDay, selectCurrentDay, setSelectedDay, leaderBoardInfo, dayLeaderBoard } =
+    usePairRewarderLeaderboard(pairRewarderAddress);
   const epochTimer = useEpochTimer();
   const { setCreateLeaderBoardModalOpen, setCreatedPairRewarderAddress, setLoadCurrentLeaderBoard } =
     useCreateLeaderBoardModalContext();
@@ -60,12 +53,11 @@ const PairRewarderLeaderboard = () => {
         </section>
 
         <section className="actions flex justify-between mb-4">
-          <LeaderBoardEpochButtons
-            selectedEpoch={selectedEpoch}
-            selectPreviousEpoch={selectPreviousEpoch}
-            selectCurrentEpoch={selectCurrentEpoch}
-            activeDay={activeDay}
-            setSelectedEpoch={setSelectedEpoch}
+          <LeaderBoardSelectDayButtons
+            selectedDay={selectedDay}
+            selectPreviousDay={selectPreviousDay}
+            selectCurrentDay={selectCurrentDay}
+            setSelectedDay={setSelectedDay}
           />
           <button onClick={() => {}} className="btn btn--secondary btn--with-icon">
             <img src="/assets/images/pair-isolated/create-leaderboard-icon.svg" alt="" />
@@ -101,7 +93,7 @@ const PairRewarderLeaderboard = () => {
           {/*    </p>*/}
           {/*  )}*/}
           {/*</p>*/}
-          <PairRewarderLeaderBoard epochLeaderBoard={epochLeaderBoard} leaderBoardInfo={leaderBoardInfo} />
+          <PairRewarderLeaderBoard dayLeaderBoard={dayLeaderBoard} leaderBoardInfo={leaderBoardInfo} />
         </section>
       </main>
     </div>

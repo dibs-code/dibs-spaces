@@ -27,7 +27,7 @@ export const useLeaderboardData = () => {
   });
 
   const getDailyLeaderboardData = useCallback(
-    async (apolloClient: ApolloClient<object>, epoch: number): Promise<LeaderBoardRecord[]> => {
+    async (apolloClient: ApolloClient<object>, day: number): Promise<LeaderBoardRecord[]> => {
       if (!dibsAddress) return [];
 
       let offset = 0;
@@ -37,7 +37,7 @@ export const useLeaderboardData = () => {
         chunkResult = (
           await apolloClient.query({
             query: DailyData,
-            variables: { day: epoch, skip: offset },
+            variables: { day, skip: offset },
             fetchPolicy: 'cache-first',
           })
         ).data.dailyGeneratedVolumes;
@@ -76,10 +76,9 @@ export const useLeaderboardData = () => {
     const fetchInfo = async () => {
       if (!currentDay) return;
       try {
-        const currentDailyEpoch = currentDay;
         const [cur, prev] = await Promise.all([
-          getDailyLeaderboardData(apolloClient, currentDailyEpoch),
-          getDailyLeaderboardData(apolloClient, currentDailyEpoch - 1),
+          getDailyLeaderboardData(apolloClient, currentDay),
+          getDailyLeaderboardData(apolloClient, currentDay - 1),
         ]);
         setCurrentData(cur);
         setPrevData(prev);

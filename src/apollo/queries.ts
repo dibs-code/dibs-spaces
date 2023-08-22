@@ -1,14 +1,14 @@
 import { gql } from './__generated__/gql';
 
 export const DailyData = gql(`query DailyDataQuery($skip: Int!, $day: BigInt!) {
-    dailyGeneratedVolumes(first: 20, skip: $skip,  where: {day: $day, amountAsReferrer_gt: 0} orderBy: amountAsReferrer orderDirection: desc) {
+    dailyGeneratedVolumes(first: 100, skip: $skip,  where: {day: $day, amountAsReferrer_gt: 0} orderBy: amountAsReferrer orderDirection: desc) {
       user
       amountAsReferrer
     }
   }`);
 
-export const DailyDataForPair = gql(`query DailyDataForPairQuery($skip: Int!, $day: BigInt!, $pair: Bytes!) {
-    dailyGeneratedVolumes(first: 20, skip: $skip,  where: {day: $day, amountAsReferrer_gt: 0, pair: $pair} orderBy: amountAsReferrer orderDirection: desc) {
+export const DailyLeaderBoardForPair = gql(`query DailyDataForPairQuery($skip: Int!, $day: BigInt!, $pair: Bytes!) {
+    dailyGeneratedVolumes(first: 100, skip: $skip,  where: {day: $day, amountAsReferrer_gt: 0, pair: $pair} orderBy: amountAsReferrer orderDirection: desc) {
       user
       amountAsReferrer
     }
@@ -36,6 +36,7 @@ export const UserVolumeDataForPairAndDay =
   }
 }`);
 
+//TODO: this query doesn't work, find a working query
 export const TotalVolumeForPairsAndDay = gql(`query TotalVolumeForPairsAndDay($pairs: [Bytes!], $day: BigInt!) {
   dailyGeneratedVolumes(
     where: {

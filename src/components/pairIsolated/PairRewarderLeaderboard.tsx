@@ -62,10 +62,10 @@ function LeaderBoardRecordRow({
 }
 
 export default function PairRewarderLeaderBoard({
-  epochLeaderBoard,
+  dayLeaderBoard,
   leaderBoardInfo,
 }: {
-  epochLeaderBoard: LeaderBoardRecord[];
+  dayLeaderBoard: LeaderBoardRecord[];
   leaderBoardInfo: LeaderBoardInfo | undefined;
 }) {
   return (
@@ -79,7 +79,7 @@ export default function PairRewarderLeaderBoard({
         </tr>
       </thead>
       <tbody>
-        {epochLeaderBoard?.map((leaderBoardRecord, i) => (
+        {dayLeaderBoard?.map((leaderBoardRecord, i) => (
           <LeaderBoardRecordRow
             key={leaderBoardRecord.user}
             index={i}
