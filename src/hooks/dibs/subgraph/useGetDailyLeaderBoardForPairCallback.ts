@@ -1,5 +1,5 @@
 import { useApolloClient } from '@apollo/client';
-import { DailyDataForPairQueryQuery } from 'apollo/__generated__/graphql';
+import { DailyDataForPairQuery } from 'apollo/__generated__/graphql';
 import { DailyLeaderBoardForPair } from 'apollo/queries';
 import { DibsAddressMap } from 'constants/addresses';
 import { useContractAddress } from 'hooks/useContractAddress';
@@ -13,31 +13,34 @@ export default function useGetDailyLeaderBoardForPairCallback() {
   const apolloClient = useApolloClient();
 
   return useCallback(
-    async (pairAddress: Address, day: number): Promise<LeaderBoardRecord[]> => {
+    async (pairAddress: Address, day: number, first?: number): Promise<LeaderBoardRecord[]> => {
       if (!dibsAddress || !pairAddress) return [];
 
       let offset = 0;
-      const result: DailyDataForPairQueryQuery['dailyGeneratedVolumes'] = [];
-      let chunkResult: DailyDataForPairQueryQuery['dailyGeneratedVolumes'] = [];
+      const result: DailyDataForPairQuery['dailyGeneratedVolumes'] = [];
+      let chunkResult: DailyDataForPairQuery['dailyGeneratedVolumes'] = [];
       do {
         chunkResult = (
           await apolloClient.query({
             query: DailyLeaderBoardForPair,
-            variables: { day, skip: offset, pair: pairAddress },
+            variables: { day, pair: pairAddress, skip: offset, first: first ?? 1000 },
             fetchPolicy: 'cache-first',
           })
         ).data.dailyGeneratedVolumes;
         result.push(...chunkResult);
+        if (first) break;
         offset += chunkResult.length;
-      } while (chunkResult.length);
-      return result
-        .filter((ele) => ele.user !== dibsAddress.toLowerCase())
-        .map((ele) => {
-          return {
+      } while (chunkResult.length && offset <= 5000);
+
+      return result.reduce((acc, ele) => {
+        if (ele.user !== dibsAddress.toLowerCase()) {
+          acc.push({
             ...ele,
             volume: fromWei(ele.amountAsReferrer),
-          };
-        });
+          });
+        }
+        return acc;
+      }, [] as LeaderBoardRecord[]);
     },
     [apolloClient, dibsAddress],
   );

@@ -1,23 +1,25 @@
 import { gql } from './__generated__/gql';
 
-export const DailyData = gql(`query DailyDataQuery($skip: Int!, $day: BigInt!) {
-    dailyGeneratedVolumes(first: 100, skip: $skip,  where: {day: $day, amountAsReferrer_gt: 0} orderBy: amountAsReferrer orderDirection: desc) {
+export const DailyData = gql(`query DailyData($day: BigInt!, $first: Int!, $skip: Int!) {
+    dailyGeneratedVolumes(first: $first, skip: $skip,  where: {day: $day, amountAsReferrer_gt: 0} orderBy: amountAsReferrer orderDirection: desc) {
       user
       amountAsReferrer
     }
   }`);
 
-export const DailyLeaderBoardForPair = gql(`query DailyDataForPairQuery($skip: Int!, $day: BigInt!, $pair: Bytes!) {
-    dailyGeneratedVolumes(first: 100, skip: $skip,  where: {day: $day, amountAsReferrer_gt: 0, pair: $pair} orderBy: amountAsReferrer orderDirection: desc) {
+export const DailyLeaderBoardForPair =
+  gql(`query DailyDataForPair($day: BigInt!, $pair: Bytes!, $first: Int!, $skip: Int!) {
+    dailyGeneratedVolumes(first: $first, skip: $skip,  where: {day: $day, amountAsReferrer_gt: 0, pair: $pair} orderBy: amountAsReferrer orderDirection: desc) {
       user
       amountAsReferrer
     }
   }`);
 
-export const UserVolumeData = gql(`query UserVolumeDataQuery($skip: Int!, $user: Bytes!) {
-    dailyGeneratedVolumes(first: 100, skip: $skip,  where: {user: $user, day_gte: 0, amountAsReferrer_gt: 0} orderBy: day orderDirection: desc) {
+export const UserVolumeData = gql(`query UserVolumeData($skip: Int!, $user: Bytes!) {
+    dailyGeneratedVolumes(first: 1000, skip: $skip,  where: {user: $user, day_gte: 0, amountAsReferrer_gt: 0} orderBy: day orderDirection: desc) {
       user
       day
+      pair
       amountAsReferrer
     }
   }`);

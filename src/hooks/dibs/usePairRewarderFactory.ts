@@ -3,10 +3,7 @@ import { erc20ABI, pairRewarderFactoryABI, uniswapV2PairABI } from 'abis/types/g
 import { Address } from 'abitype';
 import { useDibsAddresses } from 'hooks/dibs/useDibsAddresses';
 import { useEffect, useMemo, useState } from 'react';
-
-type PairRewardersOfPairs = {
-  [pairAddress: Address]: Address[];
-};
+import { PairRewardersOfPairs } from 'types/rewards';
 
 export function usePairRewarderFactoryAllPairs() {
   const { pairRewarderFactoryAddress } = useDibsAddresses();

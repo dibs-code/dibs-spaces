@@ -1,7 +1,7 @@
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import SubmittedModal from 'components/modal/submitted';
 import { chains, isSupportedChain } from 'constants/chains';
-import useDibsUserTotalVolume from 'hooks/dibs/subgraph/useDibsUserTotalVolume';
+import usePairIsolatedUserTotalRecords from 'hooks/dibs/subgraph/usePairIsolatedUserTotalRecords';
 import { useDibsCodeData } from 'hooks/dibs/useDibsCodeData';
 import { useDibsRegisterCallback } from 'hooks/dibs/useDibsRegisterCallback';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -15,7 +15,7 @@ const YourCode = ({ testAccount }: { testAccount?: Address }) => {
   const { addressToName, parentCodeName: parentCodeNameFromContract } = useDibsCodeData(testAccount ?? account);
   const [searchParams] = useSearchParams();
   const [parentCodeName, setParentCodeName] = useState('DIBS');
-  const { userTotalVolume } = useDibsUserTotalVolume(testAccount ?? account);
+  const { userTotalVolume } = usePairIsolatedUserTotalRecords(testAccount ?? account);
   useEffect(() => {
     const refCode = searchParams.get('ref');
     if (refCode) {

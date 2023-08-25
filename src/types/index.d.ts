@@ -1,4 +1,5 @@
 import { pairRewarderABI } from 'abis/types/generated';
+import { Address } from 'abitype';
 import BigNumber from 'bignumber.js';
 import BigNumberJS from 'bignumber.js';
 import { Address, Chain } from 'wagmi';
@@ -86,12 +87,6 @@ export type PairRewarderDayWinners =
 export type LeaderBoardInfo = ReadContractResult<typeof pairRewarderABI, 'leaderBoardInfo'>;
 
 export type RewardTokenAndAmount = { token: Address; amount: bigint };
-export type PairRewarderRewardItem = {
-  day: bigint;
-  rank: number;
-  claimed: boolean;
-  rewardTokensAndAmounts: RewardTokenAndAmount[];
-};
 
 export type AddressMap = {
   [key: Chain['id']]: Address;
@@ -108,14 +103,6 @@ export interface LeaderBoardRecord {
 export interface LeaderBoardRecordWithCodeNames extends LeaderBoardRecord {
   code: string;
 }
-
-export type AllPairRewarderRewardsItem = {
-  pair: Address;
-  rewards: PairRewarderRewardItem[];
-};
-export type AllPairRewarderRewards = {
-  [pairRewarderAddress: Address]: AllPairRewarderRewardsItem;
-};
 
 export type PairVolumes = {
   [pairAddress: Address]: BigNumberJS | undefined;

@@ -18,6 +18,7 @@ interface PlatformsProviderProps {
 
 // Define the Provider component
 export const AllPairsDataForCurrentDayContextProvider: React.FC<PlatformsProviderProps> = ({ children }) => {
+  //TODO: this query does not work. use a query that works
   const { pairsTotalVolumesForDay: allPairsTotalVolumeForCurrentDay } = useDibsAllPairsTotalVolumeForCurrentDay();
 
   const currentDay = useDibsCurrentDay();
@@ -45,6 +46,7 @@ export const AllPairsDataForCurrentDayContextProvider: React.FC<PlatformsProvide
   );
 };
 
+//TODO: this query does not work. use a query that works
 export const useAllPairsDataForCurrentDayContext = () => {
   const context = useContext(AllPairsDataForCurrentDayContext);
   if (context === null) {

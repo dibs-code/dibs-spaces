@@ -29,7 +29,7 @@ const PairRewarderLeaderboard = () => {
           <div className="section--left pr-6">
             <h1 className="text-[32px] font-bold text-secondary mb-3 flex gap-3">
               <img src="/assets/images/pair-coin-icon.svg" alt="" />
-              {pairName} leaderboard
+              {pairName || 'Unknown Pair'} leaderboard
             </h1>
             <p className="text-xl">
               This is where you can view the leaderboard of all positions. <br />

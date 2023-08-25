@@ -7,6 +7,7 @@ import { PairVolumes } from 'types';
 import { fromWei } from 'utils/numbers';
 import { Address } from 'wagmi';
 
+//TODO: this query does not work. use a query that works
 export const useDibsPairsTotalVolumeForDay = (pairs: Address[] | null, day: number | null | undefined) => {
   const apolloClient = useApolloClient();
 

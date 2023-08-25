@@ -86,7 +86,7 @@ export default function PairRewarderCard({
           <span className="flex gap-3">
             <img src="/assets/images/pair-coin-icon.svg" alt="" />
             <span>
-              <p>{pairName}</p>
+              <p>{pairName || 'Unknown Pair'}</p>
               <p className="text-secondary text-sm">Volatile</p>
             </span>
           </span>

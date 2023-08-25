@@ -6,7 +6,7 @@ import useTestOrRealData from 'hooks/useTestOrRealData';
 import React from 'react';
 // import { Link } from 'react-router-dom';
 // import RoutePath from 'routes';
-import { AllPairRewarderRewardsItem, PairRewarderRewardItem } from 'types';
+import { AllPairRewarderRewardsItem, PairRewarderRewardItem } from 'types/rewards';
 import { Address, useAccount } from 'wagmi';
 
 const PairRewarderClaimButton = ({
@@ -25,9 +25,31 @@ const PairRewarderClaimButton = ({
   const { write: claim, isLoading: isLoadingClaim } = usePairRewarderWrite(claimRewardConfig);
 
   return (
-    <button disabled={isLoadingClaim} className="btn btn--secondary-outlined" onClick={claim}>
+    <button disabled={isLoadingClaim} className="btn btn--secondary-outlined mx-auto" onClick={claim}>
       Claim
     </button>
+  );
+};
+const PairRewarderSetTopReferrersButton = ({
+  rewardItem,
+  pairRewarderAddress,
+}: {
+  pairRewarderAddress: Address;
+  rewardItem: PairRewarderRewardItem;
+}) => {
+  //TODO: implement this
+
+  // const { address } = useAccount();
+
+  // const { config: claimRewardConfig } = usePreparePairRewarderClaimLeaderBoardReward({
+  //   address: pairRewarderAddress,
+  //   args: address && [rewardItem.day, address],
+  // });
+  // const { write: claim, isLoading: isLoadingClaim } = usePairRewarderWrite(claimRewardConfig);
+
+  return (
+    // <button disabled={isLoadingClaim} className="btn btn--secondary-outlined mx-auto" onClick={claim}>
+    <button className="btn btn--secondary-outlined mx-auto">Set Winners</button>
   );
 };
 
@@ -65,7 +87,7 @@ export const PairRewarderRewardItemComponent = ({
           <span className="flex gap-3">
             <img src="/assets/images/pair-coin-icon.svg" alt="" />
             <span>
-              <p>{pairName}</p>
+              <p>{pairName || 'Unknown Pair'}</p>
               <p className="text-secondary text-sm">Volatile</p>
             </span>
           </span>
@@ -76,8 +98,10 @@ export const PairRewarderRewardItemComponent = ({
       <td>
         <RewardAmounts rewardTokensAndAmounts={rewardItem.rewardTokensAndAmounts} showTotalUsd={!rewardItem.claimed} />
       </td>
-      <td className="py-4 pr-8 rounded-r w-36">
-        {rewardItem.claimed ? (
+      <td className="py-4 pr-8 rounded-r w-52 text-center">
+        {!rewardItem.topReferrersSet ? (
+          <PairRewarderSetTopReferrersButton rewardItem={rewardItem} pairRewarderAddress={pairRewarderAddress} />
+        ) : rewardItem.claimed ? (
           <button className="btn-primary btn-large font-medium mt-4 w-full xl:w-auto px-5 border-2 mx-2 text-white bg-gray shadow-primary-xl">
             Claimed
           </button>

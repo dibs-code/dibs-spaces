@@ -2,7 +2,7 @@ import { multicall } from '@wagmi/core';
 import { pairRewarderABI } from 'abis/types/generated';
 import useTestOrRealData from 'hooks/useTestOrRealData';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { AllPairRewarderRewards, PairRewarderRewardItem } from 'types';
+import { AllPairRewarderRewards, PairRewarderRewardItem } from 'types/rewards';
 import getPairIsolatedRewardTokensAndAmounts from 'utils/getPairIsolatedRewardTokensAndAmounts';
 import { Address, useAccount, useBlockNumber } from 'wagmi';
 
@@ -57,6 +57,7 @@ export function usePairRewarderGetAccountRewards() {
           rank: rankIndex + 1,
           rewardTokensAndAmounts: getPairIsolatedRewardTokensAndAmounts(leaderBoardWinnersForDays[i].info, rankIndex),
           claimed: claimedForDays[i],
+          topReferrersSet: true,
         });
       }
       return rewardsArray;
@@ -93,7 +94,10 @@ export function useWonPairRewarders(address: Address | undefined) {
 
   const { allPairRewarders: allPairRewardersFromContract } = usePairRewarderFactory();
   const allPairRewarders: Address[] | null = useMemo(
-    () => (isTestRewardsRoute ? ['0x6cB66a0762E7Ce3c0Abc9d0241bF4cfFc67fcdA1'] : allPairRewardersFromContract),
+    () =>
+      isTestRewardsRoute
+        ? ['0x6cB66a0762E7Ce3c0Abc9d0241bF4cfFc67fcdA1', '0x21DAcb323a7a23E8B70BA96f2D472bbA92A94D9c']
+        : allPairRewardersFromContract,
     [allPairRewardersFromContract, isTestRewardsRoute],
   );
 
@@ -110,11 +114,13 @@ export function useWonPairRewarders(address: Address | undefined) {
         })),
         chainId,
       });
-      setWonPairRewarderAddresses(allPairRewarders.filter((_item, i) => allWinDays[i].length !== 0));
+      setWonPairRewarderAddresses(
+        isTestRewardsRoute ? allPairRewarders : allPairRewarders.filter((_item, i) => allWinDays[i].length !== 0),
+      );
     }
 
     getData();
-  }, [allPairRewarders, address, chainId]);
+  }, [allPairRewarders, address, chainId, isTestRewardsRoute]);
 
   useEffect(() => {
     async function getData() {

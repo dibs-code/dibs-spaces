@@ -1,20 +1,20 @@
 import { useApolloClient } from '@apollo/client';
-import { UserVolumeDataQueryQuery } from 'apollo/__generated__/graphql';
+import { UserVolumeDataQuery } from 'apollo/__generated__/graphql';
 import { UserVolumeData } from 'apollo/queries';
 import BigNumberJS from 'bignumber.js';
 import { useCallback, useEffect, useState } from 'react';
 import { Address } from 'wagmi';
 
-const useDibsUserTotalVolume = (account: Address | undefined) => {
+const usePairIsolatedUserTotalRecords = (account: Address | undefined) => {
   const apolloClient = useApolloClient();
 
   const [userTotalVolume, setUserTotalVolume] = useState<BigNumberJS | null>(null);
-
+  const [userTotalRecords, setUserTotalRecords] = useState<UserVolumeDataQuery['dailyGeneratedVolumes'] | null>(null);
   const getDailyLeaderboardData = useCallback(
-    async (user: string): Promise<BigNumberJS> => {
+    async (user: string): Promise<UserVolumeDataQuery['dailyGeneratedVolumes']> => {
       let offset = 0;
-      const result: UserVolumeDataQueryQuery['dailyGeneratedVolumes'] = [];
-      let chunkResult: UserVolumeDataQueryQuery['dailyGeneratedVolumes'] = [];
+      const result: UserVolumeDataQuery['dailyGeneratedVolumes'] = [];
+      let chunkResult: UserVolumeDataQuery['dailyGeneratedVolumes'] = [];
       do {
         chunkResult = (
           await apolloClient.query({
@@ -25,9 +25,9 @@ const useDibsUserTotalVolume = (account: Address | undefined) => {
         ).data.dailyGeneratedVolumes;
         result.push(...chunkResult);
         offset += chunkResult.length;
-      } while (chunkResult.length);
-      console.log({ result });
-      return result.reduce((a, c) => a.plus(new BigNumberJS(c.amountAsReferrer)), new BigNumberJS(0));
+      } while (chunkResult.length && offset <= 5000);
+      setUserTotalRecords(result);
+      return result;
     },
     [apolloClient],
   );
@@ -36,7 +36,12 @@ const useDibsUserTotalVolume = (account: Address | undefined) => {
     const fetchInfo = async () => {
       if (!account) return;
       try {
-        setUserTotalVolume(await getDailyLeaderboardData(account));
+        setUserTotalVolume(
+          (await getDailyLeaderboardData(account)).reduce(
+            (a, c) => a.plus(new BigNumberJS(c.amountAsReferrer)),
+            new BigNumberJS(0),
+          ),
+        );
       } catch (error) {
         console.log('leaderboard get error :>> ', error);
       }
@@ -44,6 +49,6 @@ const useDibsUserTotalVolume = (account: Address | undefined) => {
     fetchInfo();
   }, [account, getDailyLeaderboardData]);
 
-  return { userTotalVolume };
+  return { userTotalVolume, userTotalRecords };
 };
-export default useDibsUserTotalVolume;
+export default usePairIsolatedUserTotalRecords;
