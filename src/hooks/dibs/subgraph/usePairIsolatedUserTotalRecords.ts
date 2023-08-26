@@ -3,6 +3,7 @@ import { UserVolumeDataQuery } from 'apollo/__generated__/graphql';
 import { UserVolumeData } from 'apollo/queries';
 import BigNumberJS from 'bignumber.js';
 import { useCallback, useEffect, useState } from 'react';
+import { fromWei } from 'utils/numbers';
 import { Address } from 'wagmi';
 
 const usePairIsolatedUserTotalRecords = (account: Address | undefined) => {
@@ -37,9 +38,11 @@ const usePairIsolatedUserTotalRecords = (account: Address | undefined) => {
       if (!account) return;
       try {
         setUserTotalVolume(
-          (await getDailyLeaderboardData(account)).reduce(
-            (a, c) => a.plus(new BigNumberJS(c.amountAsReferrer)),
-            new BigNumberJS(0),
+          fromWei(
+            (await getDailyLeaderboardData(account)).reduce(
+              (a, c) => a.plus(new BigNumberJS(c.amountAsReferrer)),
+              new BigNumberJS(0),
+            ),
           ),
         );
       } catch (error) {
