@@ -11,7 +11,7 @@ const usePairIsolatedUserTotalRecords = (account: Address | undefined) => {
 
   const [userTotalVolume, setUserTotalVolume] = useState<BigNumberJS | null>(null);
   const [userTotalRecords, setUserTotalRecords] = useState<UserVolumeDataQuery['dailyGeneratedVolumes'] | null>(null);
-  const getDailyLeaderboardData = useCallback(
+  const getUserAllDaysLeaderboardData = useCallback(
     async (user: string): Promise<UserVolumeDataQuery['dailyGeneratedVolumes']> => {
       let offset = 0;
       const result: UserVolumeDataQuery['dailyGeneratedVolumes'] = [];
@@ -27,7 +27,6 @@ const usePairIsolatedUserTotalRecords = (account: Address | undefined) => {
         result.push(...chunkResult);
         offset += chunkResult.length;
       } while (chunkResult.length && offset <= 5000);
-      setUserTotalRecords(result);
       return result;
     },
     [apolloClient],
@@ -37,20 +36,19 @@ const usePairIsolatedUserTotalRecords = (account: Address | undefined) => {
     const fetchInfo = async () => {
       if (!account) return;
       try {
-        setUserTotalVolume(
-          fromWei(
-            (await getDailyLeaderboardData(account)).reduce(
-              (a, c) => a.plus(new BigNumberJS(c.amountAsReferrer)),
-              new BigNumberJS(0),
-            ),
-          ),
+        const records = await getUserAllDaysLeaderboardData(account);
+        setUserTotalRecords(records);
+        const totalUserVolumeWei = records.reduce(
+          (a, c) => a.plus(new BigNumberJS(c.amountAsReferrer)),
+          new BigNumberJS(0),
         );
+        setUserTotalVolume(fromWei(totalUserVolumeWei));
       } catch (error) {
         console.log('leaderboard get error :>> ', error);
       }
     };
     fetchInfo();
-  }, [account, getDailyLeaderboardData]);
+  }, [account, getUserAllDaysLeaderboardData]);
 
   return { userTotalVolume, userTotalRecords };
 };
