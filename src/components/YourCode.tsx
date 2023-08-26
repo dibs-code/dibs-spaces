@@ -117,7 +117,7 @@ const YourCode = ({ testAccount }: { testAccount?: Address }) => {
           <>
             <section className="rounded bg-gray2 min-h-[210px] flex flex-col gap-[22px] justify-center items-center mb-8">
               <p className="font-medium text-2xl text-white w-[420px] text-center">
-                You have not create your dibs code yet, Create one and start earning!
+                You have not created your dibs code yet, Create one and start earning!
               </p>
               <p className="font-medium text-white text-center">
                 Your DiBs code can consist of both lowercase and uppercase letters, as well as numbers.
