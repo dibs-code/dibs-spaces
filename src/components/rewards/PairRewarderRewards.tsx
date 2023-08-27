@@ -84,7 +84,7 @@ const PairRewarderSetTopReferrersButton = ({
           pairRewarderAddress,
           Number(rewardItem.day),
           muonVerificationData.result.data.result.topLeaderBoardN as Address[],
-          BigInt(muonVerificationData.result.signatures[0].timestamp),
+          BigInt(muonVerificationData.result.data.timestamp),
           muonVerificationData.result.reqId,
           {
             signature: BigInt(muonVerificationData.result.signatures[0].signature),
@@ -102,7 +102,7 @@ const PairRewarderSetTopReferrersButton = ({
           pairRewarderAddress,
           Number(rewardItem.day),
           muonVerificationData.result.data.result.topLeaderBoardN as Address[],
-          BigInt(muonVerificationData.result.signatures[0].timestamp),
+          BigInt(muonVerificationData.result.data.timestamp),
           muonVerificationData.result.reqId,
           {
             signature: BigInt(muonVerificationData.result.signatures[0].signature),
