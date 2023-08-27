@@ -1,40 +1,22 @@
 export default [
-  {
-    inputs: [],
-    name: 'InvalidGateway',
-    type: 'error',
-  },
+  { inputs: [], name: 'InvalidGateway', type: 'error' },
   {
     inputs: [],
     name: 'InvalidSignature',
     type: 'error',
   },
-  {
-    inputs: [],
-    name: 'OnlyUser',
-    type: 'error',
-  },
+  { inputs: [], name: 'OnlyUser', type: 'error' },
   {
     anonymous: false,
     inputs: [
-      {
-        indexed: true,
-        internalType: 'address',
-        name: 'user',
-        type: 'address',
-      },
+      { indexed: true, internalType: 'address', name: 'user', type: 'address' },
       {
         indexed: true,
         internalType: 'address',
         name: 'token',
         type: 'address',
       },
-      {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'amount',
-        type: 'uint256',
-      },
+      { indexed: false, internalType: 'uint256', name: 'amount', type: 'uint256' },
     ],
     name: 'Claimed',
     type: 'event',
@@ -42,13 +24,21 @@ export default [
   {
     anonymous: false,
     inputs: [
+      { indexed: true, internalType: 'address', name: 'token', type: 'address' },
       {
-        indexed: false,
-        internalType: 'uint8',
-        name: 'version',
-        type: 'uint8',
+        indexed: true,
+        internalType: 'address',
+        name: 'to',
+        type: 'address',
       },
+      { indexed: false, internalType: 'uint256', name: 'amount', type: 'uint256' },
     ],
+    name: 'ClaimedExcessTokens',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [{ indexed: false, internalType: 'uint8', name: 'version', type: 'uint8' }],
     name: 'Initialized',
     type: 'event',
   },
@@ -63,11 +53,7 @@ export default [
       },
       {
         components: [
-          {
-            internalType: 'uint256',
-            name: 'x',
-            type: 'uint256',
-          },
+          { internalType: 'uint256', name: 'x', type: 'uint256' },
           {
             internalType: 'uint8',
             name: 'parity',
@@ -86,24 +72,14 @@ export default [
   {
     anonymous: false,
     inputs: [
-      {
-        indexed: true,
-        internalType: 'bytes32',
-        name: 'role',
-        type: 'bytes32',
-      },
+      { indexed: true, internalType: 'bytes32', name: 'role', type: 'bytes32' },
       {
         indexed: true,
         internalType: 'bytes32',
         name: 'previousAdminRole',
         type: 'bytes32',
       },
-      {
-        indexed: true,
-        internalType: 'bytes32',
-        name: 'newAdminRole',
-        type: 'bytes32',
-      },
+      { indexed: true, internalType: 'bytes32', name: 'newAdminRole', type: 'bytes32' },
     ],
     name: 'RoleAdminChanged',
     type: 'event',
@@ -111,24 +87,14 @@ export default [
   {
     anonymous: false,
     inputs: [
-      {
-        indexed: true,
-        internalType: 'bytes32',
-        name: 'role',
-        type: 'bytes32',
-      },
+      { indexed: true, internalType: 'bytes32', name: 'role', type: 'bytes32' },
       {
         indexed: true,
         internalType: 'address',
         name: 'account',
         type: 'address',
       },
-      {
-        indexed: true,
-        internalType: 'address',
-        name: 'sender',
-        type: 'address',
-      },
+      { indexed: true, internalType: 'address', name: 'sender', type: 'address' },
     ],
     name: 'RoleGranted',
     type: 'event',
@@ -136,24 +102,14 @@ export default [
   {
     anonymous: false,
     inputs: [
-      {
-        indexed: true,
-        internalType: 'bytes32',
-        name: 'role',
-        type: 'bytes32',
-      },
+      { indexed: true, internalType: 'bytes32', name: 'role', type: 'bytes32' },
       {
         indexed: true,
         internalType: 'address',
         name: 'account',
         type: 'address',
       },
-      {
-        indexed: true,
-        internalType: 'address',
-        name: 'sender',
-        type: 'address',
-      },
+      { indexed: true, internalType: 'address', name: 'sender', type: 'address' },
     ],
     name: 'RoleRevoked',
     type: 'event',
@@ -161,12 +117,7 @@ export default [
   {
     anonymous: false,
     inputs: [
-      {
-        indexed: true,
-        internalType: 'uint32',
-        name: 'round',
-        type: 'uint32',
-      },
+      { indexed: true, internalType: 'uint32', name: 'round', type: 'uint32' },
       {
         indexed: false,
         internalType: 'address[]',
@@ -180,12 +131,7 @@ export default [
   {
     anonymous: false,
     inputs: [
-      {
-        indexed: false,
-        internalType: 'address',
-        name: '_old',
-        type: 'address',
-      },
+      { indexed: false, internalType: 'address', name: '_old', type: 'address' },
       {
         indexed: false,
         internalType: 'address',
@@ -199,12 +145,7 @@ export default [
   {
     anonymous: false,
     inputs: [
-      {
-        indexed: false,
-        internalType: 'uint256',
-        name: '_old',
-        type: 'uint256',
-      },
+      { indexed: false, internalType: 'uint256', name: '_old', type: 'uint256' },
       {
         indexed: false,
         internalType: 'uint256',
@@ -220,11 +161,7 @@ export default [
     inputs: [
       {
         components: [
-          {
-            internalType: 'uint256',
-            name: 'x',
-            type: 'uint256',
-          },
+          { internalType: 'uint256', name: 'x', type: 'uint256' },
           {
             internalType: 'uint8',
             name: 'parity',
@@ -238,11 +175,7 @@ export default [
       },
       {
         components: [
-          {
-            internalType: 'uint256',
-            name: 'x',
-            type: 'uint256',
-          },
+          { internalType: 'uint256', name: 'x', type: 'uint256' },
           {
             internalType: 'uint8',
             name: 'parity',
@@ -261,12 +194,7 @@ export default [
   {
     anonymous: false,
     inputs: [
-      {
-        indexed: false,
-        internalType: 'address',
-        name: '_old',
-        type: 'address',
-      },
+      { indexed: false, internalType: 'address', name: '_old', type: 'address' },
       {
         indexed: false,
         internalType: 'address',
@@ -280,12 +208,7 @@ export default [
   {
     anonymous: false,
     inputs: [
-      {
-        indexed: true,
-        internalType: 'uint256',
-        name: 'day',
-        type: 'uint256',
-      },
+      { indexed: true, internalType: 'uint256', name: 'day', type: 'uint256' },
       {
         indexed: false,
         internalType: 'address[]',
@@ -299,65 +222,42 @@ export default [
   {
     inputs: [],
     name: 'DEFAULT_ADMIN_ROLE',
-    outputs: [
-      {
-        internalType: 'bytes32',
-        name: '',
-        type: 'bytes32',
-      },
-    ],
+    outputs: [{ internalType: 'bytes32', name: '', type: 'bytes32' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [],
     name: 'HALF_Q',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'PLATFORM',
+    outputs: [{ internalType: 'bytes32', name: '', type: 'bytes32' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [],
     name: 'PROJECT_ID',
-    outputs: [
-      {
-        internalType: 'bytes32',
-        name: '',
-        type: 'bytes32',
-      },
-    ],
+    outputs: [{ internalType: 'bytes32', name: '', type: 'bytes32' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [],
     name: 'Q',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [],
     name: 'SETTER',
-    outputs: [
-      {
-        internalType: 'bytes32',
-        name: '',
-        type: 'bytes32',
-      },
-    ],
+    outputs: [{ internalType: 'bytes32', name: '', type: 'bytes32' }],
     stateMutability: 'view',
     type: 'function',
   },
@@ -370,11 +270,7 @@ export default [
       },
       {
         components: [
-          {
-            internalType: 'uint256',
-            name: 'x',
-            type: 'uint256',
-          },
+          { internalType: 'uint256', name: 'x', type: 'uint256' },
           {
             internalType: 'uint8',
             name: 'parity',
@@ -393,21 +289,13 @@ export default [
   },
   {
     inputs: [
-      {
-        internalType: 'address',
-        name: 'admin_',
-        type: 'address',
-      },
+      { internalType: 'address', name: 'admin_', type: 'address' },
       {
         internalType: 'address',
         name: 'setter_',
         type: 'address',
       },
-      {
-        internalType: 'address',
-        name: 'dibs_',
-        type: 'address',
-      },
+      { internalType: 'address', name: 'dibs_', type: 'address' },
       {
         internalType: 'address',
         name: 'validGateway_',
@@ -421,31 +309,19 @@ export default [
   },
   {
     inputs: [
-      {
-        internalType: 'address',
-        name: 'user',
-        type: 'address',
-      },
+      { internalType: 'address', name: 'user', type: 'address' },
       {
         internalType: 'address',
         name: 'token',
         type: 'address',
       },
-      {
-        internalType: 'address',
-        name: 'to',
-        type: 'address',
-      },
+      { internalType: 'address', name: 'to', type: 'address' },
       {
         internalType: 'uint256',
         name: 'accumulativeBalance',
         type: 'uint256',
       },
-      {
-        internalType: 'uint256',
-        name: 'amount',
-        type: 'uint256',
-      },
+      { internalType: 'uint256', name: 'amount', type: 'uint256' },
       {
         internalType: 'bytes',
         name: 'reqId',
@@ -458,11 +334,7 @@ export default [
             name: 'signature',
             type: 'uint256',
           },
-          {
-            internalType: 'address',
-            name: 'owner',
-            type: 'address',
-          },
+          { internalType: 'address', name: 'owner', type: 'address' },
           {
             internalType: 'address',
             name: 'nonce',
@@ -473,11 +345,7 @@ export default [
         name: 'sign',
         type: 'tuple',
       },
-      {
-        internalType: 'bytes',
-        name: 'gatewaySignature',
-        type: 'bytes',
-      },
+      { internalType: 'bytes', name: 'gatewaySignature', type: 'bytes' },
     ],
     name: 'claim',
     outputs: [],
@@ -486,26 +354,59 @@ export default [
   },
   {
     inputs: [
-      {
-        internalType: 'address',
-        name: 'token',
-        type: 'address',
-      },
+      { internalType: 'address', name: 'token', type: 'address' },
       {
         internalType: 'address',
         name: 'to',
         type: 'address',
       },
-      {
-        internalType: 'uint256',
-        name: 'accumulativeBalance',
-        type: 'uint256',
-      },
+      { internalType: 'uint256', name: 'accumulativeBalance', type: 'uint256' },
       {
         internalType: 'uint256',
         name: 'amount',
         type: 'uint256',
       },
+      { internalType: 'bytes', name: 'reqId', type: 'bytes' },
+      {
+        components: [
+          {
+            internalType: 'uint256',
+            name: 'signature',
+            type: 'uint256',
+          },
+          { internalType: 'address', name: 'owner', type: 'address' },
+          {
+            internalType: 'address',
+            name: 'nonce',
+            type: 'address',
+          },
+        ],
+        internalType: 'struct MuonClientBase.SchnorrSign',
+        name: 'sign',
+        type: 'tuple',
+      },
+      { internalType: 'bytes', name: 'gatewaySignature', type: 'bytes' },
+    ],
+    name: 'claimDibsFee',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'address', name: 'token', type: 'address' },
+      {
+        internalType: 'address',
+        name: 'to',
+        type: 'address',
+      },
+      { internalType: 'uint256', name: 'accumulativeBalance', type: 'uint256' },
+      {
+        internalType: 'uint256',
+        name: 'amount',
+        type: 'uint256',
+      },
+      { internalType: 'uint256', name: 'sigTimestamp', type: 'uint256' },
       {
         internalType: 'bytes',
         name: 'reqId',
@@ -518,11 +419,7 @@ export default [
             name: 'signature',
             type: 'uint256',
           },
-          {
-            internalType: 'address',
-            name: 'owner',
-            type: 'address',
-          },
+          { internalType: 'address', name: 'owner', type: 'address' },
           {
             internalType: 'address',
             name: 'nonce',
@@ -533,13 +430,9 @@ export default [
         name: 'sign',
         type: 'tuple',
       },
-      {
-        internalType: 'bytes',
-        name: 'gatewaySignature',
-        type: 'bytes',
-      },
+      { internalType: 'bytes', name: 'gatewaySignature', type: 'bytes' },
     ],
-    name: 'claimDibsFee',
+    name: 'claimExcessTokens',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
@@ -547,42 +440,20 @@ export default [
   {
     inputs: [],
     name: 'dibs',
-    outputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
-    ],
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
-    inputs: [
-      {
-        internalType: 'bytes32',
-        name: 'role',
-        type: 'bytes32',
-      },
-    ],
+    inputs: [{ internalType: 'bytes32', name: 'role', type: 'bytes32' }],
     name: 'getRoleAdmin',
-    outputs: [
-      {
-        internalType: 'bytes32',
-        name: '',
-        type: 'bytes32',
-      },
-    ],
+    outputs: [{ internalType: 'bytes32', name: '', type: 'bytes32' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [
-      {
-        internalType: 'bytes32',
-        name: 'role',
-        type: 'bytes32',
-      },
+      { internalType: 'bytes32', name: 'role', type: 'bytes32' },
       {
         internalType: 'address',
         name: 'account',
@@ -596,11 +467,7 @@ export default [
   },
   {
     inputs: [
-      {
-        internalType: 'bytes32',
-        name: 'role',
-        type: 'bytes32',
-      },
+      { internalType: 'bytes32', name: 'role', type: 'bytes32' },
       {
         internalType: 'address',
         name: 'account',
@@ -608,33 +475,19 @@ export default [
       },
     ],
     name: 'hasRole',
-    outputs: [
-      {
-        internalType: 'bool',
-        name: '',
-        type: 'bool',
-      },
-    ],
+    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [
-      {
-        internalType: 'address',
-        name: 'admin_',
-        type: 'address',
-      },
+      { internalType: 'address', name: 'admin_', type: 'address' },
       {
         internalType: 'address',
         name: 'setter_',
         type: 'address',
       },
-      {
-        internalType: 'address',
-        name: 'dibs_',
-        type: 'address',
-      },
+      { internalType: 'address', name: 'dibs_', type: 'address' },
       {
         internalType: 'address',
         name: 'validGateway_',
@@ -647,11 +500,7 @@ export default [
       },
       {
         components: [
-          {
-            internalType: 'uint256',
-            name: 'x',
-            type: 'uint256',
-          },
+          { internalType: 'uint256', name: 'x', type: 'uint256' },
           {
             internalType: 'uint8',
             name: 'parity',
@@ -671,13 +520,7 @@ export default [
   {
     inputs: [],
     name: 'muonAppId',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'view',
     type: 'function',
   },
@@ -685,11 +528,7 @@ export default [
     inputs: [],
     name: 'muonPublicKey',
     outputs: [
-      {
-        internalType: 'uint256',
-        name: 'x',
-        type: 'uint256',
-      },
+      { internalType: 'uint256', name: 'x', type: 'uint256' },
       {
         internalType: 'uint8',
         name: 'parity',
@@ -701,11 +540,7 @@ export default [
   },
   {
     inputs: [
-      {
-        internalType: 'bytes',
-        name: 'reqId',
-        type: 'bytes',
-      },
+      { internalType: 'bytes', name: 'reqId', type: 'bytes' },
       {
         internalType: 'uint256',
         name: 'hash',
@@ -718,11 +553,7 @@ export default [
             name: 'signature',
             type: 'uint256',
           },
-          {
-            internalType: 'address',
-            name: 'owner',
-            type: 'address',
-          },
+          { internalType: 'address', name: 'owner', type: 'address' },
           {
             internalType: 'address',
             name: 'nonce',
@@ -735,11 +566,7 @@ export default [
       },
       {
         components: [
-          {
-            internalType: 'uint256',
-            name: 'x',
-            type: 'uint256',
-          },
+          { internalType: 'uint256', name: 'x', type: 'uint256' },
           {
             internalType: 'uint8',
             name: 'parity',
@@ -752,23 +579,13 @@ export default [
       },
     ],
     name: 'muonVerify',
-    outputs: [
-      {
-        internalType: 'bool',
-        name: '',
-        type: 'bool',
-      },
-    ],
+    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
     stateMutability: 'nonpayable',
     type: 'function',
   },
   {
     inputs: [
-      {
-        internalType: 'bytes32',
-        name: 'role',
-        type: 'bytes32',
-      },
+      { internalType: 'bytes32', name: 'role', type: 'bytes32' },
       {
         internalType: 'address',
         name: 'account',
@@ -782,11 +599,7 @@ export default [
   },
   {
     inputs: [
-      {
-        internalType: 'bytes32',
-        name: 'role',
-        type: 'bytes32',
-      },
+      { internalType: 'bytes32', name: 'role', type: 'bytes32' },
       {
         internalType: 'address',
         name: 'account',
@@ -799,26 +612,14 @@ export default [
     type: 'function',
   },
   {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'dibs_',
-        type: 'address',
-      },
-    ],
+    inputs: [{ internalType: 'address', name: 'dibs_', type: 'address' }],
     name: 'setDibs',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
   },
   {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: 'muonAppId_',
-        type: 'uint256',
-      },
-    ],
+    inputs: [{ internalType: 'uint256', name: 'muonAppId_', type: 'uint256' }],
     name: 'setMuonAppId',
     outputs: [],
     stateMutability: 'nonpayable',
@@ -833,11 +634,7 @@ export default [
             name: 'x',
             type: 'uint256',
           },
-          {
-            internalType: 'uint8',
-            name: 'parity',
-            type: 'uint8',
-          },
+          { internalType: 'uint8', name: 'parity', type: 'uint8' },
         ],
         internalType: 'struct MuonClientBase.PublicKey',
         name: 'muonPublicKey_',
@@ -851,21 +648,19 @@ export default [
   },
   {
     inputs: [
+      { internalType: 'address', name: 'pairRewarder', type: 'address' },
       {
         internalType: 'uint32',
-        name: 'round',
+        name: 'day',
         type: 'uint32',
       },
+      { internalType: 'address[]', name: 'topReferrers', type: 'address[]' },
       {
-        internalType: 'address[]',
-        name: 'winners',
-        type: 'address[]',
+        internalType: 'uint256',
+        name: 'sigTimestamp',
+        type: 'uint256',
       },
-      {
-        internalType: 'bytes',
-        name: 'reqId',
-        type: 'bytes',
-      },
+      { internalType: 'bytes', name: 'reqId', type: 'bytes' },
       {
         components: [
           {
@@ -873,11 +668,7 @@ export default [
             name: 'signature',
             type: 'uint256',
           },
-          {
-            internalType: 'address',
-            name: 'owner',
-            type: 'address',
-          },
+          { internalType: 'address', name: 'owner', type: 'address' },
           {
             internalType: 'address',
             name: 'nonce',
@@ -888,11 +679,41 @@ export default [
         name: 'sign',
         type: 'tuple',
       },
+      { internalType: 'bytes', name: 'gatewaySignature', type: 'bytes' },
+    ],
+    name: 'setPairRewarderTopReferrers',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'uint32', name: 'round', type: 'uint32' },
       {
-        internalType: 'bytes',
-        name: 'gatewaySignature',
-        type: 'bytes',
+        internalType: 'address[]',
+        name: 'winners',
+        type: 'address[]',
       },
+      { internalType: 'bytes', name: 'reqId', type: 'bytes' },
+      {
+        components: [
+          {
+            internalType: 'uint256',
+            name: 'signature',
+            type: 'uint256',
+          },
+          { internalType: 'address', name: 'owner', type: 'address' },
+          {
+            internalType: 'address',
+            name: 'nonce',
+            type: 'address',
+          },
+        ],
+        internalType: 'struct MuonClientBase.SchnorrSign',
+        name: 'sign',
+        type: 'tuple',
+      },
+      { internalType: 'bytes', name: 'gatewaySignature', type: 'bytes' },
     ],
     name: 'setRoundWinners',
     outputs: [],
@@ -901,16 +722,13 @@ export default [
   },
   {
     inputs: [
-      {
-        internalType: 'uint32',
-        name: 'day',
-        type: 'uint32',
-      },
+      { internalType: 'uint32', name: 'day', type: 'uint32' },
       {
         internalType: 'address[]',
         name: 'topReferrers',
         type: 'address[]',
       },
+      { internalType: 'uint256', name: 'sigTimestamp', type: 'uint256' },
       {
         internalType: 'bytes',
         name: 'reqId',
@@ -923,11 +741,7 @@ export default [
             name: 'signature',
             type: 'uint256',
           },
-          {
-            internalType: 'address',
-            name: 'owner',
-            type: 'address',
-          },
+          { internalType: 'address', name: 'owner', type: 'address' },
           {
             internalType: 'address',
             name: 'nonce',
@@ -938,11 +752,7 @@ export default [
         name: 'sign',
         type: 'tuple',
       },
-      {
-        internalType: 'bytes',
-        name: 'gatewaySignature',
-        type: 'bytes',
-      },
+      { internalType: 'bytes', name: 'gatewaySignature', type: 'bytes' },
     ],
     name: 'setTopReferrers',
     outputs: [],
@@ -950,57 +760,29 @@ export default [
     type: 'function',
   },
   {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'validGateway_',
-        type: 'address',
-      },
-    ],
+    inputs: [{ internalType: 'address', name: 'validGateway_', type: 'address' }],
     name: 'setValidGateway',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
   },
   {
-    inputs: [
-      {
-        internalType: 'bytes4',
-        name: 'interfaceId',
-        type: 'bytes4',
-      },
-    ],
+    inputs: [{ internalType: 'bytes4', name: 'interfaceId', type: 'bytes4' }],
     name: 'supportsInterface',
-    outputs: [
-      {
-        internalType: 'bool',
-        name: '',
-        type: 'bool',
-      },
-    ],
+    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [],
     name: 'validGateway',
-    outputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
-    ],
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [
-      {
-        internalType: 'bytes',
-        name: 'data',
-        type: 'bytes',
-      },
+      { internalType: 'bytes', name: 'data', type: 'bytes' },
       {
         internalType: 'bytes',
         name: 'reqId',
@@ -1013,11 +795,7 @@ export default [
             name: 'signature',
             type: 'uint256',
           },
-          {
-            internalType: 'address',
-            name: 'owner',
-            type: 'address',
-          },
+          { internalType: 'address', name: 'owner', type: 'address' },
           {
             internalType: 'address',
             name: 'nonce',
@@ -1028,11 +806,7 @@ export default [
         name: 'sign',
         type: 'tuple',
       },
-      {
-        internalType: 'bytes',
-        name: 'gatewaySignature',
-        type: 'bytes',
-      },
+      { internalType: 'bytes', name: 'gatewaySignature', type: 'bytes' },
     ],
     name: 'verifyTSSAndGW',
     outputs: [],
