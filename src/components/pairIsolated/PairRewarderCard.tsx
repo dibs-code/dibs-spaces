@@ -61,9 +61,10 @@ export default function PairRewarderCard({
   const { address } = useAccount();
   const yourPosition = useMemo(() => {
     if (!currentDayLeaderBoard || !address) return null;
-    const index = currentDayLeaderBoard.findIndex((item) => item.user.toLowerCase() === address);
+    const index = currentDayLeaderBoard.findIndex((item) => item.user.toLowerCase() === address.toLowerCase());
     return index !== -1 ? index + 1 : null;
   }, [address, currentDayLeaderBoard]);
+
   const yourPositionRewardAmounts = useMemo(() => {
     if (!tokenDecimals || !activeLeaderBoardInfo || !yourPosition) return null;
     const amounts = activeLeaderBoardInfo.rewardAmounts.map((rewardAmounts, i) =>
@@ -80,7 +81,7 @@ export default function PairRewarderCard({
   });
 
   return (
-    <tr className="text-white text-left bg-gray2">
+    <tr className="text-white text-left bg-gray2" data-testid={`${pairRewarderAddress}-row`}>
       <td className="pl-8 rounded-l py-5">
         <span className="flex flex-col justify-center ">
           <span className="flex gap-3">
@@ -104,11 +105,11 @@ export default function PairRewarderCard({
           '-'
         )}
       </td>
-      <td>{rankOneWinnerCode || '-'}</td>
-      <td>
+      <td data-testid={`${pairRewarderAddress}-winner-1`}>{rankOneWinnerCode || '-'}</td>
+      <td data-testid={`${pairRewarderAddress}-your-position`}>
         {yourPosition ? (
           <>
-            #${yourPosition}
+            #{yourPosition}
             {rewardTokens && yourPositionRewardAmounts && (
               <>
                 {' '}

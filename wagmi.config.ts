@@ -1,13 +1,13 @@
 import { defineConfig } from '@wagmi/cli';
 import { react } from '@wagmi/cli/plugins';
+import { Abi } from 'viem';
 import { erc20ABI } from 'wagmi';
 
-import DibsABI from './src/abis/dibs';
-import DibsLotteryABI from './src/abis/dibsLottery';
-import MuonInterfaceABI from './src/abis/muonInterface';
-import PairRewarderABI from './src/abis/pairRewarder';
-import pairRewarderFactoryABI from './src/abis/pairRewarderFactory';
-import UniswapV2PairABI from './src/abis/uniswapV2Pair';
+import DibsABI from './src/abis/dibs.json';
+import MuonInterfaceABI from './src/abis/muonInterface.json';
+import PairRewarderABI from './src/abis/pairRewarder.json';
+import pairRewarderFactoryABI from './src/abis/pairRewarderFactory.json';
+import UniswapV2PairABI from './src/abis/uniswapV2Pair.json';
 
 export default defineConfig({
   out: 'src/abis/types/generated.ts',
@@ -18,27 +18,23 @@ export default defineConfig({
     },
     {
       name: 'Dibs',
-      abi: DibsABI,
-    },
-    {
-      name: 'DibsLottery',
-      abi: DibsLotteryABI,
+      abi: DibsABI as Abi,
     },
     {
       name: 'MuonInterface',
-      abi: MuonInterfaceABI,
+      abi: MuonInterfaceABI as Abi,
     },
     {
       name: 'PairRewarder',
-      abi: PairRewarderABI,
+      abi: PairRewarderABI as Abi,
     },
     {
       name: 'pairRewarderFactory',
-      abi: pairRewarderFactoryABI,
+      abi: pairRewarderFactoryABI as Abi,
     },
     {
       name: 'UniswapV2Pair',
-      abi: UniswapV2PairABI,
+      abi: UniswapV2PairABI as Abi,
     },
   ],
   plugins: [react()],

@@ -1,6 +1,9 @@
 .env
 .npmrc
 
+cypress/videos
+cypress/screenshots
+cypress/utils/mock-contracts/types
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 src/abis/types
 

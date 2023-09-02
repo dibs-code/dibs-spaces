@@ -9,6 +9,7 @@ export const ConnectWalletButton = ({ size }: { size?: 'sm' | 'md' | 'lg' }) => 
 
         return (
           <div
+            data-testid={'connect-wallet-button'}
             {...(!ready && {
               'aria-hidden': true,
               style: {

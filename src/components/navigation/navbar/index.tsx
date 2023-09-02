@@ -29,7 +29,7 @@ const Navbar = () => {
   const [show, setShow] = React.useState(false);
 
   const { address: account } = useAccount();
-  const renderConnector = () => {
+  const renderConnectorMobile = () => {
     return (
       <div className="flex-1 flex justify-end">
         {account ? (
@@ -50,7 +50,11 @@ const Navbar = () => {
           </>
         ) : (
           <>
-            <button className={'btn__secondary btn-medium text-center'} onClick={openConnectModal}>
+            <button
+              className={'btn__secondary btn-medium text-center'}
+              data-testid={'connect-wallet-button-mobile'}
+              onClick={openConnectModal}
+            >
               Connect Wallet
             </button>
             {/*<div className={'flex justify-end flex-1'}>*/}
@@ -110,7 +114,7 @@ const Navbar = () => {
           leaveTo="opacity-0 translate-x-32"
         >
           <div className={'w-full inset-0 h-screen overflow-y-auto bg-white absolute py-20 px-4'}>
-            {renderConnector()}
+            {renderConnectorMobile()}
             <Menu />
             {account && (
               <div className={'flex justify-center'}>

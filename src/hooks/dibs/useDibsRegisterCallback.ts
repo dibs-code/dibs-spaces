@@ -1,7 +1,6 @@
 import { keccak256 } from '@ethersproject/keccak256';
 import { toUtf8Bytes } from '@ethersproject/strings';
-import DibsABI from 'abis/dibs';
-import { useDibsRegister, usePrepareDibsRegister } from 'abis/types/generated';
+import { dibsABI, useDibsRegister, usePrepareDibsRegister } from 'abis/types/generated';
 import { DibsAddressMap } from 'constants/addresses';
 import { useContractAddress } from 'hooks/useContractAddress';
 import { useCallback, useMemo, useState } from 'react';
@@ -29,13 +28,13 @@ export const useDibsRegisterCallback = (name: string, parentName: string) => {
       contracts: [
         {
           address: dibsAddress,
-          abi: DibsABI,
+          abi: dibsABI,
           functionName: 'codeToAddress',
           args: [yourCode],
         },
         {
           address: dibsAddress,
-          abi: DibsABI,
+          abi: dibsABI,
           functionName: 'codeToAddress',
           args: [parentCode],
         },

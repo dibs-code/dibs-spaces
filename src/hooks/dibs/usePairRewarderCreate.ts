@@ -1,6 +1,6 @@
 import { Interface } from '@ethersproject/abi';
 import { prepareWriteContract, waitForTransaction, writeContract } from '@wagmi/core';
-import pairRewarderFactoryABI from 'abis/pairRewarderFactory';
+import pairRewarderFactoryABI from 'abis/pairRewarderFactory.json';
 import { useDibsAddresses } from 'hooks/dibs/useDibsAddresses';
 import usePairName from 'hooks/dibs/usePairName';
 import { useCallback, useEffect, useMemo, useState } from 'react';

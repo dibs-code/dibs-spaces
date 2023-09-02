@@ -6,7 +6,7 @@ const config: CodegenConfig = {
   generates: {
     './src/apollo/__generated__/': {
       preset: 'client',
-      plugins: [],
+      plugins: ['named-operations-object'],
       presetConfig: {
         gqlTagName: 'gql',
       },

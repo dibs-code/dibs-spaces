@@ -1,5 +1,5 @@
 import { multicall, prepareWriteContract, waitForTransaction, writeContract } from '@wagmi/core';
-import PairRewarderABI from 'abis/pairRewarder';
+import PairRewarderABI from 'abis/pairRewarder.json';
 import { erc20ABI } from 'abis/types/generated';
 import { PAIR_ISOLATED_LEADERBOARD_MAXIMUM_SPOT_COUNT } from 'constants/config';
 import usePairName from 'hooks/dibs/usePairName';
