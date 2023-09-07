@@ -3,7 +3,7 @@ import { isTheSameAddress } from 'metamocks';
 import RoutePath from 'routes';
 import { fromWei } from 'utils/numbers';
 
-import { getTestSelector } from '../utils';
+import { getTestSelector, injectDibsContractAddressInLeaderBoardThatShouldBeFiltered } from '../utils';
 import {
   chainId,
   dibsCodeNamesRegistered,
@@ -59,11 +59,11 @@ describe('PairRewardersList', () => {
           return;
         }
         if (req.body.variables.day === 21 && isTheSameAddress(req.body.variables.pair, testPairAddress)) {
-          req.reply(testPairDay21LeaderBoard);
+          req.reply(injectDibsContractAddressInLeaderBoardThatShouldBeFiltered(testPairDay21LeaderBoard));
           return;
         }
         if (req.body.variables.day === 20 && isTheSameAddress(req.body.variables.pair, testPairAddress)) {
-          req.reply(testPairDay20LeaderBoard);
+          req.reply(injectDibsContractAddressInLeaderBoardThatShouldBeFiltered(testPairDay20LeaderBoard));
           return;
         }
       }

@@ -2,7 +2,7 @@ import { namedOperations } from 'apollo/__generated__/graphql';
 import { isTheSameAddress } from 'metamocks';
 import RoutePath from 'routes';
 
-import { getTestSelector } from '../utils';
+import { getTestSelector, injectDibsContractAddressInLeaderBoardThatShouldBeFiltered } from '../utils';
 import {
   chainId,
   dibsCodeNames,
@@ -56,7 +56,7 @@ describe('PairRewardersList', () => {
           return;
         }
         if (req.body.variables.day === 21 && isTheSameAddress(req.body.variables.pair, testPairAddress)) {
-          req.reply(testPairDay21LeaderBoard);
+          req.reply(injectDibsContractAddressInLeaderBoardThatShouldBeFiltered(testPairDay21LeaderBoard));
           return;
         }
       }
