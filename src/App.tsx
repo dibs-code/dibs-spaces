@@ -25,7 +25,7 @@ function App() {
     const walletNotConnected = !address;
     const walletLoadedAndHasWrongChain = chain?.id && !isSupportedChain(chain?.id);
     if ((walletNotConnected || walletLoadedAndHasWrongChain) && requiresCode(location.pathname)) {
-      navigate(RoutePath.HOME, { replace: true });
+      navigate(RoutePath.YOUR_CODE, { replace: true });
     }
   }, [chain, location, navigate, address]);
   const { createLeaderBoardModalOpen, setCreateLeaderBoardModalOpen } = useCreateLeaderBoardModalContext();
@@ -33,7 +33,7 @@ function App() {
     <div className="app">
       <Navbar />
       <Routes>
-        <Route path={RoutePath.HOME} element={<Home />} />
+        <Route path={RoutePath.YOUR_CODE} element={<Home />} />
         <Route path={RoutePath.YOUR_CODE_TEST} element={<YourCodeTest />} />
         <Route path={RoutePath.REWARDS} element={<Rewards />} />
         <Route path={RoutePath.REWARDS_TEST} element={<RewardsTest />} />

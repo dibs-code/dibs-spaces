@@ -99,7 +99,9 @@ const YourCode = ({ testAccount }: { testAccount?: Address }) => {
             <div className="card-yellow rounded flex flex-col gap-20 bg-gray2 py-7 px-9 flex-1">
               <p className="card-title text-white font-medium text-2xl">Your Code</p>
               <span className="flex gap-4 items-center ml-auto">
-                <p className="font-medium text-[32px] text-white">{addressToName}</p>
+                <p className="font-medium text-[32px] text-white" data-testid="your-code-name">
+                  {addressToName}
+                </p>
                 <img onClick={copyRefUrl} src="/assets/images/code/copy-clipboard.svg" alt="" />
               </span>
             </div>
@@ -126,6 +128,7 @@ const YourCode = ({ testAccount }: { testAccount?: Address }) => {
             <section className="flex justify-between mb-4">
               <div className="inputs flex gap-8 flex-1">
                 <input
+                  data-testid="your-code-name-input"
                   className="flex-1 bg-gray2 placeholder-gray3 text-white rounded py-3.5 pl-4 pr-2 flex items-center"
                   type="text"
                   value={name}
@@ -141,7 +144,11 @@ const YourCode = ({ testAccount }: { testAccount?: Address }) => {
                 />
               </div>
               <div className="flex-1">
-                <button className="btn btn--secondary font-bold py-[11px] px-11 ml-auto" onClick={create}>
+                <button
+                  data-testid="your-code-name-create"
+                  className="btn btn--secondary font-bold py-[11px] px-11 ml-auto"
+                  onClick={create}
+                >
                   Create
                 </button>
               </div>

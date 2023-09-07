@@ -5,11 +5,18 @@ import { CallOverrides } from 'ethers';
 import { PromiseOrValue } from 'graphql/jsutils/PromiseOrValue';
 import { MockContract, MockContractInterface } from 'metamocks';
 
-import { dibsCodeNames, dibsCodeNamesRegistered, DibsContractAddresses, ZERO_ADDRESS } from '../data';
+import {
+  dibsCodeNames,
+  dibsCodeNamesRegistered,
+  DibsContractAddresses,
+  TEST_ADDRESS_NEVER_USE,
+  ZERO_ADDRESS,
+} from '../data';
 import { Dibs } from './types';
 
 export default class DibsMockContract extends MockContract<Dibs> implements MockContractInterface<Dibs> {
   abi = DibsABI;
+  codeNames = { ...dibsCodeNames };
 
   BLACKLIST_SETTER(overrides: CallOverrides | undefined): Promise<string> {
     throw Error('not implemented');
@@ -105,7 +112,7 @@ export default class DibsMockContract extends MockContract<Dibs> implements Mock
   }
 
   async getCodeName(user: PromiseOrValue<string>, overrides: CallOverrides | undefined): Promise<string> {
-    const codeName = dibsCodeNames[(await user).toLowerCase()];
+    const codeName = this.codeNames[(await user).toLowerCase()];
     if (codeName) return codeName;
     throw Error('Code name not found');
   }
@@ -175,12 +182,12 @@ export default class DibsMockContract extends MockContract<Dibs> implements Mock
     throw Error('not implemented');
   }
 
-  register(
+  async register(
     name: PromiseOrValue<string>,
     parentCode: PromiseOrValue<BytesLike>,
     overrides: CallOverrides | undefined,
   ): Promise<void> {
-    throw Error('not implemented');
+    this.codeNames[TEST_ADDRESS_NEVER_USE] = await name;
   }
 
   renounceRole(
@@ -250,9 +257,5 @@ export default class DibsMockContract extends MockContract<Dibs> implements Mock
 }
 
 export class DibsMockContractRegistered extends DibsMockContract {
-  async getCodeName(user: PromiseOrValue<string>, overrides: CallOverrides | undefined): Promise<string> {
-    const codeName = dibsCodeNamesRegistered[(await user).toLowerCase()];
-    if (codeName) return codeName;
-    throw Error('Code name not found');
-  }
+  codeNames = { ...dibsCodeNamesRegistered };
 }
