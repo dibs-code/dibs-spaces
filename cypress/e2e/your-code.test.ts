@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 
+import { namedOperations } from 'apollo/__generated__/graphql';
+import { isTheSameAddress } from 'metamocks';
 import RoutePath from 'routes';
 
 import { getTestSelector } from '../utils';
@@ -9,6 +11,7 @@ import {
   DibsContractAddresses,
   multicall3Address,
   TEST_ADDRESS_NEVER_USE,
+  testPairAddress,
 } from '../utils/data';
 import DibsMockContract from '../utils/mock-contracts/Dibs';
 import Multicall3MockContract from '../utils/mock-contracts/Multicall3';
@@ -18,6 +21,49 @@ describe('YourCode', () => {
   beforeEach(() => {
     cy.setupMetamocks();
     cy.registerMockContract<Multicall3>(multicall3Address[chainId], Multicall3MockContract);
+    cy.intercept('POST', /api.thegraph.com\/subgraphs\/name/, (req) => {
+      if (req.body.operationName === namedOperations.Query.UserVolumeData) {
+        if (req.body.variables.skip) {
+          req.reply({
+            data: {
+              dailyGeneratedVolumes: [],
+            },
+          });
+          return;
+        }
+        if (isTheSameAddress(req.body.variables.user, TEST_ADDRESS_NEVER_USE)) {
+          req.reply({
+            data: {
+              dailyGeneratedVolumes: [
+                {
+                  user: TEST_ADDRESS_NEVER_USE,
+                  day: 5,
+                  pair: testPairAddress,
+                  amountAsReferrer: '18327005718129500',
+                  __typename: 'DailyGeneratedVolume',
+                },
+                {
+                  user: TEST_ADDRESS_NEVER_USE,
+                  day: 10,
+                  pair: testPairAddress,
+                  amountAsReferrer: '5718129500',
+                  __typename: 'DailyGeneratedVolume',
+                },
+                {
+                  user: TEST_ADDRESS_NEVER_USE,
+                  day: 15,
+                  pair: testPairAddress,
+                  amountAsReferrer: '28327005718129500',
+                  __typename: 'DailyGeneratedVolume',
+                },
+              ],
+            },
+          });
+          return;
+        }
+      }
+      req.continue();
+    });
     cy.visit(RoutePath.YOUR_CODE);
   });
 
@@ -32,6 +78,7 @@ describe('YourCode', () => {
       .then(() => {
         expect(dibsMockContract['register']).to.have.called;
         cy.get(getTestSelector('your-code-name')).contains(dibsCodeNamesRegistered[TEST_ADDRESS_NEVER_USE]);
+        cy.get(getTestSelector('your-code-volume-generated')).contains('$0.047');
       });
   });
 });

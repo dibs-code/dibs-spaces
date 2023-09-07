@@ -108,7 +108,7 @@ const YourCode = ({ testAccount }: { testAccount?: Address }) => {
             <div className="card-red rounded flex flex-col gap-20 bg-gray2 py-7 px-9 flex-1">
               <p className="card-title text-white font-medium text-2xl">Volume Generated</p>
               <span className="flex gap-4 items-center ml-auto">
-                <p className="font-medium text-[32px] text-white">
+                <p className="font-medium text-[32px] text-white" data-testid="your-code-volume-generated">
                   ${userTotalVolume?.toNumber().toLocaleString() ?? '...'}
                 </p>
                 <img src="/assets/images/code/arrow-right.svg" alt="" />
