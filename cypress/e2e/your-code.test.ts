@@ -11,7 +11,7 @@ import {
   DibsContractAddresses,
   multicall3Address,
   TEST_ADDRESS_NEVER_USE,
-  testPairAddress,
+  userGeneratedVolumeData,
 } from '../utils/data';
 import DibsMockContract from '../utils/mock-contracts/Dibs';
 import Multicall3MockContract from '../utils/mock-contracts/Multicall3';
@@ -32,33 +32,7 @@ describe('YourCode', () => {
           return;
         }
         if (isTheSameAddress(req.body.variables.user, TEST_ADDRESS_NEVER_USE)) {
-          req.reply({
-            data: {
-              dailyGeneratedVolumes: [
-                {
-                  user: TEST_ADDRESS_NEVER_USE,
-                  day: 5,
-                  pair: testPairAddress,
-                  amountAsReferrer: '18327005718129500',
-                  __typename: 'DailyGeneratedVolume',
-                },
-                {
-                  user: TEST_ADDRESS_NEVER_USE,
-                  day: 10,
-                  pair: testPairAddress,
-                  amountAsReferrer: '5718129500',
-                  __typename: 'DailyGeneratedVolume',
-                },
-                {
-                  user: TEST_ADDRESS_NEVER_USE,
-                  day: 15,
-                  pair: testPairAddress,
-                  amountAsReferrer: '28327005718129500',
-                  __typename: 'DailyGeneratedVolume',
-                },
-              ],
-            },
-          });
+          req.reply(userGeneratedVolumeData);
           return;
         }
       }

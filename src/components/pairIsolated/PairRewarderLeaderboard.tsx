@@ -44,11 +44,15 @@ function LeaderBoardRecordRow({
   }, [chainId, tokenAddresses, tokenAmountsRaw]);
   return (
     <tr className="text-white text-left bg-gray2">
-      <td className="pl-8 rounded-l">
+      <td className="pl-8 rounded-l" data-testid={`leaderboard-record-${index}-rank`}>
         <span>#{index + 1}</span>
       </td>
-      <td className="">{leaderBoardRecord.code || leaderBoardRecord.user}</td>
-      <td className="">{leaderBoardRecord.volume.toString()}</td>
+      <td className="" data-testid={`leaderboard-record-${index}-code-name`}>
+        {leaderBoardRecord.code || leaderBoardRecord.user}
+      </td>
+      <td className="" data-testid={`leaderboard-record-${index}-volume`}>
+        ${leaderBoardRecord.volume.toNumber().toLocaleString()}
+      </td>
       <td className="py-4 pr-8 rounded-r text-right">
         <span className="flex justify-end gap-1">
           {rewardTokensAndAmounts.map((obj) => (

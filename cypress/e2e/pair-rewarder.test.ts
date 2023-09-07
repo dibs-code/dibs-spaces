@@ -1,22 +1,23 @@
-import { namedOperations } from 'apollo/__generated__/graphql';
+import { DailyDataQuery, namedOperations } from 'apollo/__generated__/graphql';
 import { isTheSameAddress } from 'metamocks';
 import RoutePath from 'routes';
+import { fromWei } from 'utils/numbers';
 
 import { getTestSelector } from '../utils';
 import {
   chainId,
-  dibsCodeNames,
+  dibsCodeNamesRegistered,
   DibsContractAddresses,
   multicall3Address,
-  TEST_DIBS_USER_1,
   testPairAddress,
+  testPairDay20LeaderBoard,
   testPairDay21LeaderBoard,
   testPairRewarderIsNotSetterAddress,
   testPairRewarderIsSetterAddress,
   UWU_ADDRESS,
   WETH_ADDRESS,
 } from '../utils/data';
-import DibsMockContract from '../utils/mock-contracts/Dibs';
+import { DibsMockContractRegistered } from '../utils/mock-contracts/Dibs';
 import { UWUMockContract, WETHMockContract } from '../utils/mock-contracts/Erc20';
 import Multicall3MockContract from '../utils/mock-contracts/Multicall3';
 import { TestPairRewarderIsNotSetter, TestPairRewarderIsSetter } from '../utils/mock-contracts/PairRewarder';
@@ -41,11 +42,13 @@ describe('PairRewardersList', () => {
     );
     cy.registerMockContract<PairRewarder>(testPairRewarderIsSetterAddress, TestPairRewarderIsSetter);
     cy.registerMockContract<PairRewarder>(testPairRewarderIsNotSetterAddress, TestPairRewarderIsNotSetter);
-    cy.registerMockContract<Dibs>(DibsContractAddresses.dibs, DibsMockContract);
+    cy.registerMockContract<Dibs>(DibsContractAddresses.dibs, DibsMockContractRegistered);
     cy.registerMockContract<UniswapV2Pair>(testPairAddress, TestPairMockContract);
     cy.registerMockContract<Erc20>(WETH_ADDRESS, WETHMockContract);
     cy.registerMockContract<Erc20>(UWU_ADDRESS, UWUMockContract);
     cy.intercept('POST', /api.thegraph.com\/subgraphs\/name/, (req) => {
+      console.log('req.body');
+      console.log(req.body);
       if (req.body.operationName === namedOperations.Query.DailyDataForPair) {
         if (req.body.variables.skip) {
           req.reply({
@@ -59,32 +62,44 @@ describe('PairRewardersList', () => {
           req.reply(testPairDay21LeaderBoard);
           return;
         }
+        if (req.body.variables.day === 20 && isTheSameAddress(req.body.variables.pair, testPairAddress)) {
+          req.reply(testPairDay20LeaderBoard);
+          return;
+        }
       }
       req.continue();
     });
-    cy.visit(RoutePath.PAIR_ISOLATED);
   });
 
-  function assertPairRewarderRowGeneral() {
-    cy.get(getTestSelector(`${testPairRewarderIsSetterAddress}-row`)).should('exist');
-    cy.get(getTestSelector(`${testPairRewarderIsSetterAddress}-pair-name`)).contains('UWU/WETH');
-    cy.get(getTestSelector(`${testPairRewarderIsNotSetterAddress}-row`)).should('exist');
-    cy.get(getTestSelector(`${testPairRewarderIsSetterAddress}-winner-1`)).contains(dibsCodeNames[TEST_DIBS_USER_1]);
-    cy.get(getTestSelector(`${testPairRewarderIsNotSetterAddress}-winner-1`)).contains(dibsCodeNames[TEST_DIBS_USER_1]);
+  function assertLeaderBoardRecords(data: DailyDataQuery) {
+    data.dailyGeneratedVolumes.forEach((item, index) => {
+      cy.get(getTestSelector(`leaderboard-record-${index}-rank`)).contains(`#${index + 1}`);
+      cy.get(getTestSelector(`leaderboard-record-${index}-code-name`)).contains(dibsCodeNamesRegistered[item.user]);
+      cy.get(getTestSelector(`leaderboard-record-${index}-volume`)).contains(
+        fromWei(item.amountAsReferrer).toNumber().toLocaleString(),
+      );
+    });
   }
 
-  it('Can visit pair rewarders list page', function () {
+  function assertPairRewarderRowGeneral() {
+    cy.get(getTestSelector(`${testPairRewarderIsSetterAddress}-pair-name`)).contains('UWU/WETH');
+    assertLeaderBoardRecords(testPairDay21LeaderBoard.data);
+    cy.get(getTestSelector('table-view-switch-option-two')).click();
+    assertLeaderBoardRecords(testPairDay20LeaderBoard.data);
+    cy.get(getTestSelector('table-view-switch-option-one')).click();
+  }
+
+  it('Can visit pair rewarder page', function () {
+    cy.registerMockContract<PairRewarder>(testPairRewarderIsSetterAddress, TestPairRewarderIsSetter);
+    cy.visit(RoutePath.PAIR_REWARDER_LEADERBOARD.replace(':address', testPairRewarderIsSetterAddress));
+
     // assert before wallet connection
     assertPairRewarderRowGeneral();
-    cy.get(getTestSelector(`${testPairRewarderIsSetterAddress}-edit`)).should('not.exist');
-    cy.get(getTestSelector(`${testPairRewarderIsNotSetterAddress}-edit`)).should('not.exist');
-    cy.get(getTestSelector(`${testPairRewarderIsSetterAddress}-your-position`)).contains('-');
+    cy.get(getTestSelector(`${testPairRewarderIsSetterAddress}-edit-or-create`)).contains('Create');
 
     cy.connectWallet();
     // assert after wallet connection
-    cy.get(getTestSelector(`${testPairRewarderIsSetterAddress}-your-position`)).contains('#3');
-    cy.get(getTestSelector(`${testPairRewarderIsSetterAddress}-edit`)).should('exist');
-    cy.get(getTestSelector(`${testPairRewarderIsNotSetterAddress}-edit`)).should('not.exist');
+    cy.get(getTestSelector(`${testPairRewarderIsSetterAddress}-edit-or-create`)).contains('Edit');
     assertPairRewarderRowGeneral();
   });
 });

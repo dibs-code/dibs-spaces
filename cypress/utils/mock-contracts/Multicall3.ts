@@ -55,7 +55,6 @@ export default class Multicall3MockContract
               returnData = r;
             });
           } catch (e) {
-            console.log('123');
             console.error(e);
           }
         }

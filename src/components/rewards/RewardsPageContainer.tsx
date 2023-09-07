@@ -184,7 +184,7 @@ const RewardsPageContainer = ({ testAddress }: { testAddress?: Address }) => {
           <div className="card-yellow rounded flex flex-col gap-20 bg-gray2 py-7 px-9 flex-1">
             <p className="card-title text-white font-medium text-2xl">Rewards Earned</p>
             <span className="flex gap-4 items-center ml-auto">
-              <p className="font-medium text-[32px] text-white">$730</p>
+              <p className="font-medium text-[32px] text-white">...</p>
             </span>
           </div>
         </section>

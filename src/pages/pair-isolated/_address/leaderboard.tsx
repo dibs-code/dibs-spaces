@@ -16,18 +16,21 @@ const PairRewarderLeaderboard = () => {
       ? // '0x6cB66a0762E7Ce3c0Abc9d0241bF4cfFc67fcdA1' // has day 10 winners
         '0x21DAcb323a7a23E8B70BA96f2D472bbA92A94D9c' // has day 21 subgraph data
       : (params.address as Address);
-  const { pairName, hasSetterRole } = usePairRewarder(pairRewarderAddress);
+  const { pairAddress, pairName, hasSetterRole } = usePairRewarder(pairRewarderAddress);
   const { selectedDay, selectPreviousDay, selectCurrentDay, setSelectedDay, leaderBoardInfo, dayLeaderBoard } =
     usePairRewarderLeaderboard(pairRewarderAddress);
   const epochTimer = useEpochTimer();
-  const { setCreateLeaderBoardModalOpen, setCreatedPairRewarderAddress, setLoadCurrentLeaderBoard } =
+  const { setPairAddress, setCreateLeaderBoardModalOpen, setCreatedPairRewarderAddress, setLoadCurrentLeaderBoard } =
     useCreateLeaderBoardModalContext();
   return (
     <div className="page">
       <main>
         <section className="px-8 py-7 rounded bg-primary mb-8 flex w-full justify-between">
           <div className="section--left pr-6">
-            <h1 className="text-[32px] font-bold text-secondary mb-3 flex gap-3">
+            <h1
+              className="text-[32px] font-bold text-secondary mb-3 flex gap-3"
+              data-testid={`${pairRewarderAddress}-pair-name`}
+            >
               <img src="/assets/images/pair-coin-icon.svg" alt="" />
               {pairName || 'Unknown Pair'} leaderboard
             </h1>
@@ -59,23 +62,24 @@ const PairRewarderLeaderboard = () => {
             selectCurrentDay={selectCurrentDay}
             setSelectedDay={setSelectedDay}
           />
-          <button onClick={() => {}} className="btn btn--secondary btn--with-icon">
-            <img src="/assets/images/pair-isolated/create-leaderboard-icon.svg" alt="" />
-            {hasSetterRole !== undefined && (
-              <p
-                className="mt-1"
-                onClick={() => {
-                  if (hasSetterRole) {
-                    setCreatedPairRewarderAddress(pairRewarderAddress);
-                    setLoadCurrentLeaderBoard(true);
-                  }
-                  setCreateLeaderBoardModalOpen(true);
-                }}
-              >
-                {hasSetterRole ? 'Edit Leaderboard' : 'Create Leaderboard'}
-              </p>
-            )}
-          </button>
+          {pairAddress && (
+            <button
+              onClick={() => {
+                if (hasSetterRole) {
+                  setCreatedPairRewarderAddress(pairRewarderAddress);
+                  setLoadCurrentLeaderBoard(true);
+                } else {
+                  setPairAddress(pairAddress);
+                }
+                setCreateLeaderBoardModalOpen(true);
+              }}
+              className="btn btn--secondary btn--with-icon"
+              data-testid={`${pairRewarderAddress}-edit-or-create`}
+            >
+              <img src="/assets/images/pair-isolated/create-leaderboard-icon.svg" alt="" />
+              <p className="mt-1">{hasSetterRole ? 'Edit Leaderboard' : 'Create Leaderboard'}</p>
+            </button>
+          )}
         </section>
 
         <section className="border border-gray8 rounded p-8 pt-0 pb-6">

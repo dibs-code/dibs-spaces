@@ -26,7 +26,7 @@ export const usePairRewarderLeaderboard = (pairRewarderAddress: Address | undefi
   const currentDay = useDibsCurrentDay();
   const selectPreviousDay = useCallback(() => {
     if (currentDay) {
-      setSelectedDay(currentDay);
+      setSelectedDay(currentDay - 1);
     }
   }, [currentDay, setSelectedDay]);
   const selectCurrentDay = useCallback(() => {

@@ -1,5 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber';
 import { Wallet } from '@ethersproject/wallet';
+import { DailyDataForPairQuery, UserVolumeDataQuery } from 'apollo/__generated__/graphql';
 import { DibsAddressMap } from 'constants/addresses';
 
 import { IPairRewarder } from './mock-contracts/types/PairRewarder';
@@ -60,4 +61,79 @@ export const dibsCodeNames = {
 export const dibsCodeNamesRegistered = {
   ...dibsCodeNames,
   [TEST_ADDRESS_NEVER_USE]: 'DIBS_ME',
+};
+export const userGeneratedVolumeData: {
+  data: UserVolumeDataQuery;
+} = {
+  data: {
+    dailyGeneratedVolumes: [
+      {
+        user: TEST_ADDRESS_NEVER_USE,
+        day: 5,
+        pair: testPairAddress,
+        amountAsReferrer: '18327005718129500',
+        __typename: 'DailyGeneratedVolume',
+      },
+      {
+        user: TEST_ADDRESS_NEVER_USE,
+        day: 10,
+        pair: testPairAddress,
+        amountAsReferrer: '5718129500',
+        __typename: 'DailyGeneratedVolume',
+      },
+      {
+        user: TEST_ADDRESS_NEVER_USE,
+        day: 15,
+        pair: testPairAddress,
+        amountAsReferrer: '28327005718129500',
+        __typename: 'DailyGeneratedVolume',
+      },
+    ],
+  },
+};
+export const testPairDay20LeaderBoard: {
+  data: DailyDataForPairQuery;
+} = {
+  data: {
+    dailyGeneratedVolumes: [
+      {
+        user: TEST_ADDRESS_NEVER_USE,
+        amountAsReferrer: '18327005718129500',
+        __typename: 'DailyGeneratedVolume',
+      },
+      {
+        user: TEST_DIBS_USER_1,
+        amountAsReferrer: '10327005718129500',
+        __typename: 'DailyGeneratedVolume',
+      },
+      {
+        user: TEST_DIBS_USER_2,
+        amountAsReferrer: '9327005718129500',
+        __typename: 'DailyGeneratedVolume',
+      },
+    ],
+  },
+};
+export const testPairDay21LeaderBoard: {
+  data: DailyDataForPairQuery;
+} = {
+  data: {
+    dailyGeneratedVolumes: [
+      {
+        user: TEST_DIBS_USER_1,
+        amountAsReferrer: '18327005718129500',
+        __typename: 'DailyGeneratedVolume',
+      },
+      {
+        user: TEST_DIBS_USER_2,
+        amountAsReferrer: '10327005718129500',
+        __typename: 'DailyGeneratedVolume',
+      },
+      {
+        user: TEST_ADDRESS_NEVER_USE,
+        amountAsReferrer: '9327005718129500',
+        __typename: 'DailyGeneratedVolume',
+      },
+    ],
+  },
 };

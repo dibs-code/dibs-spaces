@@ -26,6 +26,7 @@ export default function TableViewSwitch({
             optionOneSelected ? 'text-white' : 'text-secondary'
           }`}
           onClick={selectOptionOne}
+          data-testid="table-view-switch-option-one"
         >
           {optionOneLabel}
         </p>
@@ -34,6 +35,7 @@ export default function TableViewSwitch({
             optionOneSelected ? 'text-secondary' : 'text-white'
           }`}
           onClick={selectOptionTwo}
+          data-testid="table-view-switch-option-two"
         >
           {optionTwoLabel}
         </p>
