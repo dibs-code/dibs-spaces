@@ -87,7 +87,7 @@ export default function PairRewarderCard({
           <span className="flex gap-3">
             <img src="/assets/images/pair-coin-icon.svg" alt="" />
             <span>
-              <p>{pairName || 'Unknown Pair'}</p>
+              <p data-testid={`${pairRewarderAddress}-pair-name`}>{pairName || 'Unknown Pair'}</p>
               <p className="text-secondary text-sm">Volatile</p>
             </span>
           </span>
@@ -132,6 +132,7 @@ export default function PairRewarderCard({
           </Link>
           {hasSetterRole && (
             <div
+              data-testid={`${pairRewarderAddress}-edit`}
               className={'btn btn--secondary-outlined mr-3 px-1 py-1 w-11'}
               onClick={() => {
                 setCreatedPairRewarderAddress(pairRewarderAddress);

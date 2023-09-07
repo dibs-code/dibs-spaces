@@ -12,14 +12,15 @@ import {
   TEST_DIBS_USER_1,
   TEST_DIBS_USER_2,
   testPairAddress,
-  testPairRewarderAddress,
+  testPairRewarderIsNotSetterAddress,
+  testPairRewarderIsSetterAddress,
   UWU_ADDRESS,
   WETH_ADDRESS,
 } from '../utils/data';
 import DibsMockContract from '../utils/mock-contracts/Dibs';
 import { UWUMockContract, WETHMockContract } from '../utils/mock-contracts/Erc20';
 import Multicall3MockContract from '../utils/mock-contracts/Multicall3';
-import { TestPairRewarderIsSetter } from '../utils/mock-contracts/PairRewarder';
+import { TestPairRewarderIsNotSetter, TestPairRewarderIsSetter } from '../utils/mock-contracts/PairRewarder';
 import PairRewarderFactoryMockContract from '../utils/mock-contracts/PairRewarderFactory';
 import {
   Dibs,
@@ -39,7 +40,8 @@ describe('PairRewardersList', () => {
       DibsContractAddresses.pairRewarderFactory,
       PairRewarderFactoryMockContract,
     );
-    cy.registerMockContract<PairRewarder>(testPairRewarderAddress, TestPairRewarderIsSetter);
+    cy.registerMockContract<PairRewarder>(testPairRewarderIsSetterAddress, TestPairRewarderIsSetter);
+    cy.registerMockContract<PairRewarder>(testPairRewarderIsNotSetterAddress, TestPairRewarderIsNotSetter);
     cy.registerMockContract<Dibs>(DibsContractAddresses.dibs, DibsMockContract);
     cy.registerMockContract<UniswapV2Pair>(testPairAddress, TestPairMockContract);
     cy.registerMockContract<Erc20>(WETH_ADDRESS, WETHMockContract);
@@ -85,18 +87,25 @@ describe('PairRewardersList', () => {
   });
 
   function assertPairRewarderRowGeneral() {
-    cy.get(getTestSelector(`${testPairRewarderAddress}-row`)).should('exist');
-    cy.get(getTestSelector(`${testPairRewarderAddress}-winner-1`)).contains(dibsCodeNames[TEST_DIBS_USER_1]);
+    cy.get(getTestSelector(`${testPairRewarderIsSetterAddress}-row`)).should('exist');
+    cy.get(getTestSelector(`${testPairRewarderIsSetterAddress}-pair-name`)).contains('UWU/WETH');
+    cy.get(getTestSelector(`${testPairRewarderIsNotSetterAddress}-row`)).should('exist');
+    cy.get(getTestSelector(`${testPairRewarderIsSetterAddress}-winner-1`)).contains(dibsCodeNames[TEST_DIBS_USER_1]);
+    cy.get(getTestSelector(`${testPairRewarderIsNotSetterAddress}-winner-1`)).contains(dibsCodeNames[TEST_DIBS_USER_1]);
   }
 
   it('Can visit pair rewarders list page', function () {
     // assert before wallet connection
     assertPairRewarderRowGeneral();
-    cy.get(getTestSelector(`${testPairRewarderAddress}-your-position`)).contains('-');
+    cy.get(getTestSelector(`${testPairRewarderIsSetterAddress}-edit`)).should('not.exist');
+    cy.get(getTestSelector(`${testPairRewarderIsNotSetterAddress}-edit`)).should('not.exist');
+    cy.get(getTestSelector(`${testPairRewarderIsSetterAddress}-your-position`)).contains('-');
 
     cy.connectWallet();
     // assert after wallet connection
-    cy.get(getTestSelector(`${testPairRewarderAddress}-your-position`)).contains('#3');
+    cy.get(getTestSelector(`${testPairRewarderIsSetterAddress}-your-position`)).contains('#3');
+    cy.get(getTestSelector(`${testPairRewarderIsSetterAddress}-edit`)).should('exist');
+    cy.get(getTestSelector(`${testPairRewarderIsNotSetterAddress}-edit`)).should('not.exist');
     assertPairRewarderRowGeneral();
   });
 });

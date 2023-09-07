@@ -20,14 +20,15 @@ export const DibsContractAddresses = {
 };
 
 export const testPairAddress = '0x46e26733aa90bd74fd6a56e1894c10b4457fa0d0';
-export const testPairRewarderAddress = '0x21DAcb323a7a23E8B70BA96f2D472bbA92A94D9c';
+export const testPairRewarderIsSetterAddress = '0x21DAcb323a7a23E8B70BA96f2D472bbA92A94D9c';
+export const testPairRewarderIsNotSetterAddress = '0x730867fdf227Ba72503AA8154e8c9628c3c0C100';
 export const multicall3Address = {
   [ARBITRUM_CHAIN_ID]: '0xca11bde05977b3631167028862be2a173976ca11',
 };
 export const pairs = [testPairAddress];
 
 export const pairRewarders = {
-  [testPairAddress]: [testPairRewarderAddress],
+  [testPairAddress]: [testPairRewarderIsSetterAddress, testPairRewarderIsNotSetterAddress],
 };
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 export const leaderBoardInfo = Object.assign(
