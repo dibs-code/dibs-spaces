@@ -76,6 +76,7 @@ describe('PairRewardersList', () => {
   it('Can visit pair rewarders list page', function () {
     // assert before wallet connection
     assertPairRewarderRowGeneral();
+    cy.get(getTestSelector(`show-my-leaderboards-switch`)).should('not.exist');
     cy.get(getTestSelector(`${testPairRewarderIsSetterAddress}-edit`)).should('not.exist');
     cy.get(getTestSelector(`${testPairRewarderIsNotSetterAddress}-edit`)).should('not.exist');
     cy.get(getTestSelector(`${testPairRewarderIsSetterAddress}-your-position`)).contains('-');
@@ -86,5 +87,8 @@ describe('PairRewardersList', () => {
     cy.get(getTestSelector(`${testPairRewarderIsSetterAddress}-edit`)).should('exist');
     cy.get(getTestSelector(`${testPairRewarderIsNotSetterAddress}-edit`)).should('not.exist');
     assertPairRewarderRowGeneral();
+    cy.get(getTestSelector(`show-my-leaderboards-switch`)).click();
+    cy.get(getTestSelector(`${testPairRewarderIsSetterAddress}-row`)).should('exist');
+    cy.get(getTestSelector(`${testPairRewarderIsNotSetterAddress}-row`)).should('not.exist');
   });
 });

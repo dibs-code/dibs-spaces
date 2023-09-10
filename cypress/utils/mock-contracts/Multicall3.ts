@@ -28,6 +28,7 @@ export default class Multicall3MockContract
     throw Error('not implemented');
   }
 
+  // TODO: handle "allowFailure" and  "success = false"
   async aggregate3(
     calls: {
       target: string;
@@ -48,18 +49,19 @@ export default class Multicall3MockContract
     for (const call of calls) {
       const { target, allowFailure, callData } = call;
       let returnData = EMPTY_DATA;
+      let success = false;
       for (const contractAddress in this.context.handlers) {
         if (isTheSameAddress(contractAddress, target)) {
           try {
             await this.context.handlers[contractAddress].handleCall(callData, (r: string) => {
               returnData = r;
             });
+            success = true;
           } catch (e) {
             console.error(e);
           }
         }
       }
-      const success = returnData !== EMPTY_DATA;
       results.push(
         Object.assign(
           {

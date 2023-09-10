@@ -1,9 +1,10 @@
 import { multicall, readContract } from '@wagmi/core';
-import { erc20ABI, pairRewarderFactoryABI, uniswapV2PairABI } from 'abis/types/generated';
+import { erc20ABI, pairRewarderABI, pairRewarderFactoryABI, uniswapV2PairABI } from 'abis/types/generated';
 import { Address } from 'abitype';
 import { useDibsAddresses } from 'hooks/dibs/useDibsAddresses';
 import { useEffect, useMemo, useState } from 'react';
 import { PairRewardersOfPairs } from 'types/rewards';
+import { useAccount } from 'wagmi';
 
 export function usePairRewarderFactoryAllPairs() {
   const { pairRewarderFactoryAddress } = useDibsAddresses();
@@ -155,7 +156,51 @@ export function usePairRewarderFactory() {
     return Object.values(pairRewardersFinal).reduce((a, c) => a.concat(c), [] as Address[]);
   }, [pairRewardersFinal]);
 
+  const { address } = useAccount();
+  const [myPairRewarders, setMyPairRewarders] = useState<PairRewardersOfPairs | null>(null);
+  useEffect(() => {
+    async function getData() {
+      if (allPairRewarders && address && pairRewardersFinal) {
+        const setterRoles = await multicall({
+          allowFailure: false,
+          contracts: allPairRewarders.map((pairRewarderAddress) => {
+            return {
+              address: pairRewarderAddress,
+              abi: pairRewarderABI,
+              functionName: 'SETTER_ROLE',
+            };
+          }),
+        });
+        const isSetter = await multicall({
+          allowFailure: false,
+          contracts: allPairRewarders.map((pairRewarderAddress, i) => {
+            return {
+              address: pairRewarderAddress,
+              abi: pairRewarderABI,
+              functionName: 'hasRole',
+              args: [setterRoles[i], address],
+            };
+          }),
+        });
+        const myPairRewardersList = allPairRewarders.filter((pairRewarderAddress, i) => isSetter[i]);
+        const result: PairRewardersOfPairs = {};
+        (Object.keys(pairRewardersFinal) as Address[]).forEach((pair) => {
+          const pairRewardersFiltered = pairRewardersFinal[pair].filter(
+            (pairRewarderAddress) => myPairRewardersList.findIndex((item) => item === pairRewarderAddress) !== -1,
+          );
+          if (pairRewardersFiltered.length) {
+            result[pair] = pairRewardersFiltered;
+          }
+        });
+        setMyPairRewarders(result);
+      }
+    }
+
+    getData();
+  }, [allPairRewarders, address, pairRewardersFinal]);
+
   return {
+    myPairRewarders,
     pairFilterString,
     setPairFilterString,
     allPairs,

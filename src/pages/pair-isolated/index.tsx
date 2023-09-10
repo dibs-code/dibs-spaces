@@ -1,14 +1,27 @@
 import PairRewarderCard from 'components/pairIsolated/PairRewarderCard';
 import { useCreateLeaderBoardModalContext } from 'contexts/CreateLeaderBoardModalContext';
 import { usePairRewarderFactory } from 'hooks/dibs/usePairRewarderFactory';
-import React from 'react';
+import React, { useMemo, useState } from 'react';
+import { IS_DEV_OR_CYPRESS } from 'utils/env';
 // import { Link } from 'react-router-dom';
 // import RoutePath from 'routes';
-import { Address } from 'wagmi';
+import { Address, useAccount } from 'wagmi';
 
 const PairIsolated = () => {
-  const { pairRewarders, pairFilterString, setPairFilterString } = usePairRewarderFactory();
+  const { myPairRewarders, pairRewarders, pairFilterString, setPairFilterString } = usePairRewarderFactory();
   const { setCreateLeaderBoardModalOpen } = useCreateLeaderBoardModalContext();
+  const [showMyPairRewarders, setShowMyPairRewarders] = useState(false);
+  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setShowMyPairRewarders(event.target.checked);
+  };
+
+  const pairRewardersToShow = useMemo(
+    () => (showMyPairRewarders ? myPairRewarders : pairRewarders),
+    [myPairRewarders, pairRewarders, showMyPairRewarders],
+  );
+
+  const { address } = useAccount();
+
   return (
     <div className="page">
       <main>
@@ -50,13 +63,20 @@ const PairIsolated = () => {
                 <th className="py-2 text-left">Total Prize</th>
                 <th className="py-2 text-left">#1 Winner</th>
                 <th className="py-2 text-left">Your position</th>
-                <th className="py-2 text-left"></th>
+                <th className="py-2 text-left">
+                  {IS_DEV_OR_CYPRESS && address && (
+                    <label data-testid="show-my-leaderboards-switch">
+                      <input type="checkbox" checked={showMyPairRewarders} onChange={handleCheckboxChange} />
+                      My LeaderBoards
+                    </label>
+                  )}
+                </th>
               </tr>
             </thead>
             <tbody>
-              {pairRewarders &&
-                Object.keys(pairRewarders).map((pairAddress) =>
-                  pairRewarders[pairAddress as Address].map((pairRewarderAddress) => (
+              {pairRewardersToShow &&
+                Object.keys(pairRewardersToShow).map((pairAddress) =>
+                  pairRewardersToShow[pairAddress as Address].map((pairRewarderAddress) => (
                     <PairRewarderCard
                       key={pairRewarderAddress}
                       pairAddress={pairAddress as Address}
