@@ -10,9 +10,6 @@ const PairIsolated = () => {
   const { myPairRewarders, pairRewarders, pairFilterString, setPairFilterString } = usePairRewarderFactory();
   const { setCreateLeaderBoardModalOpen } = useCreateLeaderBoardModalContext();
   const [showMyPairRewarders, setShowMyPairRewarders] = useState(false);
-  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setShowMyPairRewarders(event.target.checked);
-  };
 
   const pairRewardersToShow = useMemo(
     () => (showMyPairRewarders ? myPairRewarders : pairRewarders),
