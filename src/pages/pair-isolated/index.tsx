@@ -65,9 +65,34 @@ const PairIsolated = () => {
                 <th className="py-2 text-left">Your position</th>
                 <th className="py-2 text-left">
                   {IS_DEV_OR_CYPRESS && address && (
-                    <label data-testid="show-my-leaderboards-switch">
-                      <input type="checkbox" checked={showMyPairRewarders} onChange={handleCheckboxChange} />
-                      My LeaderBoards
+                    <label data-testid="show-my-leaderboards-switch" className="flex gap-3 items-center">
+                      {/*<input type="checkbox" checked={showMyPairRewarders} onChange={handleCheckboxChange} />*/}
+                      <p className={`transition-all ${showMyPairRewarders ? 'text-white' : 'text-gray9'}`}>
+                        My leaderboards
+                      </p>
+                      <div className="p-1 w-[50px] h-[28px] rounded border border-secondary">
+                        <div className={'flex flex-wrap relative h-full'}>
+                          <p
+                            className={`background absolute w-1/2 top-0 bottom-0 rounded-sm transition-all duration-300 ease-in-out ${
+                              showMyPairRewarders ? 'left-0 right-1/2 bg-secondary' : 'right-0 left-1/2 bg-gray9'
+                            }`}
+                          ></p>
+                          <p
+                            className={`bg-transparent absolute cursor-pointer w-1/2 h-full left-0 top-1/2 -translate-y-1/2 text-center font-medium transition-all duration-300 ease-in-out ${
+                              showMyPairRewarders ? 'text-white' : 'text-secondary'
+                            }`}
+                            onClick={() => setShowMyPairRewarders(!showMyPairRewarders)}
+                            data-testid="table-view-switch-option-one"
+                          ></p>
+                          <p
+                            className={`bg-transparent absolute cursor-pointer w-1/2 h-full right-0 top-1/2 -translate-y-1/2 text-center font-medium transition-all duration-300 ease-in-out ${
+                              showMyPairRewarders ? 'text-secondary' : 'text-white'
+                            }`}
+                            onClick={() => setShowMyPairRewarders(!showMyPairRewarders)}
+                            data-testid="table-view-switch-option-two"
+                          ></p>
+                        </div>
+                      </div>
                     </label>
                   )}
                 </th>

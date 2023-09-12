@@ -39,6 +39,7 @@ module.exports = {
         gray6: '#D9D9D9',
         gray7: '#999999',
         gray8: '#4A4A4A',
+        gray9: '#646464',
         body: '#F6F8FA',
         disabled: '#E2E4E7',
         'primary-dark': '#d1b745',
