@@ -1,7 +1,6 @@
 import { defineConfig } from 'cypress';
 
 export default defineConfig({
-  projectId: 'yp82ef',
   defaultCommandTimeout: 24000, // 2x average block time
   chromeWebSecurity: false,
   e2e: {
