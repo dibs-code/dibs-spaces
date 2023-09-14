@@ -8,6 +8,7 @@ import PairRewarderLeaderboard from 'pages/pair-isolated/_address/leaderboard';
 import PairIsolated from 'pages/pair-isolated/index';
 import Rewards from 'pages/rewards';
 import RewardsTest from 'pages/rewards-test';
+import Shares from 'pages/shares';
 import YourCodeTest from 'pages/your-code-test';
 import React, { useEffect } from 'react';
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
@@ -35,6 +36,7 @@ function App() {
       <Routes>
         <Route path={RoutePath.YOUR_CODE} element={<Home />} />
         <Route path={RoutePath.YOUR_CODE_TEST} element={<YourCodeTest />} />
+        <Route path={RoutePath.SHARES} element={<Shares />} />
         <Route path={RoutePath.REWARDS} element={<Rewards />} />
         <Route path={RoutePath.REWARDS_TEST} element={<RewardsTest />} />
         <Route path={RoutePath.PAIR_ISOLATED} element={<PairIsolated />} />

@@ -4,6 +4,7 @@ import { Abi } from 'viem';
 import { erc20ABI } from 'wagmi';
 
 import DibsABI from './src/abis/dibs.json';
+import DibsSharesABI from './src/abis/dibsshares.json';
 import MuonInterfaceABI from './src/abis/muonInterface.json';
 import PairRewarderABI from './src/abis/pairRewarder.json';
 import pairRewarderFactoryABI from './src/abis/pairRewarderFactory.json';
@@ -19,6 +20,10 @@ export default defineConfig({
     {
       name: 'Dibs',
       abi: DibsABI as Abi,
+    },
+    {
+      name: 'DibsShares',
+      abi: DibsSharesABI as Abi,
     },
     {
       name: 'MuonInterface',

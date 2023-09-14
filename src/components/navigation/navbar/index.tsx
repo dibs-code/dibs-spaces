@@ -129,14 +129,14 @@ const Navbar = () => {
     </>
   );
 };
-
+type RouteObject = { name: string; icon: string | null; address: RoutePath };
 const Menu = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { address: account } = useAccount();
   const { chain } = useNetwork();
   const links = useMemo(() => {
-    const linksList: { name: string; icon: string | null; address: string }[] = [
+    const linksList: RouteObject[] = [
       { name: 'Your code', icon: null, address: RoutePath.YOUR_CODE },
       { name: 'Rewards', icon: null, address: RoutePath.REWARDS },
       {
@@ -147,7 +147,13 @@ const Menu = () => {
     ];
     return IS_PRODUCTION
       ? linksList
-      : linksList.concat([
+      : [
+          {
+            name: 'Shares',
+            icon: null,
+            address: RoutePath.SHARES,
+          },
+          ...linksList,
           { name: 'Your code (test)', icon: null, address: RoutePath.YOUR_CODE_TEST },
           { name: 'Rewards (test)', icon: null, address: RoutePath.REWARDS_TEST },
           {
@@ -155,7 +161,7 @@ const Menu = () => {
             icon: null,
             address: RoutePath.PAIR_REWARDER_LEADERBOARD_TEST,
           },
-        ]);
+        ];
   }, []);
 
   const [selectedNavbarItemElement, setSelectedNavbarItemElement] = React.useState<HTMLElement | null>(null);

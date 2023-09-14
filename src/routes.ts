@@ -4,6 +4,7 @@ export enum RoutePath {
   REPORTS = '/reports',
   PAIR_ISOLATED = '/pair-isolated',
   PAIR_REWARDER_LEADERBOARD = '/pair-isolated/:address/leaderboard',
+  SHARES = '/shares',
 
   YOUR_CODE_TEST = 'your-code-test',
   REWARDS_TEST = '/rewards-test',
