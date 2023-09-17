@@ -1,10 +1,9 @@
 import { defineConfig } from 'cypress';
 
 export default defineConfig({
-  defaultCommandTimeout: 24000, // 2x average block time
   chromeWebSecurity: false,
   e2e: {
-    setupNodeEvents(on, config) {
+    setupNodeEvents(_on, config) {
       return {
         ...config,
         // Only enable Chrome.
