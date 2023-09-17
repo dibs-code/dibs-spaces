@@ -4,7 +4,7 @@ import ERC20_ABI from 'abis/erc20.json';
 import { CallOverrides } from 'ethers';
 import { MockContract, MockContractInterface } from 'metamocks';
 
-import { TOKEN_BALANCE } from '../data';
+import { CONNECTOR_TOKEN_DECIMALS, TOKEN_BALANCE } from '../data';
 import { Erc20 } from './types/Erc20';
 
 export class Erc20MockContract extends MockContract<Erc20> implements MockContractInterface<Erc20> {
@@ -63,5 +63,11 @@ export class WETHMockContract extends Erc20MockContract {
 export class UWUMockContract extends Erc20MockContract {
   symbol(overrides: CallOverrides | undefined): Promise<string> {
     return Promise.resolve('UWU');
+  }
+}
+
+export class Erc20ConnectorTokenMockContract extends Erc20MockContract {
+  decimals(overrides: CallOverrides | undefined): Promise<number> {
+    return Promise.resolve(CONNECTOR_TOKEN_DECIMALS);
   }
 }

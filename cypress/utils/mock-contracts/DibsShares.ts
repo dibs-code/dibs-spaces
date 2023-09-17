@@ -1,6 +1,5 @@
 import { BigNumber, BigNumberish } from '@ethersproject/bignumber';
 import DibsSharesABI from 'abis/dibsshares.json';
-import { Promise } from 'cypress/types/cy-bluebird';
 import { CallOverrides } from 'ethers';
 import { MockContract, MockContractInterface } from 'metamocks';
 
@@ -24,7 +23,7 @@ export default class DibsSharesMockContract
     throw Error('not implemented');
   }
 
-  deployBondingToken(
+  async deployBondingToken(
     name: string,
     symbol: string,
     _connectorToken: string,
@@ -33,6 +32,6 @@ export default class DibsSharesMockContract
     _initialPrice: BigNumberish,
     overrides: CallOverrides | undefined,
   ): Promise<string> {
-    throw Error('not implemented');
+    return '';
   }
 }

@@ -7,7 +7,7 @@ export const DibsAddressMap: AddressMap = {
 };
 export const DibsSharesAddressMap: AddressMap = {
   [goerli.id]: '0x8a5DE5a5a5d8fefeE4249B307CDCa4d96D3Fb60C',
-  [arbitrum.id]: '0x0',
+  [arbitrum.id]: '0x8a5DE5a5a5d8fefeE4249B307CDCa4d96D3Fb60C', //TODO: change to real contract address on arbitreum
 };
 
 export const PairFactoryAddressMap: AddressMap = {

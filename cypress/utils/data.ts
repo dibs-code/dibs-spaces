@@ -11,6 +11,8 @@ export const TOKEN_BALANCE = BigNumber.from(10).pow(16);
 
 export const UWU_ADDRESS = '0x05d35769a222affd6185e20f3f3676abde56c25f'; // token0
 export const WETH_ADDRESS = '0x82af49447d8a07e3bd95bd0d56f35241523fbab1'; // token1
+export const UNI_ADDRESS = '0x1f9840a85d5af5bf1d1762f925bdaddc4201f984'; // token2
+
 export const ARBITRUM_CHAIN_ID = 42161; // arbitrum
 export const chainId = ARBITRUM_CHAIN_ID; // arbitrum
 export const DibsContractAddresses = {
@@ -137,3 +139,6 @@ export const testPairDay21LeaderBoard: {
     ],
   },
 };
+
+
+export const CONNECTOR_TOKEN_DECIMALS = 6;

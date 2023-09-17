@@ -20,7 +20,9 @@ const Shares = () => {
   const { data: connectorTokenDecimals } = useErc20Decimals({
     address: isAddress(formData.connectorToken) ? formData.connectorToken : undefined,
   });
-
+  
+  const initialPriceParsed = useMemo(() => formData.initialPrice && connectorTokenDecimals ? parseUnits(formData.initialPrice, connectorTokenDecimals) : undefined, [formData.initialPrice, connectorTokenDecimals]);
+  
   const args = useMemo(
     () =>
       formData.name &&
@@ -28,18 +30,17 @@ const Shares = () => {
       formData.connectorToken &&
       formData.connectorWeight &&
       formData.initialSupply &&
-      formData.initialPrice &&
-      connectorTokenDecimals !== undefined
+      initialPriceParsed
         ? ([
             formData.name,
             formData.symbol,
             formData.connectorToken as Address,
             Number((Number(formData.connectorWeight) * 100).toFixed(2)),
             parseEther(formData.initialSupply),
-            parseUnits(formData.initialPrice, connectorTokenDecimals),
+            initialPriceParsed,
           ] as [string, string, `0x${string}`, number, bigint, bigint])
         : undefined,
-    [formData, connectorTokenDecimals],
+    [formData, initialPriceParsed],
   );
 
   const {
@@ -85,7 +86,7 @@ const Shares = () => {
         value = '100';
       } else {
         if (hasMoreThanTwoDecimals(valueAsNumber)) {
-          value = valueAsNumber.toFixed(2);
+          value = (Math.floor(valueAsNumber * 100) / 100).toString();
         }
       }
     }
@@ -100,6 +101,7 @@ const Shares = () => {
           <label className="pr-2">Name</label>
           <input
             className="form-input text-black"
+            data-testid="shares-name-input"
             type="text"
             name="name"
             value={formData.name}
@@ -110,6 +112,7 @@ const Shares = () => {
           <label className="pr-2">Symbol</label>
           <input
             className="form-input text-black"
+            data-testid="shares-symbol-input"
             type="text"
             name="symbol"
             value={formData.symbol}
@@ -120,6 +123,7 @@ const Shares = () => {
           <label className="pr-2">Connector Token</label>
           <input
             className="form-input text-black"
+            data-testid="shares-connector-token-input"
             type="text"
             name="connectorToken"
             value={formData.connectorToken}
@@ -130,6 +134,7 @@ const Shares = () => {
           <label className="pr-2">Connector Weight (Percentage)</label>
           <input
             className="form-input text-black"
+            data-testid="shares-connector-weight-input"            
             type="number"
             step="0.01"
             min="0"
@@ -142,6 +147,7 @@ const Shares = () => {
           <label className="pr-2">Initial Supply</label>
           <input
             className="form-input text-black"
+            data-testid="shares-initial-supply-input"
             type="number"
             name="initialSupply"
             value={formData.initialSupply}
@@ -152,13 +158,13 @@ const Shares = () => {
           <label className="pr-2">Initial Price</label>
           <input
             className="form-input text-black"
+            data-testid="shares-initial-price-input"
             type="number"
             name="initialPrice"
             value={formData.initialPrice}
             onChange={handleChange}
           />
         </div>
-        {/* Add submit functionality here */}
         <div>
           <button
             onClick={(e) => {
@@ -166,6 +172,7 @@ const Shares = () => {
               onSubmit();
             }}
             className="btn-primary text-black py-2 px-8"
+            data-testid="shares-submit-button"
             type="submit"
           >
             Submit
