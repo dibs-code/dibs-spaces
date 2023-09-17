@@ -47,15 +47,14 @@ describe('YourCode', () => {
     cy.connectWallet();
     cy.get(getTestSelector('your-code-name')).should('not.exist');
     cy.get(getTestSelector('your-code-name-input')).type(dibsCodeNamesRegistered[TEST_ADDRESS_NEVER_USE]);
-    cy.get(getTestSelector('your-code-name-create'))
-      .click()
-      .then(() => {
-        expect(dibsMockContract['register']).to.have.calledWithExactly(
-          dibsCodeNamesRegistered[TEST_ADDRESS_NEVER_USE],
-          '0x46179b40ce845b634390725b96cd52c6a6627d29c6f7a7d0d8951a4ec629afb1',
-        );
-        cy.get(getTestSelector('your-code-name')).contains(dibsCodeNamesRegistered[TEST_ADDRESS_NEVER_USE]);
-        cy.get(getTestSelector('your-code-volume-generated')).contains('$0.047');
-      });
+    cy.get(getTestSelector('your-code-name-create')).click();
+    cy.wait(1000).then(() => {
+      expect(dibsMockContract['register']).to.have.calledWithExactly(
+        dibsCodeNamesRegistered[TEST_ADDRESS_NEVER_USE],
+        '0x46179b40ce845b634390725b96cd52c6a6627d29c6f7a7d0d8951a4ec629afb1',
+      );
+      cy.get(getTestSelector('your-code-name')).contains(dibsCodeNamesRegistered[TEST_ADDRESS_NEVER_USE]);
+      cy.get(getTestSelector('your-code-volume-generated')).contains('$0.047');
+    });
   });
 });
