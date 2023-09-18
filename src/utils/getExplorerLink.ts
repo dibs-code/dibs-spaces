@@ -1,4 +1,4 @@
-import { arbitrum, goerli, mainnet } from 'wagmi/chains';
+import { arbitrum, base, goerli, mainnet } from 'wagmi/chains';
 
 const BLOCK_EXPLORER_PREFIXES: {
   [chainId: number]: string;
@@ -6,6 +6,7 @@ const BLOCK_EXPLORER_PREFIXES: {
   [mainnet.id]: 'https://etherscan.io',
   [goerli.id]: 'https://goerli.etherscan.io',
   [arbitrum.id]: 'https://arbiscan.io',
+  [base.id]: 'https://basescan.org',
 };
 
 export enum ExplorerDataType {

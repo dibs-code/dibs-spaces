@@ -17,10 +17,6 @@ export function useDibsAddresses() {
     contracts: [
       {
         ...args,
-        functionName: 'dibsLottery',
-      },
-      {
-        ...args,
         functionName: 'muonInterface',
       },
       {
@@ -31,9 +27,8 @@ export function useDibsAddresses() {
   });
   return useMemo(
     () => ({
-      dibsLotteryAddress: addresses?.[0]?.result,
-      muonInterfaceAddress: addresses?.[1]?.result,
-      pairRewarderFactoryAddress: addresses?.[2]?.result,
+      muonInterfaceAddress: addresses?.[0]?.result,
+      pairRewarderFactoryAddress: addresses?.[1]?.result,
     }),
     [addresses],
   );

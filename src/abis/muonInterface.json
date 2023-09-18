@@ -18,56 +18,6 @@
     "anonymous": false,
     "inputs": [
       {
-        "indexed": true,
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "token",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "Claimed",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "token",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "to",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "ClaimedExcessTokens",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
         "indexed": false,
         "internalType": "uint8",
         "name": "version",
@@ -187,25 +137,6 @@
     "anonymous": false,
     "inputs": [
       {
-        "indexed": true,
-        "internalType": "uint32",
-        "name": "round",
-        "type": "uint32"
-      },
-      {
-        "indexed": false,
-        "internalType": "address[]",
-        "name": "winners",
-        "type": "address[]"
-      }
-    ],
-    "name": "RoundWinnerSet",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
         "indexed": false,
         "internalType": "address",
         "name": "_old",
@@ -306,7 +237,13 @@
     "anonymous": false,
     "inputs": [
       {
-        "indexed": true,
+        "indexed": false,
+        "internalType": "address",
+        "name": "pairRewarder",
+        "type": "address"
+      },
+      {
+        "indexed": false,
         "internalType": "uint256",
         "name": "day",
         "type": "uint256"
@@ -453,196 +390,6 @@
       }
     ],
     "name": "__MuonInterface_init",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "token",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "to",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "accumulativeBalance",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      },
-      {
-        "internalType": "bytes",
-        "name": "reqId",
-        "type": "bytes"
-      },
-      {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "signature",
-            "type": "uint256"
-          },
-          {
-            "internalType": "address",
-            "name": "owner",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "nonce",
-            "type": "address"
-          }
-        ],
-        "internalType": "struct MuonClientBase.SchnorrSign",
-        "name": "sign",
-        "type": "tuple"
-      },
-      {
-        "internalType": "bytes",
-        "name": "gatewaySignature",
-        "type": "bytes"
-      }
-    ],
-    "name": "claim",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "token",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "to",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "accumulativeBalance",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      },
-      {
-        "internalType": "bytes",
-        "name": "reqId",
-        "type": "bytes"
-      },
-      {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "signature",
-            "type": "uint256"
-          },
-          {
-            "internalType": "address",
-            "name": "owner",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "nonce",
-            "type": "address"
-          }
-        ],
-        "internalType": "struct MuonClientBase.SchnorrSign",
-        "name": "sign",
-        "type": "tuple"
-      },
-      {
-        "internalType": "bytes",
-        "name": "gatewaySignature",
-        "type": "bytes"
-      }
-    ],
-    "name": "claimDibsFee",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "token",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "to",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "accumulativeBalance",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "sigTimestamp",
-        "type": "uint256"
-      },
-      {
-        "internalType": "bytes",
-        "name": "reqId",
-        "type": "bytes"
-      },
-      {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "signature",
-            "type": "uint256"
-          },
-          {
-            "internalType": "address",
-            "name": "owner",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "nonce",
-            "type": "address"
-          }
-        ],
-        "internalType": "struct MuonClientBase.SchnorrSign",
-        "name": "sign",
-        "type": "tuple"
-      },
-      {
-        "internalType": "bytes",
-        "name": "gatewaySignature",
-        "type": "bytes"
-      }
-    ],
-    "name": "claimExcessTokens",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1008,111 +755,6 @@
       }
     ],
     "name": "setPairRewarderTopReferrers",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint32",
-        "name": "round",
-        "type": "uint32"
-      },
-      {
-        "internalType": "address[]",
-        "name": "winners",
-        "type": "address[]"
-      },
-      {
-        "internalType": "bytes",
-        "name": "reqId",
-        "type": "bytes"
-      },
-      {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "signature",
-            "type": "uint256"
-          },
-          {
-            "internalType": "address",
-            "name": "owner",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "nonce",
-            "type": "address"
-          }
-        ],
-        "internalType": "struct MuonClientBase.SchnorrSign",
-        "name": "sign",
-        "type": "tuple"
-      },
-      {
-        "internalType": "bytes",
-        "name": "gatewaySignature",
-        "type": "bytes"
-      }
-    ],
-    "name": "setRoundWinners",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint32",
-        "name": "day",
-        "type": "uint32"
-      },
-      {
-        "internalType": "address[]",
-        "name": "topReferrers",
-        "type": "address[]"
-      },
-      {
-        "internalType": "uint256",
-        "name": "sigTimestamp",
-        "type": "uint256"
-      },
-      {
-        "internalType": "bytes",
-        "name": "reqId",
-        "type": "bytes"
-      },
-      {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "signature",
-            "type": "uint256"
-          },
-          {
-            "internalType": "address",
-            "name": "owner",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "nonce",
-            "type": "address"
-          }
-        ],
-        "internalType": "struct MuonClientBase.SchnorrSign",
-        "name": "sign",
-        "type": "tuple"
-      },
-      {
-        "internalType": "bytes",
-        "name": "gatewaySignature",
-        "type": "bytes"
-      }
-    ],
-    "name": "setTopReferrers",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
