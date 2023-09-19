@@ -1,0 +1,12 @@
+version: 2.1
+orbs:
+  cypress: cypress-io/cypress@3
+workflows:
+  test:
+    jobs:
+      - cypress/run:
+          install-browsers: true
+          package-manager: 'yarn'
+          post-install: 'yarn build'
+          start-command: 'npx serve -s build'
+          cypress-command: 'npx cypress run --browser chrome'
