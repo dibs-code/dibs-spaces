@@ -6,7 +6,6 @@ import RoutePath from 'routes';
 
 import { getTestSelector } from '../utils';
 import {
-  chainId,
   dibsCodeNamesRegistered,
   DibsContractAddresses,
   multicall3Address,
@@ -20,7 +19,7 @@ import { Dibs, Multicall3 } from '../utils/mock-contracts/types';
 describe('YourCode', () => {
   beforeEach(() => {
     cy.setupMetamocks();
-    cy.registerMockContract<Multicall3>(multicall3Address[chainId], Multicall3MockContract);
+    cy.registerMockContract<Multicall3>(multicall3Address, Multicall3MockContract);
     cy.intercept('POST', /api.thegraph.com\/subgraphs\/name/, (req) => {
       if (req.body.operationName === namedOperations.Query.UserVolumeData) {
         if (req.body.variables.skip) {

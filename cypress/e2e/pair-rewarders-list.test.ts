@@ -4,7 +4,6 @@ import RoutePath from 'routes';
 
 import { getTestSelector, injectDibsContractAddressInLeaderBoardThatShouldBeFiltered } from '../utils';
 import {
-  chainId,
   dibsCodeNames,
   DibsContractAddresses,
   multicall3Address,
@@ -34,7 +33,7 @@ import { TestPairMockContract } from '../utils/mock-contracts/UniswapV2Pair';
 describe('PairRewardersList', () => {
   beforeEach(() => {
     cy.setupMetamocks();
-    cy.registerMockContract<Multicall3>(multicall3Address[chainId], Multicall3MockContract);
+    cy.registerMockContract<Multicall3>(multicall3Address, Multicall3MockContract);
     cy.registerMockContract<PairRewarderFactory>(
       DibsContractAddresses.pairRewarderFactory,
       PairRewarderFactoryMockContract,

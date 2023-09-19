@@ -12,7 +12,7 @@ import { getTestSelector } from '../utils';
 import { injected } from './ethereum';
 
 Cypress.Commands.add('setupMetamocks', () => {
-  cy.intercept(/arbitrum-mainnet.infura.io/, async (req) => {
+  cy.intercept(/infura.io/, async (req) => {
     const data = req.body;
     try {
       const result = await injected.handleEthMethod(data);

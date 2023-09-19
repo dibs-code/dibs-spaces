@@ -16,7 +16,7 @@ describe('Dibs Shares', () => {
 
   beforeEach(() => {
     cy.setupMetamocks();
-    cy.registerMockContract<Multicall3>(multicall3Address[chainId], Multicall3MockContract);
+    cy.registerMockContract<Multicall3>(multicall3Address, Multicall3MockContract);
     cy.registerMockContract<Erc20>(connectorToken, Erc20ConnectorTokenMockContract);
     cy.visit(RoutePath.SHARES);
   });
