@@ -7,7 +7,7 @@ import { isSupportedChain } from 'constants/chains';
 import React, { Fragment, PropsWithChildren, useEffect, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import RoutePath, { requiresCode } from 'routes';
-import { IS_PRODUCTION } from 'utils/env';
+import { IS_DEV } from 'utils/env';
 import { shortenAddress } from 'utils/index';
 import { useAccount, useNetwork } from 'wagmi';
 
@@ -145,7 +145,7 @@ const Menu = () => {
         address: RoutePath.PAIR_ISOLATED,
       },
     ];
-    return IS_PRODUCTION
+    return !IS_DEV
       ? linksList
       : [
           {
