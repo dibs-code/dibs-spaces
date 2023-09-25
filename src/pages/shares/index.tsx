@@ -63,25 +63,33 @@ const Shares = () => {
   }, [allBondingTokensLength, dibsSharesAddress]);
 
   return (
-    <div style={{ color: 'white' }}>
-      <Link to={RoutePath.SHARES_CREATE} className={'btn btn--secondary-outlined py-1.5'}>
+    <div className="text-white bg-gray-800 p-6">
+      <Link
+        to={RoutePath.SHARES_CREATE}
+        className="inline-block px-4 py-2 text-center text-white btn--secondary rounded hover:bg-white hover:text-gray-800"
+      >
         Create Share
       </Link>
-      <table>
+      <table className="table-auto w-full mt-6 text-left rounded">
         <thead>
-          <tr>
-            <th>name</th>
-            <th>symbol</th>
-            <th>view</th>
+          <tr className="text-gray-800">
+            <th className="px-4 py-2">name</th>
+            <th className="px-4 py-2">symbol</th>
+            <th className="px-4 py-2">link</th>
           </tr>
         </thead>
         <tbody>
           {allBondingTokens?.map((bondingToken) => (
-            <tr key={bondingToken.address}>
-              <td>{bondingToken.name}</td>
-              <td>{bondingToken.symbol}</td>
-              <td>
-                <Link to={RoutePath.SHARES_SHARE.replace(':address', bondingToken.address)}>View</Link>
+            <tr key={bondingToken.address} className="text-gray-700">
+              <td className="border px-4 py-2">{bondingToken.name}</td>
+              <td className="border px-4 py-2">{bondingToken.symbol}</td>
+              <td className="border px-4 py-2">
+                <Link
+                  to={RoutePath.SHARES_SHARE.replace(':address', bondingToken.address)}
+                  className="text-blue-500 hover:text-blue-800 underline"
+                >
+                  Trade
+                </Link>
               </td>
             </tr>
           ))}
