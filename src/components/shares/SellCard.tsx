@@ -14,7 +14,6 @@ import { useCallback, useMemo, useState } from 'react';
 import { formatUnits, parseUnits } from 'viem';
 import { Address, useAccount } from 'wagmi';
 
-
 export const SellCard = ({ bondingTokenAddress }: { bondingTokenAddress: Address }) => {
   const { data: connectorTokenAddress, isLoading: connectorTokenAddressLoading } = useBondingTokenConnectorToken({
     address: bondingTokenAddress,
@@ -50,10 +49,15 @@ export const SellCard = ({ bondingTokenAddress }: { bondingTokenAddress: Address
     address: bondingTokenAddress,
     args: address ? [address] : undefined,
   });
+  const bondingTokenBalanceParsed = useMemo(
+    () =>
+      bondingTokenDecimals && bondingTokenBalance ? formatUnits(bondingTokenBalance, bondingTokenDecimals) : undefined,
+    [bondingTokenDecimals, bondingTokenBalance],
+  );
 
   const hasSufficientBalance = useMemo(
     () =>
-    bondingTokenBalance !== undefined && sellAmountParsed !== undefined && bondingTokenBalance >= sellAmountParsed,
+      bondingTokenBalance !== undefined && sellAmountParsed !== undefined && bondingTokenBalance >= sellAmountParsed,
     [sellAmountParsed, bondingTokenBalance],
   );
 
@@ -94,24 +98,18 @@ export const SellCard = ({ bondingTokenAddress }: { bondingTokenAddress: Address
         console.log(burnError);
       }
     }
-  }, [
-    bondingTokenBurn,
-    sellAmountParsed,
-    hasSufficientBalance,
-    isBurnError,
-    loading,
-    burnError,
-  ]);
+  }, [bondingTokenBurn, sellAmountParsed, hasSufficientBalance, isBurnError, loading, burnError]);
 
   const { data: bondingTokenSymbol } = useBondingTokenSymbol({
     address: bondingTokenAddress,
   });
 
-
-
   return (
     <div>
       <p>Sell Share</p>
+      <div>
+        balance: {bondingTokenBalanceParsed?.toLocaleString()} {bondingTokenSymbol}
+      </div>
       <input
         style={{ color: 'black' }}
         type="number"
@@ -127,8 +125,8 @@ export const SellCard = ({ bondingTokenAddress }: { bondingTokenAddress: Address
           ? 'Loading...'
           : sellAmountParsed
           ? hasSufficientBalance
-              ? 'Sell'
-              : 'Insufficient balance'
+            ? 'Sell'
+            : 'Insufficient balance'
           : 'Enter Amount'}
       </button>
     </div>
