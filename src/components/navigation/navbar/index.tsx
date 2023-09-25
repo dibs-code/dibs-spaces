@@ -145,9 +145,8 @@ const Menu = () => {
         address: RoutePath.PAIR_ISOLATED,
       },
     ];
-    return !IS_DEV
-      ? linksList
-      : [
+    return process.env.REACT_APP_SHOW_TEST_URLS === 'true' || IS_DEV
+      ? [
           {
             name: 'Shares',
             icon: null,
@@ -161,7 +160,8 @@ const Menu = () => {
             icon: null,
             address: RoutePath.PAIR_REWARDER_LEADERBOARD_TEST,
           },
-        ];
+        ]
+      : linksList;
   }, []);
 
   const [selectedNavbarItemElement, setSelectedNavbarItemElement] = React.useState<HTMLElement | null>(null);

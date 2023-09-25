@@ -72,11 +72,6 @@ export const BuyCard = ({ bondingTokenAddress }: { bondingTokenAddress: Address 
       connectorTokenBalance >= connectorTokenAmountParsed,
     [connectorTokenAmountParsed, connectorTokenBalance],
   );
-  console.log({
-    hasSufficientBalance,
-    connectorTokenBalance,
-    connectorTokenAmountParsed,
-  });
 
   const loading = useMemo(
     () =>
