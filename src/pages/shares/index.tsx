@@ -67,7 +67,6 @@ const Shares = () => {
       <Link to={RoutePath.SHARES_CREATE} className={'btn btn--secondary-outlined py-1.5'}>
         Create Share
       </Link>
-      <div>{String(allBondingTokensLength)}</div>
       <table>
         <thead>
           <tr>

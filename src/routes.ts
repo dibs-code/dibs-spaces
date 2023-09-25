@@ -10,6 +10,7 @@ export enum RoutePath {
   REWARDS_TEST = '/rewards-test',
   PAIR_REWARDER_LEADERBOARD_TEST = '/pair-isolated/test/leaderboard',
   SHARES_CREATE = '/shares/create',
+  SHARES_SHARE = '/shares/:address',
 }
 
 export function requiresCode(routePath: string) {
