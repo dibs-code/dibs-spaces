@@ -32,14 +32,17 @@ export const BuyCard = ({ bondingTokenAddress }: { bondingTokenAddress: Address 
     address: bondingTokenAddress,
   });
 
-  const [buyAmount, setBuyAmount] = useState('0');
-  const buyAmountParsed = useMemo(
-    () => (connectorTokenDecimals && buyAmount ? parseUnits(buyAmount, connectorTokenDecimals) : undefined),
-    [connectorTokenDecimals, buyAmount],
+  const [connectorTokenAmount, setConnectorTokenAmount] = useState('0');
+  const connectorTokenAmountParsed = useMemo(
+    () =>
+      connectorTokenDecimals && connectorTokenAmount
+        ? parseUnits(connectorTokenAmount, connectorTokenDecimals)
+        : undefined,
+    [connectorTokenDecimals, connectorTokenAmount],
   );
   const { data: purchaseReturn, isLoading: purchaseReturnLoading } = useBondingTokenGetPurchaseReturn({
     address: bondingTokenAddress,
-    args: buyAmountParsed ? [buyAmountParsed] : undefined,
+    args: connectorTokenAmountParsed ? [connectorTokenAmountParsed] : undefined,
   });
   const purchaseReturnParsed = useMemo(
     () => (bondingTokenDecimals && purchaseReturn ? formatUnits(purchaseReturn, bondingTokenDecimals) : undefined),
@@ -53,8 +56,9 @@ export const BuyCard = ({ bondingTokenAddress }: { bondingTokenAddress: Address 
     watch: true,
   });
   const isApproved = useMemo(
-    () => allowance !== undefined && buyAmountParsed !== undefined && allowance >= buyAmountParsed,
-    [allowance, buyAmountParsed],
+    () =>
+      allowance !== undefined && connectorTokenAmountParsed !== undefined && allowance >= connectorTokenAmountParsed,
+    [allowance, connectorTokenAmountParsed],
   );
 
   const { data: connectorTokenBalance, isLoading: connectorTokenBalanceLoading } = useErc20BalanceOf({
@@ -63,14 +67,19 @@ export const BuyCard = ({ bondingTokenAddress }: { bondingTokenAddress: Address 
   });
   const hasSufficientBalance = useMemo(
     () =>
-      connectorTokenBalance !== undefined && buyAmountParsed !== undefined && connectorTokenBalance >= buyAmountParsed,
-    [buyAmountParsed, connectorTokenBalance],
+      connectorTokenBalance !== undefined &&
+      connectorTokenAmountParsed !== undefined &&
+      connectorTokenBalance >= connectorTokenAmountParsed,
+    [connectorTokenAmountParsed, connectorTokenBalance],
   );
+  console.log({
+    hasSufficientBalance,
+    connectorTokenBalance,
+    connectorTokenAmountParsed,
+  });
 
   const loading = useMemo(
     () =>
-      connectorTokenAddressLoading ||
-      connectorTokenSymbolLoading ||
       connectorTokenDecimalsLoading ||
       bondingTokenDecimalsLoading ||
       purchaseReturnLoading ||
@@ -79,10 +88,8 @@ export const BuyCard = ({ bondingTokenAddress }: { bondingTokenAddress: Address 
     [
       allowanceLoading,
       bondingTokenDecimalsLoading,
-      connectorTokenAddressLoading,
       connectorTokenBalanceLoading,
       connectorTokenDecimalsLoading,
-      connectorTokenSymbolLoading,
       purchaseReturnLoading,
     ],
   );
@@ -99,12 +106,12 @@ export const BuyCard = ({ bondingTokenAddress }: { bondingTokenAddress: Address 
     isError: isMintError,
   } = usePrepareBondingTokenMint({
     address: bondingTokenAddress,
-    args: buyAmountParsed && address ? [address, buyAmountParsed] : undefined,
+    args: connectorTokenAmountParsed && address ? [address, connectorTokenAmountParsed] : undefined,
   });
   const { write: bondingTokenMint } = useBondingTokenWrite(bondingTokenMintConfig);
 
   const onBuy = useCallback(async () => {
-    if (loading || !buyAmountParsed || !hasSufficientBalance) return;
+    if (loading || !connectorTokenAmountParsed || !hasSufficientBalance) return;
     if (!isApproved) {
       approveConnectorToken?.();
     } else {
@@ -119,7 +126,7 @@ export const BuyCard = ({ bondingTokenAddress }: { bondingTokenAddress: Address 
   }, [
     approveConnectorToken,
     bondingTokenMint,
-    buyAmountParsed,
+    connectorTokenAmountParsed,
     hasSufficientBalance,
     isApproved,
     isMintError,
@@ -137,17 +144,18 @@ export const BuyCard = ({ bondingTokenAddress }: { bondingTokenAddress: Address 
       <input
         style={{ color: 'black' }}
         type="number"
-        value={buyAmount}
-        onChange={(e) => setBuyAmount(e.target.value)}
+        value={connectorTokenAmount}
+        data-testid="share-buy-connector-token-amount"
+        onChange={(e) => setConnectorTokenAmount(e.target.value)}
       />{' '}
       {connectorTokenSymbol}
-      <div className="mt-2">
+      <div className="mt-2" data-testid="share-purchase-return">
         {purchaseReturnParsed || '0'} {bondingTokenSymbol}
       </div>
-      <button className="btn btn--secondary my-2" onClick={onBuy}>
+      <button className="btn btn--secondary my-2" onClick={onBuy} data-testid="share-buy">
         {loading
           ? 'Loading...'
-          : buyAmountParsed
+          : connectorTokenAmountParsed
           ? hasSufficientBalance
             ? isApproved
               ? 'Buy'

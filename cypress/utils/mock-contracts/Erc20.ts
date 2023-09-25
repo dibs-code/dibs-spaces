@@ -9,14 +9,12 @@ import { Erc20 } from './types/Erc20';
 
 export class Erc20MockContract extends MockContract<Erc20> implements MockContractInterface<Erc20> {
   abi = ERC20_ABI;
-  allowedList: string[] = [];
 
   async allowance(_owner: string, _spender: string, overrides: CallOverrides | undefined): Promise<BigNumber> {
-    return this.allowedList.includes(_spender) ? MaxUint256 : Zero;
+    return Zero;
   }
 
   async approve(_spender: string, _value: BigNumberish, overrides: CallOverrides | undefined): Promise<boolean> {
-    this.allowedList.push(_spender);
     return true;
   }
 
@@ -69,5 +67,11 @@ export class UWUMockContract extends Erc20MockContract {
 export class Erc20ConnectorTokenMockContract extends Erc20MockContract {
   decimals(overrides: CallOverrides | undefined): Promise<number> {
     return Promise.resolve(CONNECTOR_TOKEN_DECIMALS);
+  }
+}
+
+export class Erc20ConnectorTokenWithAllowanceMockContract extends Erc20ConnectorTokenMockContract {
+  async allowance(_owner: string, _spender: string, overrides: CallOverrides | undefined): Promise<BigNumber> {
+    return MaxUint256;
   }
 }

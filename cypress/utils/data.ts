@@ -7,11 +7,12 @@ import { IPairRewarder } from './mock-contracts/types/PairRewarder';
 
 export const TEST_PRIVATE_KEY = '0xe580410d7c37d26c6ad1a837bbae46bc27f9066a466fb3a66e770523b4666d19';
 export const TEST_ADDRESS_NEVER_USE = new Wallet(TEST_PRIVATE_KEY).address.toLowerCase();
-export const TOKEN_BALANCE = BigNumber.from(10).pow(16);
+export const TOKEN_BALANCE = BigNumber.from(10).pow(4);
 
 export const UWU_ADDRESS = '0x05d35769a222affd6185e20f3f3676abde56c25f'; // token0
 export const WETH_ADDRESS = '0x82af49447d8a07e3bd95bd0d56f35241523fbab1'; // token1
 export const UNI_ADDRESS = '0x1f9840a85d5af5bf1d1762f925bdaddc4201f984'; // token2
+export const BONDING_TOKEN_ADDRESS = '0x81198059b7e320a7afc7afc59812fc722532aaa6'; // token0
 
 export const ARBITRUM_CHAIN_ID = 42161; // arbitrum
 export const chainId = ARBITRUM_CHAIN_ID; // arbitrum
@@ -139,3 +140,7 @@ export const testPairDay21LeaderBoard: {
 };
 
 export const CONNECTOR_TOKEN_DECIMALS = 6;
+
+export const TRADE_SHARE_UNI_AMOUNT = BigNumber.from(10).pow(8);
+
+export const TRADE_SHARE_BONDING_TOKEN_AMOUNT = BigNumber.from(3).mul(BigNumber.from(10).pow(14));
