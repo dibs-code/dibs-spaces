@@ -7,7 +7,6 @@ import { isSupportedChain } from 'constants/chains';
 import React, { Fragment, PropsWithChildren, useEffect, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import RoutePath, { requiresCode } from 'routes';
-import { IS_DEV } from 'utils/env';
 import { shortenAddress } from 'utils/index';
 import { useAccount, useNetwork } from 'wagmi';
 
@@ -145,23 +144,14 @@ const Menu = () => {
         address: RoutePath.PAIR_ISOLATED,
       },
     ];
-    return process.env.REACT_APP_SHOW_TEST_URLS === 'true' || IS_DEV
-      ? [
-          {
-            name: 'Shares',
-            icon: null,
-            address: RoutePath.SHARES,
-          },
-          ...linksList,
-          { name: 'Your code (test)', icon: null, address: RoutePath.YOUR_CODE_TEST },
-          { name: 'Rewards (test)', icon: null, address: RoutePath.REWARDS_TEST },
-          {
-            name: 'Pair Isolated (test)',
-            icon: null,
-            address: RoutePath.PAIR_REWARDER_LEADERBOARD_TEST,
-          },
-        ]
-      : linksList;
+    return [
+      {
+        name: 'Shares',
+        icon: null,
+        address: RoutePath.SHARES,
+      },
+      ...linksList,
+    ];
   }, []);
 
   const [selectedNavbarItemElement, setSelectedNavbarItemElement] = React.useState<HTMLElement | null>(null);

@@ -1,6 +1,6 @@
-import { arbitrum, goerli } from 'wagmi/chains';
+import { goerli } from 'wagmi/chains';
 
-export const chains = [arbitrum, goerli];
+export const chains = [goerli];
 
 export function isSupportedChain(chainId: number | null | undefined) {
   // return !!chainId && !!SupportedChainId[chainId];
