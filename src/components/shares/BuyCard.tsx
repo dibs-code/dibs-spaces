@@ -2,6 +2,7 @@ import {
   useBondingTokenConnectorToken,
   useBondingTokenDecimals,
   useBondingTokenGetPurchaseReturn,
+  useBondingTokenSymbol,
   useBondingTokenWrite,
   useErc20Allowance,
   useErc20BalanceOf,
@@ -126,6 +127,10 @@ export const BuyCard = ({ bondingTokenAddress }: { bondingTokenAddress: Address 
     mintError,
   ]);
 
+  const { data: bondingTokenSymbol } = useBondingTokenSymbol({
+    address: bondingTokenAddress,
+  });
+
   return (
     <div>
       <p>Buy Share</p>
@@ -136,7 +141,9 @@ export const BuyCard = ({ bondingTokenAddress }: { bondingTokenAddress: Address 
         onChange={(e) => setBuyAmount(e.target.value)}
       />{' '}
       {connectorTokenSymbol}
-      <div>{purchaseReturnParsed}</div>
+      <div className="mt-2">
+        {purchaseReturnParsed || '0'} {bondingTokenSymbol}
+      </div>
       <button className="btn btn--secondary my-2" onClick={onBuy}>
         {loading
           ? 'Loading...'
