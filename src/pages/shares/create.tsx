@@ -20,9 +20,15 @@ const Shares = () => {
   const { data: connectorTokenDecimals } = useErc20Decimals({
     address: isAddress(formData.connectorToken) ? formData.connectorToken : undefined,
   });
-  
-  const initialPriceParsed = useMemo(() => formData.initialPrice && connectorTokenDecimals ? parseUnits(formData.initialPrice, connectorTokenDecimals) : undefined, [formData.initialPrice, connectorTokenDecimals]);
-  
+
+  const initialPriceParsed = useMemo(
+    () =>
+      formData.initialPrice && connectorTokenDecimals
+        ? parseUnits(formData.initialPrice, connectorTokenDecimals)
+        : undefined,
+    [formData.initialPrice, connectorTokenDecimals],
+  );
+
   const args = useMemo(
     () =>
       formData.name &&
@@ -35,7 +41,7 @@ const Shares = () => {
             formData.name,
             formData.symbol,
             formData.connectorToken as Address,
-            Number((Number(formData.connectorWeight) * 100).toFixed(2)),
+            Number((Number(formData.connectorWeight) * 10000).toFixed(4)),
             parseEther(formData.initialSupply),
             initialPriceParsed,
           ] as [string, string, `0x${string}`, number, bigint, bigint])
@@ -72,9 +78,9 @@ const Shares = () => {
     }
   }, [deployBondingToken, isError, args, error]);
 
-  const hasMoreThanTwoDecimals = (value: number) => {
+  const hasMoreThanFourDecimals = (value: number) => {
     const decimalPart = value.toString().split('.')[1];
-    return decimalPart && decimalPart.length > 2;
+    return decimalPart && decimalPart.length > 4;
   };
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     let value = event.target.value;
@@ -85,8 +91,8 @@ const Shares = () => {
       if (valueAsNumber > 100) {
         value = '100';
       } else {
-        if (hasMoreThanTwoDecimals(valueAsNumber)) {
-          value = (Math.floor(valueAsNumber * 100) / 100).toString();
+        if (hasMoreThanFourDecimals(valueAsNumber)) {
+          value = (Math.floor(valueAsNumber * 10000) / 10000).toString();
         }
       }
     }
@@ -134,7 +140,7 @@ const Shares = () => {
           <label className="pr-2">Connector Weight (Percentage)</label>
           <input
             className="form-input text-black"
-            data-testid="shares-connector-weight-input"            
+            data-testid="shares-connector-weight-input"
             type="number"
             step="0.01"
             min="0"

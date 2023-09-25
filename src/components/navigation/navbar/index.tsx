@@ -169,7 +169,7 @@ const Menu = () => {
   useEffect(() => {
     if (location.pathname) {
       setSelectedNavbarItemElement(
-        document.getElementById('navbar-item-' + links.findIndex((link) => link.address === location.pathname)),
+        document.getElementById('navbar-item-' + links.findIndex((link) => location.pathname.startsWith(link.address))),
       );
     }
   }, [location.pathname, links]);

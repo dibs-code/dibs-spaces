@@ -3,6 +3,7 @@ import { react } from '@wagmi/cli/plugins';
 import { Abi } from 'viem';
 import { erc20ABI } from 'wagmi';
 
+import BondingTokenABI from './src/abis/bondingToken.json';
 import DibsABI from './src/abis/dibs.json';
 import DibsSharesABI from './src/abis/dibsshares.json';
 import MuonInterfaceABI from './src/abis/muonInterface.json';
@@ -40,6 +41,10 @@ export default defineConfig({
     {
       name: 'UniswapV2Pair',
       abi: UniswapV2PairABI as Abi,
+    },
+    {
+      name: 'BondingToken',
+      abi: BondingTokenABI as Abi,
     },
   ],
   plugins: [react()],
