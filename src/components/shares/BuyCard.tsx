@@ -45,7 +45,10 @@ export const BuyCard = ({ bondingTokenAddress }: { bondingTokenAddress: Address 
     args: connectorTokenAmountParsed ? [connectorTokenAmountParsed] : undefined,
   });
   const purchaseReturnParsed = useMemo(
-    () => (bondingTokenDecimals && purchaseReturn ? formatUnits(purchaseReturn, bondingTokenDecimals) : undefined),
+    () =>
+      bondingTokenDecimals !== undefined && purchaseReturn !== undefined
+        ? formatUnits(purchaseReturn, bondingTokenDecimals)
+        : undefined,
     [bondingTokenDecimals, purchaseReturn],
   );
 
@@ -65,6 +68,13 @@ export const BuyCard = ({ bondingTokenAddress }: { bondingTokenAddress: Address 
     address: connectorTokenAddress,
     args: address ? [address] : undefined,
   });
+  const connectorTokenBalanceParsed = useMemo(
+    () =>
+      connectorTokenDecimals !== undefined && connectorTokenBalance !== undefined
+        ? Number(formatUnits(connectorTokenBalance, connectorTokenDecimals))
+        : undefined,
+    [connectorTokenDecimals, connectorTokenBalance],
+  );
   const hasSufficientBalance = useMemo(
     () =>
       connectorTokenBalance !== undefined &&
@@ -136,6 +146,10 @@ export const BuyCard = ({ bondingTokenAddress }: { bondingTokenAddress: Address 
   return (
     <div>
       <p>Buy Share</p>
+      <p>
+        balance: {connectorTokenBalanceParsed !== undefined ? connectorTokenBalanceParsed.toLocaleString() : '...'}{' '}
+        {connectorTokenSymbol}
+      </p>
       <input
         style={{ color: 'black' }}
         type="number"

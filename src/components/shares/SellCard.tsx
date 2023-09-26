@@ -39,7 +39,10 @@ export const SellCard = ({ bondingTokenAddress }: { bondingTokenAddress: Address
     args: sellAmountParsed ? [sellAmountParsed] : undefined,
   });
   const saleReturnParsed = useMemo(
-    () => (connectorTokenDecimals && saleReturn ? formatUnits(saleReturn, connectorTokenDecimals) : undefined),
+    () =>
+      connectorTokenDecimals !== undefined && saleReturn !== undefined
+        ? formatUnits(saleReturn, connectorTokenDecimals)
+        : undefined,
     [connectorTokenDecimals, saleReturn],
   );
 
@@ -49,9 +52,12 @@ export const SellCard = ({ bondingTokenAddress }: { bondingTokenAddress: Address
     address: bondingTokenAddress,
     args: address ? [address] : undefined,
   });
+
   const bondingTokenBalanceParsed = useMemo(
     () =>
-      bondingTokenDecimals && bondingTokenBalance ? formatUnits(bondingTokenBalance, bondingTokenDecimals) : undefined,
+      bondingTokenDecimals !== undefined && bondingTokenBalance !== undefined
+        ? formatUnits(bondingTokenBalance, bondingTokenDecimals)
+        : undefined,
     [bondingTokenDecimals, bondingTokenBalance],
   );
 
@@ -108,7 +114,8 @@ export const SellCard = ({ bondingTokenAddress }: { bondingTokenAddress: Address
     <div>
       <p>Sell Share</p>
       <div>
-        balance: {bondingTokenBalanceParsed?.toLocaleString()} {bondingTokenSymbol}
+        balance: {bondingTokenBalanceParsed !== undefined ? bondingTokenBalanceParsed.toLocaleString() : '...'}{' '}
+        {bondingTokenSymbol}
       </div>
       <input
         style={{ color: 'black' }}
