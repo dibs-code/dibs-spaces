@@ -1,7 +1,16 @@
-import { useDibsSharesWrite, useErc20Decimals, usePrepareDibsSharesDeployBondingToken } from 'abis/types/generated';
+import { Interface } from '@ethersproject/abi';
+import { waitForTransaction } from '@wagmi/core';
+import {
+  dibsSharesABI,
+  useDibsSharesWrite,
+  useErc20Decimals,
+  usePrepareDibsSharesDeployBondingToken,
+} from 'abis/types/generated';
 import { DibsSharesAddressMap } from 'constants/addresses';
 import { useContractAddress } from 'hooks/useContractAddress';
-import { ChangeEvent, useCallback, useMemo, useState } from 'react';
+import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import RoutePath from 'routes';
 import { isAddress, parseEther, parseUnits } from 'viem';
 import { Address } from 'wagmi';
 
@@ -58,7 +67,7 @@ const Shares = () => {
     args,
   });
 
-  const { write: deployBondingToken } = useDibsSharesWrite(deployBondingTokenConfig);
+  const { write: deployBondingToken, data } = useDibsSharesWrite(deployBondingTokenConfig);
 
   const onSubmit = useCallback(() => {
     if (deployBondingToken) {
@@ -77,6 +86,37 @@ const Shares = () => {
       }
     }
   }, [deployBondingToken, isError, args, error]);
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    let loading = false;
+
+    async function getDeployedBondingCurveAddress() {
+      if (data?.hash && !loading) {
+        loading = true;
+        const txData = await waitForTransaction({
+          hash: data.hash,
+        });
+        const iface = new Interface(dibsSharesABI);
+        const events = txData.logs.map((l) => {
+          try {
+            return iface.parseLog(l);
+          } catch (_e) {
+            return null;
+          }
+        });
+        const bondingTokenDeployedEvent = events.find((e) => e?.name === 'BondingTokenDeployed');
+        const bondingTokenAddress: Address = bondingTokenDeployedEvent?.args.bondingToken;
+        loading = false;
+        if (!bondingTokenAddress) {
+          throw new Error('Error: Could not get the created contract address');
+        }
+        navigate(RoutePath.SHARES_SHARE.replace(':address', bondingTokenAddress));
+      }
+    }
+
+    getDeployedBondingCurveAddress();
+  }, [data?.hash, navigate]);
 
   const hasMoreThanFourDecimals = (value: number) => {
     const decimalPart = value.toString().split('.')[1];
