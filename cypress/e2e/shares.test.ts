@@ -66,7 +66,7 @@ describe('Dibs Shares', () => {
     });
   });
 
-  it.only('Can Buy Dibs Share', function () {
+  it('Can Buy Dibs Share', function () {
     const connectorTokenContract = this.metamocks.registerMockContract<Erc20>(
       connectorToken,
       Erc20ConnectorTokenMockContract,

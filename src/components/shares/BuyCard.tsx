@@ -18,10 +18,10 @@ import { formatUnits, parseUnits } from 'viem';
 import { Address, useAccount } from 'wagmi';
 
 export const BuyCard = ({ bondingTokenAddress }: { bondingTokenAddress: Address }) => {
-  const { data: connectorTokenAddress, isLoading: connectorTokenAddressLoading } = useBondingTokenConnectorToken({
+  const { data: connectorTokenAddress } = useBondingTokenConnectorToken({
     address: bondingTokenAddress,
   });
-  const { data: connectorTokenSymbol, isLoading: connectorTokenSymbolLoading } = useErc20Symbol({
+  const { data: connectorTokenSymbol } = useErc20Symbol({
     address: connectorTokenAddress,
   });
 

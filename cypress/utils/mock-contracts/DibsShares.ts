@@ -34,4 +34,8 @@ export default class DibsSharesMockContract
   ): Promise<string> {
     return '';
   }
+
+  bondingTokenImplementation(overrides: CallOverrides | undefined): Promise<string> {
+    throw Error('not implemented');
+  }
 }
