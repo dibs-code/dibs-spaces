@@ -38,7 +38,7 @@
     "start:cypress": "env REACT_APP_IS_CYPRESS='true' react-app-rewired start",
     "cypress:open": "cypress open --browser chrome --e2e",
     "cypress": "start-server-and-test 'yarn start:cypress' http://localhost:3000 'yarn cypress:open'",
-    "cypress:headless": "yarn build && start-server-and-test 'serve -s build' http://localhost:3000 'cypress run --browser chrome --e2e'",
+    "cypress:headless": "yarn build && start-server-and-test 'serve -s -L build' http://localhost:3000 'cypress run --browser chrome --e2e'",
     "prepare": "wagmi generate && graphql-codegen && yarn contracts:compile:abi"
   },
   "eslintConfig": {

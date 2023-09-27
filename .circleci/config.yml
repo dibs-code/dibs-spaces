@@ -8,5 +8,5 @@ workflows:
           install-browsers: true
           package-manager: 'yarn'
           post-install: 'yarn build'
-          start-command: 'npx serve -s build'
+          start-command: 'npx serve -s -L build'
           cypress-command: 'npx cypress run --browser chrome'
