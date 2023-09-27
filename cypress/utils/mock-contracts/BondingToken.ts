@@ -3,7 +3,7 @@ import BondingTokenABI from 'abis/bondingToken.json';
 import { CallOverrides } from 'ethers';
 import { MockContract, MockContractInterface } from 'metamocks';
 
-import { TRADE_SHARE_UNI_AMOUNT, UNI_ADDRESS } from '../data';
+import { BONDING_TOKEN_DECIMALS, CONNECTOR_TOKEN_DECIMALS, UNI_ADDRESS } from '../data';
 import { BondingToken } from './types';
 
 export default class BondingTokenMockContract
@@ -49,7 +49,7 @@ export default class BondingTokenMockContract
   }
 
   async decimals(overrides: CallOverrides | undefined): Promise<number> {
-    return 18;
+    return BONDING_TOKEN_DECIMALS;
   }
 
   decreaseAllowance(
@@ -61,11 +61,15 @@ export default class BondingTokenMockContract
   }
 
   async getPurchaseReturn(amount: BigNumberish, overrides: CallOverrides | undefined): Promise<BigNumber> {
-    return BigNumber.from(amount).mul(BigNumber.from(2).mul(BigNumber.from(10).pow(10)));
+    return BigNumber.from(amount).mul(
+      BigNumber.from(2).mul(BigNumber.from(10).pow(BONDING_TOKEN_DECIMALS - CONNECTOR_TOKEN_DECIMALS - 2)),
+    );
   }
 
   async getSaleReturn(amount: BigNumberish, overrides: CallOverrides | undefined): Promise<BigNumber> {
-    return TRADE_SHARE_UNI_AMOUNT;
+    return BigNumber.from(amount).mul(
+      BigNumber.from(2).div(BigNumber.from(10).pow(BONDING_TOKEN_DECIMALS - CONNECTOR_TOKEN_DECIMALS - 2)),
+    );
   }
 
   increaseAllowance(spender: string, addedValue: BigNumberish, overrides: CallOverrides | undefined): Promise<boolean> {
@@ -93,6 +97,18 @@ export default class BondingTokenMockContract
   }
 
   transferFrom(from: string, to: string, amount: BigNumberish, overrides: CallOverrides | undefined): Promise<boolean> {
+    throw Error('not implemented');
+  }
+
+  factory(overrides: CallOverrides | undefined): Promise<string> {
+    throw Error('not implemented');
+  }
+
+  getMarketCap(overrides: CallOverrides | undefined): Promise<BigNumber> {
+    throw Error('not implemented');
+  }
+
+  spotPrice(overrides: CallOverrides | undefined): Promise<BigNumber> {
     throw Error('not implemented');
   }
 }

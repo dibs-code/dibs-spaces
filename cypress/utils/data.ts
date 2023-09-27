@@ -140,6 +140,7 @@ export const testPairDay21LeaderBoard: {
 };
 
 export const CONNECTOR_TOKEN_DECIMALS = 6;
+export const BONDING_TOKEN_DECIMALS = 18;
 
 export const TRADE_SHARE_UNI_AMOUNT = BigNumber.from(10).pow(8);
 
