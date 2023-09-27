@@ -7,3 +7,11 @@
 
 // Import commands.ts using ES2015 syntax:
 import './ethereum';
+
+Cypress.Commands.overwrite('intercept', (original, arg1, arg2, ...args) => {
+  if (typeof arg2 === 'object') {
+    // @ts-ignore
+    return original(arg1, { ...arg2, log: false }, ...args);
+  }
+  return original(arg1, arg2, ...args);
+});

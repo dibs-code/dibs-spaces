@@ -3,6 +3,7 @@ import DibsSharesABI from 'abis/dibsshares.json';
 import { CallOverrides } from 'ethers';
 import { MockContract, MockContractInterface } from 'metamocks';
 
+import { BONDING_TOKEN_ADDRESS } from '../data';
 import { Dibsshares } from './types';
 
 export default class DibsSharesMockContract
@@ -32,7 +33,7 @@ export default class DibsSharesMockContract
     _initialPrice: BigNumberish,
     overrides: CallOverrides | undefined,
   ): Promise<string> {
-    return '';
+    return BONDING_TOKEN_ADDRESS;
   }
 
   bondingTokenImplementation(overrides: CallOverrides | undefined): Promise<string> {

@@ -159,7 +159,7 @@ export const BuyCard = ({ bondingTokenAddress }: { bondingTokenAddress: Address 
       />{' '}
       {connectorTokenSymbol}
       <div className="mt-2" data-testid="share-purchase-return">
-        {purchaseReturnParsed || '0'} {bondingTokenSymbol}
+        Purchase return: {purchaseReturnParsed ?? '...'} {bondingTokenSymbol}
       </div>
       <button className="btn btn--secondary my-2" onClick={onBuy} data-testid="share-buy">
         {loading

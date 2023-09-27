@@ -79,13 +79,12 @@ const Shares = () => {
       }
     } else {
       if (isError) {
-        console.log({ args });
         console.log(error);
       } else {
         console.log('deployBondingToken not defined');
       }
     }
-  }, [deployBondingToken, isError, args, error]);
+  }, [deployBondingToken, isError, error]);
 
   const navigate = useNavigate();
   useEffect(() => {

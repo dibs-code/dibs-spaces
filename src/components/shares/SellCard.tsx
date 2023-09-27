@@ -125,7 +125,7 @@ export const SellCard = ({ bondingTokenAddress }: { bondingTokenAddress: Address
       />{' '}
       {bondingTokenSymbol}
       <div className="mt-2">
-        {saleReturnParsed || '0'} {connectorTokenSymbol}
+        Sale return: {saleReturnParsed ?? '...'} {connectorTokenSymbol}
       </div>
       <button className="btn btn--secondary my-2" onClick={onSell}>
         {loading
