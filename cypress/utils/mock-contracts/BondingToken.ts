@@ -67,8 +67,8 @@ export default class BondingTokenMockContract
   }
 
   async getSaleReturn(amount: BigNumberish, overrides: CallOverrides | undefined): Promise<BigNumber> {
-    return BigNumber.from(amount).mul(
-      BigNumber.from(2).div(BigNumber.from(10).pow(BONDING_TOKEN_DECIMALS - CONNECTOR_TOKEN_DECIMALS - 2)),
+    return BigNumber.from(amount).div(
+      BigNumber.from(2).mul(BigNumber.from(10).pow(BONDING_TOKEN_DECIMALS - CONNECTOR_TOKEN_DECIMALS - 2)),
     );
   }
 
