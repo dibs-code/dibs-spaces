@@ -1,10 +1,10 @@
 import {
+  useBondingTokenBalanceOf,
   useBondingTokenConnectorToken,
   useBondingTokenDecimals,
   useBondingTokenGetSaleReturn,
   useBondingTokenSymbol,
   useBondingTokenWrite,
-  useErc20BalanceOf,
   useErc20Decimals,
   useErc20Symbol,
   usePrepareBondingTokenBurn,
@@ -48,7 +48,7 @@ export const SellCard = ({ bondingTokenAddress }: { bondingTokenAddress: Address
 
   const { address } = useAccount();
 
-  const { data: bondingTokenBalance, isLoading: bondingTokenBalanceLoading } = useErc20BalanceOf({
+  const { data: bondingTokenBalance, isLoading: bondingTokenBalanceLoading } = useBondingTokenBalanceOf({
     address: bondingTokenAddress,
     args: address ? [address] : undefined,
   });
@@ -121,13 +121,14 @@ export const SellCard = ({ bondingTokenAddress }: { bondingTokenAddress: Address
         style={{ color: 'black' }}
         type="number"
         value={sellAmount}
+        data-testid="share-sell-bonding-token-amount"
         onChange={(e) => setSellAmount(e.target.value)}
       />{' '}
       {bondingTokenSymbol}
-      <div className="mt-2">
+      <div className="mt-2" data-testid="share-sale-return">
         Sale return: {saleReturnParsed ?? '...'} {connectorTokenSymbol}
       </div>
-      <button className="btn btn--secondary my-2" onClick={onSell}>
+      <button className="btn btn--secondary my-2" onClick={onSell} data-testid="share-sell">
         {loading
           ? 'Loading...'
           : sellAmountParsed

@@ -24,8 +24,8 @@ export default class BondingTokenMockContract
     throw Error('not implemented');
   }
 
-  balanceOf(account: string, overrides: CallOverrides | undefined): Promise<BigNumber> {
-    throw Error('not implemented');
+  async balanceOf(account: string, overrides: CallOverrides | undefined): Promise<BigNumber> {
+    return BigNumber.from(10).pow(16);
   }
 
   burn(amount: BigNumberish, to: string, overrides: CallOverrides | undefined): Promise<void> {

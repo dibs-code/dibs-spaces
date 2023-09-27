@@ -110,4 +110,39 @@ describe('Dibs Shares', () => {
       });
     });
   });
+
+  it('Can Sell Dibs Share', function () {
+    cy.visit(RoutePath.SHARES_SHARE.replace(':address', BONDING_TOKEN_ADDRESS));
+    this.metamocks.registerMockContract<Erc20>(
+      connectorToken,
+      Erc20ConnectorTokenMockContract,
+    );
+    const bondingTokenMockContract = this.metamocks.registerMockContract<BondingToken>(
+      BONDING_TOKEN_ADDRESS,
+      BondingTokenMockContract,
+    );
+    cy.spy(bondingTokenMockContract, 'burn').as('burnSpy');
+    cy.connectWallet();
+
+    cy.get(getTestSelector('share-sell-bonding-token-amount')).clear().type('1');
+    cy.get(getTestSelector('share-sale-return')).contains('50');
+    cy.get(getTestSelector('share-sell')).contains('Insufficient balance');
+
+    cy.get(getTestSelector('share-sell-bonding-token-amount')).clear().type('0.001');
+    cy.get(getTestSelector('share-sale-return')).contains('0.05');
+
+    cy.get(getTestSelector('share-sell'))
+      .contains('Sell')
+      .click();
+
+    cy.wait(3000).then(() => {
+      cy.get('@burnSpy').then((spy: any) => {
+        const callArgs = spy.getCall(-1).args; //getCall(0) to get the first call
+
+        expect(callArgs[0].eq(BigNumber.from(10).pow(15))).to.be.true;
+        expect(callArgs[1].toLowerCase()).to.equal(TEST_ADDRESS_NEVER_USE.toLowerCase());
+      });
+    });
+  });
+
 });
