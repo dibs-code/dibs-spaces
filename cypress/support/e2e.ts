@@ -9,7 +9,7 @@
 import './ethereum';
 
 Cypress.Commands.overwrite('intercept', (original, arg1, arg2, ...args) => {
-  if (typeof arg2 === 'object') {
+  if (typeof arg2 === 'object' && arg2.constructor !== RegExp) {
     // @ts-ignore
     return original(arg1, { ...arg2, log: false }, ...args);
   }
