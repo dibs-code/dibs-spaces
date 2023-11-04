@@ -62,3 +62,14 @@ export type PairVolumes = {
 export type PairLeaderBoardsCache = {
   [pairAddress: Address]: LeaderBoardRecord[];
 };
+
+export type DibsShareChatInfo = {
+  _id: string;
+  chatInfo: {
+    id: number;
+    title: string;
+    type: string;
+  };
+  dibsShareAddress: Address;
+  chainId: number;
+};

@@ -67,6 +67,7 @@ export const BuyCard = ({ bondingTokenAddress }: { bondingTokenAddress: Address 
   const { data: connectorTokenBalance, isLoading: connectorTokenBalanceLoading } = useErc20BalanceOf({
     address: connectorTokenAddress,
     args: address ? [address] : undefined,
+    watch: true,
   });
   const connectorTokenBalanceParsed = useMemo(
     () =>
@@ -144,7 +145,7 @@ export const BuyCard = ({ bondingTokenAddress }: { bondingTokenAddress: Address 
   });
 
   return (
-    <div>
+    <div className="mr-6">
       <p>Buy Share</p>
       <p>
         balance: {connectorTokenBalanceParsed !== undefined ? connectorTokenBalanceParsed.toLocaleString() : '...'}{' '}

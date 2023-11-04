@@ -11,6 +11,7 @@ type BondingTokenItem = {
   address: Address;
   name: string | undefined;
   symbol: string | undefined;
+  author: Address | undefined;
 };
 const Shares = () => {
   const dibsSharesAddress = useContractAddress(DibsSharesAddressMap);
@@ -34,7 +35,7 @@ const Shares = () => {
           args: [BigInt(item)],
         })),
       });
-      const [symbols, names] = await Promise.all([
+      const [symbols, names, authors] = await Promise.all([
         multicall({
           contracts: allBondingTokenAddresses?.map((bondingTokenAddress) => ({
             abi: bondingTokenABI,
@@ -49,12 +50,20 @@ const Shares = () => {
             functionName: 'name',
           })),
         }),
+        multicall({
+          contracts: allBondingTokenAddresses?.map((bondingTokenAddress) => ({
+            abi: bondingTokenABI,
+            address: bondingTokenAddress,
+            functionName: 'author',
+          })),
+        }),
       ]);
       setAllBondingTokens(
         allBondingTokenAddresses.map((bondingTokenAddress, i) => ({
           address: bondingTokenAddress,
           symbol: symbols[i].result,
           name: names[i].result,
+          author: authors[i].result,
         })),
       );
     }
@@ -75,6 +84,7 @@ const Shares = () => {
           <tr className="text-gray-800">
             <th className="px-4 py-2">name</th>
             <th className="px-4 py-2">symbol</th>
+            <th className="px-4 py-2">author</th>
             <th className="px-4 py-2">link</th>
           </tr>
         </thead>
@@ -83,6 +93,7 @@ const Shares = () => {
             <tr key={bondingToken.address} className="text-gray-700">
               <td className="border px-4 py-2">{bondingToken.name}</td>
               <td className="border px-4 py-2">{bondingToken.symbol}</td>
+              <td className="border px-4 py-2">{bondingToken.author}</td>
               <td className="border px-4 py-2">
                 <Link
                   to={RoutePath.SHARES_SHARE.replace(':address', bondingToken.address)}

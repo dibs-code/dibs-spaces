@@ -1,17 +1,17 @@
 // import { faCircleC, faGift, faRightLeft } from '@fortawesome/pro-solid-svg-icons';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Transition } from '@headlessui/react';
-import { useConnectModal } from '@rainbow-me/rainbowkit';
-import { disconnect } from '@wagmi/core';
-import { isSupportedChain } from 'constants/chains';
-import React, { Fragment, PropsWithChildren, useEffect, useMemo } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import RoutePath, { requiresCode } from 'routes';
-import { IS_DEV } from 'utils/env';
-import { shortenAddress } from 'utils/index';
-import { useAccount, useNetwork } from 'wagmi';
+import {Transition} from '@headlessui/react';
+import {useConnectModal} from '@rainbow-me/rainbowkit';
+import {disconnect} from '@wagmi/core';
+import {isSupportedChain} from 'constants/chains';
+import React, {Fragment, PropsWithChildren, useEffect, useMemo} from 'react';
+import {useLocation, useNavigate} from 'react-router-dom';
+import RoutePath, {requiresCode} from 'routes';
+import {IS_DEV} from 'utils/env';
+import {shortenAddress} from 'utils/index';
+import {useAccount, useNetwork} from 'wagmi';
 
-import { ConnectWalletButton } from '../../ConnectWalletButton';
+import {ConnectWalletButton} from '../../ConnectWalletButton';
 
 // import { Dialog, Transition } from '@headlessui/react';
 
@@ -153,13 +153,13 @@ const Menu = () => {
             address: RoutePath.SHARES,
           },
           ...linksList,
-          { name: 'Your code (test)', icon: null, address: RoutePath.YOUR_CODE_TEST },
-          { name: 'Rewards (test)', icon: null, address: RoutePath.REWARDS_TEST },
-          {
-            name: 'Pair Isolated (test)',
-            icon: null,
-            address: RoutePath.PAIR_REWARDER_LEADERBOARD_TEST,
-          },
+          // { name: 'Your code (test)', icon: null, address: RoutePath.YOUR_CODE_TEST },
+          // { name: 'Rewards (test)', icon: null, address: RoutePath.REWARDS_TEST },
+          // {
+          //   name: 'Pair Isolated (test)',
+          //   icon: null,
+          //   address: RoutePath.PAIR_REWARDER_LEADERBOARD_TEST,
+          // },
         ]
       : linksList;
   }, []);

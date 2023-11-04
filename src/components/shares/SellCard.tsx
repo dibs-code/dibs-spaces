@@ -1,7 +1,5 @@
 import {
-  useBondingTokenBalanceOf,
   useBondingTokenConnectorToken,
-  useBondingTokenDecimals,
   useBondingTokenGetSaleReturn,
   useBondingTokenSymbol,
   useBondingTokenWrite,
@@ -9,12 +7,15 @@ import {
   useErc20Symbol,
   usePrepareBondingTokenBurn,
 } from 'abis/types/generated';
+import useBondingTokenDecimalsAndBalance from 'hooks/dibs/useBondingTokenDecimalsAndBalance';
 // import { MaxUint256 } from 'constants/number';
 import { useCallback, useMemo, useState } from 'react';
 import { formatUnits, parseUnits } from 'viem';
 import { Address, useAccount } from 'wagmi';
 
 export const SellCard = ({ bondingTokenAddress }: { bondingTokenAddress: Address }) => {
+  const { address } = useAccount();
+
   const { data: connectorTokenAddress, isLoading: connectorTokenAddressLoading } = useBondingTokenConnectorToken({
     address: bondingTokenAddress,
   });
@@ -25,9 +26,14 @@ export const SellCard = ({ bondingTokenAddress }: { bondingTokenAddress: Address
   const { data: connectorTokenDecimals, isLoading: connectorTokenDecimalsLoading } = useErc20Decimals({
     address: connectorTokenAddress,
   });
-  const { data: bondingTokenDecimals, isLoading: bondingTokenDecimalsLoading } = useBondingTokenDecimals({
-    address: bondingTokenAddress,
-  });
+
+  const {
+    bondingTokenBalance,
+    bondingTokenBalanceParsed,
+    bondingTokenDecimals,
+    bondingTokenBalanceLoading,
+    bondingTokenDecimalsLoading,
+  } = useBondingTokenDecimalsAndBalance(bondingTokenAddress, address);
 
   const [sellAmount, setSellAmount] = useState('0');
   const sellAmountParsed = useMemo(
@@ -46,21 +52,6 @@ export const SellCard = ({ bondingTokenAddress }: { bondingTokenAddress: Address
     [connectorTokenDecimals, saleReturn],
   );
 
-  const { address } = useAccount();
-
-  const { data: bondingTokenBalance, isLoading: bondingTokenBalanceLoading } = useBondingTokenBalanceOf({
-    address: bondingTokenAddress,
-    args: address ? [address] : undefined,
-  });
-
-  const bondingTokenBalanceParsed = useMemo(
-    () =>
-      bondingTokenDecimals !== undefined && bondingTokenBalance !== undefined
-        ? formatUnits(bondingTokenBalance, bondingTokenDecimals)
-        : undefined,
-    [bondingTokenDecimals, bondingTokenBalance],
-  );
-
   const hasSufficientBalance = useMemo(
     () =>
       bondingTokenBalance !== undefined && sellAmountParsed !== undefined && bondingTokenBalance >= sellAmountParsed,
@@ -76,9 +67,9 @@ export const SellCard = ({ bondingTokenAddress }: { bondingTokenAddress: Address
       saleReturnLoading ||
       bondingTokenBalanceLoading,
     [
+      bondingTokenBalanceLoading,
       bondingTokenDecimalsLoading,
       connectorTokenAddressLoading,
-      bondingTokenBalanceLoading,
       connectorTokenDecimalsLoading,
       connectorTokenSymbolLoading,
       saleReturnLoading,

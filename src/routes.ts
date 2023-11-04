@@ -11,6 +11,7 @@ export enum RoutePath {
   PAIR_REWARDER_LEADERBOARD_TEST = '/pair-isolated/test/leaderboard',
   SHARES_CREATE = '/shares/create',
   SHARES_SHARE = '/shares/:address',
+  SHARES_SET_CHAT = '/shares/setchat/:id',
 }
 
 export function requiresCode(routePath: string) {

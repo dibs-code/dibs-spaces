@@ -11,6 +11,7 @@ import RewardsTest from 'pages/rewards-test';
 import Shares from 'pages/shares';
 import Share from 'pages/shares/_id';
 import CreateShares from 'pages/shares/create';
+import SharesSetChat from 'pages/shares/setchat';
 import YourCodeTest from 'pages/your-code-test';
 import React, { useEffect } from 'react';
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
@@ -41,6 +42,7 @@ function App() {
         <Route path={RoutePath.SHARES} element={<Shares />} />
         <Route path={RoutePath.SHARES_CREATE} element={<CreateShares />} />
         <Route path={RoutePath.SHARES_SHARE} element={<Share />} />
+        <Route path={RoutePath.SHARES_SET_CHAT} element={<SharesSetChat />} />
         <Route path={RoutePath.REWARDS} element={<Rewards />} />
         <Route path={RoutePath.REWARDS_TEST} element={<RewardsTest />} />
         <Route path={RoutePath.PAIR_ISOLATED} element={<PairIsolated />} />
